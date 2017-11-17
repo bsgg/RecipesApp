@@ -53,7 +53,7 @@ namespace RecipeApp
 
             for (int i= 0; i< m_RecipeSet.Count; i++)
             {
-                string path = Application.dataPath + "Resources/" + m_DataPath + m_RecipeSet[i].FileName + ".json";
+                string path = Application.dataPath + "/Resources/" + m_DataPath + m_RecipeSet[i].FileName + ".json";
                 m_RecipeSet[i].Recipe = JsonUtility.FromJson<RecipeModel>(path);
 
             }
