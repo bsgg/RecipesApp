@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using LitJson;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Utility;
@@ -35,7 +36,7 @@ namespace RecipeApp
     public class RecipeControl : Base
     {
         [SerializeField]
-        private string m_DataPath = "Data/Recipes/";
+        private string m_DataPath = "Recipes";
 
         [SerializeField]
         private List<RecipeData> m_RecipeSet;
@@ -51,11 +52,28 @@ namespace RecipeApp
 
             m_RecipeUI.Hide();
 
-            for (int i= 0; i< m_RecipeSet.Count; i++)
+            for (int i = 0; i < m_RecipeSet.Count; i++)
             {
-                string path = Application.dataPath + "/Resources/" + m_DataPath + m_RecipeSet[i].FileName + ".json";
-                m_RecipeSet[i].Recipe = JsonUtility.FromJson<RecipeModel>(path);
+               
+                string path = m_DataPath + "\\" + m_RecipeSet[i].FileName;
+                string json = Utility.Utility.LoadJSONResource(path);
+                try
+                {
+                    if (!string.IsNullOrEmpty(json))
+                    {
+                        m_RecipeSet[i].Recipe = JsonMapper.ToObject<RecipeModel>(json);
 
+                    }
+                    else
+                    {
+                        Debug.Log("[RecipeControl.Init] JSON not found: " + path);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError("[RecipeControl.Init] Bad Format JSON File: " + path);
+                }
+                
             }
 
         }

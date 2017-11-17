@@ -467,7 +467,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ce6e578e12901a4b81a5b0cda7fd445, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_DataPath: Data/
+  m_DataPath: Recipes
   m_RecipeSet:
   - FileName: Recipe1
     Recipe:
@@ -1497,8 +1497,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 870e2cdade5f95f46b5606ed59d15153, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ItemScrollPrefab: {fileID: 1179593050572560, guid: 0e926d8b2462466478ec9d04dc07f74b,
-    type: 2}
+  m_ItemScrollPrefab: {fileID: 0}
   m_ContentRecTransform: {fileID: 377416684}
   m_GridContent: {fileID: 377416685}
   m_ScrollObject: {fileID: 815764558}
