@@ -63,6 +63,7 @@ namespace RecipeApp
         {
 
             m_RecipeControl.Init();
+            m_RecipeControl.Show();
 
 
         }

@@ -28,10 +28,17 @@ namespace RecipeApp
     [System.Serializable]
     public class RecipeData
     {
+        public enum ETAG { BREAKFAST, HIGHCARB, LOWCARB, DESSERT, TREAT };        
         public string FileName;
+
+        public List<ETAG> Tags;
+
         public RecipeModel Recipe;
+
         public Sprite Sprite;
     }
+
+    
 
     public class RecipeControl : Base
     {
@@ -76,6 +83,16 @@ namespace RecipeApp
                 
             }
 
+        }
+
+        public override void Show()
+        {
+            base.Show();
+
+            // Show recipe
+
+
+            m_RecipeUI.Show();
         }
     }
 }

@@ -36,7 +36,5 @@ namespace RecipeApp
             set { m_Description.text = value; }
             get { return m_Description.text; }
         }
-
-
     }
 }
