@@ -19,12 +19,12 @@ namespace RecipeApp
         public int Calories;
         public int Difficulty;
         public List<string> Ingredients;
-        public List<string> Method;
+        public List<string> Instructions;
 
         public RecipeModel()
         {
             Ingredients = new List<string>();
-            Method = new List<string>();
+            Instructions = new List<string>();
         }
     }
 
@@ -126,9 +126,34 @@ namespace RecipeApp
             info += "\n" + "- Servings " + m_RecipeSet[m_SelectedRecipeID].Recipe.Serves + "\n";
             info += "\n" + "- Calories " + m_RecipeSet[m_SelectedRecipeID].Recipe.Calories + " Kcal\n";
             info += "\n" + "- Difficulty " + m_RecipeSet[m_SelectedRecipeID].Recipe.Difficulty + "\n";
+
             m_RecipeUI.LongText = info;
         }
 
+
+        public void SetIngredients()
+        {
+            string info = string.Empty;
+            for (int i=0; i< m_RecipeSet[m_SelectedRecipeID].Recipe.Ingredients.Count; i++)
+            {
+                info += "\n - " + m_RecipeSet[m_SelectedRecipeID].Recipe.Ingredients[i] + "\n";
+                
+            }
+
+            m_RecipeUI.LongText = info;
+        }
+
+        public void SetInstructions()
+        {
+            string info = string.Empty;
+            for (int i = 0; i < m_RecipeSet[m_SelectedRecipeID].Recipe.Instructions.Count; i++)
+            {
+                info += "\n - " + m_RecipeSet[m_SelectedRecipeID].Recipe.Instructions[i] + "\n";
+
+            }
+
+            m_RecipeUI.LongText = info;
+        }
 
         #endregion Menu
 
