@@ -138,7 +138,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 32623898}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.000061035156, y: -198.5191, z: 0}
+  m_LocalPosition: {x: 0.000015258789, y: -66.22473, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1162275301}
@@ -470,9 +470,12 @@ MonoBehaviour:
   m_DataPath: Recipes
   m_RecipeSet:
   - FileName: Recipe1
+    Tags: 0000000004000000
     Recipe:
       Title: 
       Sprite: 
+      Time: 0
+      Difficulty: 0
       Ingredients: []
       Method: []
     Sprite: {fileID: 0}
@@ -1063,7 +1066,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 611622326}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 594.8267, y: 0.000030517578, z: 0}
+  m_LocalPosition: {x: 202.27556, y: 0.00002670288, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1753573550}
@@ -1176,7 +1179,7 @@ GameObject:
   - component: {fileID: 629586192}
   - component: {fileID: 629586191}
   m_Layer: 5
-  m_Name: ExamplesBtn
+  m_Name: IngredientsBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1331,7 +1334,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 714090584}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 105, y: 0, z: 0}
+  m_LocalPosition: {x: 105.000015, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1856541109}
@@ -1674,7 +1677,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 880633374}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -140.80005, z: 0}
+  m_LocalPosition: {x: 0, y: -46.97, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 815764554}
@@ -1942,7 +1945,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1118205985}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -140.80005, z: 0}
+  m_LocalPosition: {x: 0, y: -46.97, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1767858107}
@@ -2042,7 +2045,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1162275300}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.1514893, y: 8.620728, z: 0}
+  m_LocalPosition: {x: 0.7171631, y: 2.875824, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 32623899}
@@ -2086,9 +2089,23 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\n- No\uFF08\u306E\uFF09is a possessive particle which indicates ownership
-    or attribution.\\\nn \nNo \uFF08\u306E\uFF09comes after the noun it modifies,
-    like \\\"___'s\\\" in English."
+  m_Text: Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo
+    ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient
+    montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque
+    eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla
+    vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a,
+    venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.
+    Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus.
+    Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem
+    ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut
+    metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel
+    augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas
+    tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing
+    sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id,
+    lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero
+    venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt.
+    Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed
+    consequat, leo eget bibendum sodales, augue velit cursus nunc,
 --- !u!222 &1162275303
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2201,7 +2218,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1385461125}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -720, y: 1139.2, z: 0}
+  m_LocalPosition: {x: -240, y: 380.03, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 377416684}
@@ -2359,7 +2376,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1430119113}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -131.1466, y: 0, z: 0}
+  m_LocalPosition: {x: -43.71553, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1753573550}
@@ -2437,7 +2454,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1491858280}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.000061035156, y: 818.8633, z: 0}
+  m_LocalPosition: {x: 0.000015258789, y: 273.1677, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 825182529}
@@ -2607,7 +2624,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1654747548}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 720, y: 1280, z: 0}
+  m_LocalPosition: {x: 240, y: 427, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 932691510}
@@ -2647,7 +2664,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1753573549}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1159.8934, z: 0}
+  m_LocalPosition: {x: 0, y: 386.9332, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 611622327}
@@ -2797,7 +2814,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1799799640}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 662.4, y: 0, z: 0}
+  m_LocalPosition: {x: 220.80002, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2029515124}
@@ -2918,7 +2935,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1856541108}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.000061035156, y: 1023.03284, z: 0}
+  m_LocalPosition: {x: 0.000015258789, y: 341.27737, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 629586190}

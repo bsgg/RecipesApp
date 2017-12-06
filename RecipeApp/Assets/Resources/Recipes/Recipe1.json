@@ -1,10 +1,29 @@
-{   
-    "Title": "",
-    "Sprite": "",
+﻿{
+  "Title": "HEALTHY FLAPJACKS",
+  "Sprite": "",
+    "PreparationTime": 10,
+    "CookTime": 40,
+    "Serves": 1,
+    "Calories": 0,
+  "Difficulty": 3,
+
     "Ingredients": [
-      ""
-    ],
-    "Method": [
-      ""
-    ]    
+    "150 ml any milk (soya, almond, rice milk)",
+    "Mashed bananas(Riper if possible)",
+    "50g porridge oats (about 2 handfuls)",
+    "Optional: Handful of seeds (pumpking seeds, chia)",
+    "Optional: Teaspoon of cinnamon",
+    "Optional: Tablespoon of cocoa powder",
+    "Optional: Handful raisins",
+    "Optional: Tablespoons of dessicated coconut",
+    "Optional: 1 cup frozen berries (defrosted)",
+    "Optional: 1 tablespoon honey",
+    "Optional: 1 tablespoon peanut butter"
+  ],
+  "Method": [
+    "Mix all the ingredients Together in a bowl",
+    "Put in to cake tin lined with greaseproof paper, or silicone bun cases.",
+    "It can sometimes be a bit tricky to peel the greaseproof paper off, so you can grease the paper first with some oil.",
+    "Bake for about 40 minutes at 170 degrees C. Or until they are browning."
+  ]
 }

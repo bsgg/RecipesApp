@@ -13,6 +13,11 @@ namespace RecipeApp
     {
         public string Title;
         public string Sprite;
+        public int PreparationTime;
+        public int CookTime;
+        public int Serves;
+        public int Calories;
+        public int Difficulty;
         public List<string> Ingredients;
         public List<string> Method;
 
@@ -69,7 +74,6 @@ namespace RecipeApp
                     if (!string.IsNullOrEmpty(json))
                     {
                         m_RecipeSet[i].Recipe = JsonMapper.ToObject<RecipeModel>(json);
-
                     }
                     else
                     {
@@ -83,6 +87,8 @@ namespace RecipeApp
                 
             }
 
+            m_SelectedRecipeID = 0;
+
         }
 
         public override void Show()
@@ -91,8 +97,41 @@ namespace RecipeApp
 
             // Show recipe
 
+            m_RecipeUI.Title = m_RecipeSet[m_SelectedRecipeID].Recipe.Title;
 
+            if (!string.IsNullOrEmpty(m_RecipeSet[m_SelectedRecipeID].Recipe.Sprite))
+            {
+                SetPicture();
+            }
+            else
+            {
+                SetInfo();
+            }
             m_RecipeUI.Show();
         }
+
+        #region Menu
+        public void SetPicture()
+        {
+
+        }
+
+        public void SetInfo()
+        {
+            string info = string.Empty;
+
+            info = "\n" + "- Preparation Time " + m_RecipeSet[m_SelectedRecipeID].Recipe.PreparationTime + " min\n";
+            info += "\n" + "- Cook Time " + m_RecipeSet[m_SelectedRecipeID].Recipe.CookTime + " min\n";
+            info += "\n" + "- Total Time " + (m_RecipeSet[m_SelectedRecipeID].Recipe.PreparationTime + m_RecipeSet[m_SelectedRecipeID].Recipe.CookTime) + " min\n";
+            info += "\n" + "- Servings " + m_RecipeSet[m_SelectedRecipeID].Recipe.Serves + "\n";
+            info += "\n" + "- Calories " + m_RecipeSet[m_SelectedRecipeID].Recipe.Calories + " Kcal\n";
+            info += "\n" + "- Difficulty " + m_RecipeSet[m_SelectedRecipeID].Recipe.Difficulty + "\n";
+            m_RecipeUI.LongText = info;
+        }
+
+
+        #endregion Menu
+
+
     }
 }

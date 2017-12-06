@@ -30,11 +30,11 @@ namespace RecipeApp
 
 
         [SerializeField]
-        private Text m_Description;
-        public string Description
+        private Text m_LongText;
+        public string LongText
         {
-            set { m_Description.text = value; }
-            get { return m_Description.text; }
+            set { m_LongText.text = value; }
+            get { return m_LongText.text; }
         }
     }
 }
