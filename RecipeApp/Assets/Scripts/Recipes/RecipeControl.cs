@@ -18,11 +18,13 @@ namespace RecipeApp
         public int Serves;
         public int Calories;
         public int Difficulty;
+        public List<string> Tags;
         public List<string> Ingredients;
         public List<string> Instructions;
 
         public RecipeModel()
         {
+            Tags = new List<string>();
             Ingredients = new List<string>();
             Instructions = new List<string>();
         }
@@ -33,10 +35,10 @@ namespace RecipeApp
     [System.Serializable]
     public class RecipeData
     {
-        public enum ETAG { BREAKFAST, HIGHCARB, LOWCARB, DESSERT, TREAT };        
+        //public enum ETAG { BREAKFAST, HIGHCARB, LOWCARB, DESSERT, TREAT };        
         public string FileName;
 
-        public List<ETAG> Tags;
+        //public List<ETAG> Tags;
 
         public RecipeModel Recipe;
 
@@ -58,33 +60,61 @@ namespace RecipeApp
 
         private int m_SelectedRecipeID;
 
+        private List<RecipeModel> m_RecipeList;
+
         public override void Init()
         {
             base.Init();
 
             m_RecipeUI.Hide();
 
-            for (int i = 0; i < m_RecipeSet.Count; i++)
-            {
-               
-                string path = m_DataPath + "\\" + m_RecipeSet[i].FileName;
+            /* for (int i = 0; i < m_RecipeSet.Count; i++)
+             {
+
+                 string path = m_DataPath + "\\" + m_RecipeSet[i].FileName;
                 string json = Utility.Utility.LoadJSONResource(path);
-                try
+                 try
+                 {
+                     if (!string.IsNullOrEmpty(json))
+                     {
+                         m_RecipeSet[i].Recipe = JsonMapper.ToObject<RecipeModel>(json);
+                     }
+                     else
+                     {
+                         Debug.Log("[RecipeControl.Init] JSON not found: " + path);
+                     }
+                 }
+                 catch (Exception e)
+                 {
+                     Debug.LogError("[RecipeControl.Init] Bad Format JSON File: " + path);
+                 }
+
+             }*/
+
+
+            m_RecipeList = new List<RecipeModel>();
+            if (FileRequestManager.Instance.FileData.Data != null)
+            {
+                for (int i = 0; i < FileRequestManager.Instance.FileData.Data.Count; i++)
                 {
-                    if (!string.IsNullOrEmpty(json))
+                    string data =FileRequestManager.Instance.FileData.Data[i].Data;
+
+                    try
                     {
-                        m_RecipeSet[i].Recipe = JsonMapper.ToObject<RecipeModel>(json);
+                        if (!string.IsNullOrEmpty(data))
+                        {
+                            m_RecipeList.Add(JsonMapper.ToObject<RecipeModel>(data));
+                        }
+                        else
+                        {
+                            Debug.Log("[RecipeControl.Init] JSON not found: " + FileRequestManager.Instance.FileData.Data[i].FileName + " Data: " + data);
+                        }
                     }
-                    else
+                    catch (Exception e)
                     {
-                        Debug.Log("[RecipeControl.Init] JSON not found: " + path);
+                        Debug.LogError("[RecipeControl.Init] Bad Format JSON File: " + FileRequestManager.Instance.FileData.Data[i].FileName + " Data: " + data);
                     }
                 }
-                catch (Exception e)
-                {
-                    Debug.LogError("[RecipeControl.Init] Bad Format JSON File: " + path);
-                }
-                
             }
 
             m_SelectedRecipeID = 0;
@@ -97,9 +127,9 @@ namespace RecipeApp
 
             // Show recipe
 
-            m_RecipeUI.Title = m_RecipeSet[m_SelectedRecipeID].Recipe.Title;
+            m_RecipeUI.Title = m_RecipeList[m_SelectedRecipeID].Title;
 
-            if (!string.IsNullOrEmpty(m_RecipeSet[m_SelectedRecipeID].Recipe.Sprite))
+            if (!string.IsNullOrEmpty(m_RecipeList[m_SelectedRecipeID].Sprite))
             {
                 SetPicture();
             }
@@ -120,12 +150,13 @@ namespace RecipeApp
         {
             string info = string.Empty;
 
-            info = "\n" + "- Preparation Time " + m_RecipeSet[m_SelectedRecipeID].Recipe.PreparationTime + " min\n";
-            info += "\n" + "- Cook Time " + m_RecipeSet[m_SelectedRecipeID].Recipe.CookTime + " min\n";
-            info += "\n" + "- Total Time " + (m_RecipeSet[m_SelectedRecipeID].Recipe.PreparationTime + m_RecipeSet[m_SelectedRecipeID].Recipe.CookTime) + " min\n";
-            info += "\n" + "- Servings " + m_RecipeSet[m_SelectedRecipeID].Recipe.Serves + "\n";
-            info += "\n" + "- Calories " + m_RecipeSet[m_SelectedRecipeID].Recipe.Calories + " Kcal\n";
-            info += "\n" + "- Difficulty " + m_RecipeSet[m_SelectedRecipeID].Recipe.Difficulty + "\n";
+            info = "\n" + "- Preparation Time " + m_RecipeList[m_SelectedRecipeID].PreparationTime + " min\n";
+            info += "\n" + "- Cook Time " + m_RecipeList[m_SelectedRecipeID].CookTime + " min\n";
+            info += "\n" + "- Total Time " + (m_RecipeList[m_SelectedRecipeID].PreparationTime + m_RecipeList[m_SelectedRecipeID].CookTime) + " min\n";
+            info += "\n" + "- Servings " + m_RecipeList[m_SelectedRecipeID].Serves + "\n";
+            info += "\n" + "- Calories " + m_RecipeList[m_SelectedRecipeID].Calories + " Kcal\n";
+            info += "\n" + "- Difficulty " + m_RecipeList[m_SelectedRecipeID].Difficulty + "\n";
+            info += "\n" + "- Tags " + m_RecipeList[m_SelectedRecipeID].Tags + "\n";
 
             m_RecipeUI.LongText = info;
         }
@@ -134,9 +165,9 @@ namespace RecipeApp
         public void SetIngredients()
         {
             string info = string.Empty;
-            for (int i=0; i< m_RecipeSet[m_SelectedRecipeID].Recipe.Ingredients.Count; i++)
+            for (int i=0; i< m_RecipeList[m_SelectedRecipeID].Ingredients.Count; i++)
             {
-                info += "\n - " + m_RecipeSet[m_SelectedRecipeID].Recipe.Ingredients[i] + "\n";
+                info += "\n - " + m_RecipeList[m_SelectedRecipeID].Ingredients[i] + "\n";
                 
             }
 
@@ -146,9 +177,9 @@ namespace RecipeApp
         public void SetInstructions()
         {
             string info = string.Empty;
-            for (int i = 0; i < m_RecipeSet[m_SelectedRecipeID].Recipe.Instructions.Count; i++)
+            for (int i = 0; i < m_RecipeList[m_SelectedRecipeID].Instructions.Count; i++)
             {
-                info += "\n - " + m_RecipeSet[m_SelectedRecipeID].Recipe.Instructions[i] + "\n";
+                info += "\n - " + m_RecipeList[m_SelectedRecipeID].Instructions[i] + "\n";
 
             }
 

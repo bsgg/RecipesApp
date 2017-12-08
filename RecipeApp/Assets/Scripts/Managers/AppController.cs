@@ -62,12 +62,21 @@ namespace RecipeApp
         void Start ()
         {
 
+            // Load files
+            // Utility.FileRequestManager.Instance.RequestFiles();
+
+            StartCoroutine(Init());
+        }
+        
+        private IEnumerator Init()
+        {
+            yield return Utility.FileRequestManager.Instance.RequestFiles();
+
             m_RecipeControl.Init();
             m_RecipeControl.Show();
 
-
         }
-        
+
         
         private void Update()
         {
