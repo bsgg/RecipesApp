@@ -114,9 +114,6 @@ namespace Utility
                         m_ProgressText = m_PercentProgress.ToString() + " % ";
 
                         m_FileData.Data[i].Data = www.text;
-                        //RecipeModel recipe = JsonUtility.FromJson<RecipeModel>(www.text);
-                        //m_RecipeList.Add(recipe);
-                        //m_RecipeList.Add(JsonMapper.ToObject<RecipeModel>(www.text));
 
 
                         Debug.LogWarning("<color=yellow>" + "[FileRequestManager] Data Retrieved: " + m_FileData.Data[i].Data +  "</color>");

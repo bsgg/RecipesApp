@@ -18,13 +18,13 @@ namespace RecipeApp
         public int Serves;
         public int Calories;
         public int Difficulty;
-        public List<string> Tags;
+        public List<int> Tags;
         public List<string> Ingredients;
         public List<string> Instructions;
 
         public RecipeModel()
         {
-            Tags = new List<string>();
+            Tags = new List<int>();
             Ingredients = new List<string>();
             Instructions = new List<string>();
         }
@@ -33,16 +33,10 @@ namespace RecipeApp
     #endregion DataModel
 
     [System.Serializable]
-    public class RecipeData
+    public class SpriteData
     {
-        //public enum ETAG { BREAKFAST, HIGHCARB, LOWCARB, DESSERT, TREAT };        
-        public string FileName;
-
-        //public List<ETAG> Tags;
-
-        public RecipeModel Recipe;
-
-        public Sprite Sprite;
+        public string ID;
+        public Sprite Sprite; 
     }
 
     
@@ -50,17 +44,23 @@ namespace RecipeApp
     public class RecipeControl : Base
     {
         [SerializeField]
-        private string m_DataPath = "Recipes";
+        private List<RecipeModel> m_RecipeList;
+
 
         [SerializeField]
-        private List<RecipeData> m_RecipeSet;
+        private Dictionary<ETAG, List<RecipeModel>> m_RecipeData;
 
         [SerializeField]
         private RecipeUI m_RecipeUI;
 
+        [SerializeField]
+        private CategoriesUI m_Category;
+
         private int m_SelectedRecipeID;
 
-        private List<RecipeModel> m_RecipeList;
+        
+
+        public enum ETAG { BREAKFAST = 0, HIGHCARB, LOWCARB, DESSERT, TREAT, NUM };
 
         public override void Init()
         {
@@ -68,28 +68,12 @@ namespace RecipeApp
 
             m_RecipeUI.Hide();
 
-            /* for (int i = 0; i < m_RecipeSet.Count; i++)
-             {
-
-                 string path = m_DataPath + "\\" + m_RecipeSet[i].FileName;
-                string json = Utility.Utility.LoadJSONResource(path);
-                 try
-                 {
-                     if (!string.IsNullOrEmpty(json))
-                     {
-                         m_RecipeSet[i].Recipe = JsonMapper.ToObject<RecipeModel>(json);
-                     }
-                     else
-                     {
-                         Debug.Log("[RecipeControl.Init] JSON not found: " + path);
-                     }
-                 }
-                 catch (Exception e)
-                 {
-                     Debug.LogError("[RecipeControl.Init] Bad Format JSON File: " + path);
-                 }
-
-             }*/
+            // Init recipe data
+            m_RecipeData = new Dictionary<ETAG, List<RecipeModel>>();
+            for (int i = 0; i < (int)ETAG.NUM; i++)
+            {
+                m_RecipeData.Add((ETAG)i,new List<RecipeModel>());
+            }
 
 
             m_RecipeList = new List<RecipeModel>();
@@ -103,7 +87,15 @@ namespace RecipeApp
                     {
                         if (!string.IsNullOrEmpty(data))
                         {
-                            m_RecipeList.Add(JsonUtility.FromJson<RecipeModel>(data));
+                            RecipeModel rData = JsonUtility.FromJson<RecipeModel>(data);
+
+                            // Check tags
+                            for (int tag=0; tag < rData.Tags.Count; tag++)
+                            {
+                                m_RecipeData[(ETAG)tag].Add(rData);
+                            }
+                            //m_RecipeList.Add(JsonUtility.FromJson<RecipeModel>(data));
+
                         }
                         else
                         {
@@ -119,6 +111,13 @@ namespace RecipeApp
 
             m_SelectedRecipeID = 0;
 
+            // Set categories
+            List<string> categories = new List<string>();
+            for (int i=0; i<(int)ETAG.NUM; i++)
+            {
+                categories.Add(((ETAG)i).ToString());
+            }
+            m_Category.ScrollMenu.InitScroll(categories);
         }
 
         public override void Show()
@@ -127,9 +126,52 @@ namespace RecipeApp
 
             // Show recipe
 
-            m_RecipeUI.Title = m_RecipeList[m_SelectedRecipeID].Title;
+            m_RecipeUI.Hide();
+            m_Category.ScrollMenu.OnItemPress += OnCategoryPress;
+            m_Category.Show();
 
-            if (!string.IsNullOrEmpty(m_RecipeList[m_SelectedRecipeID].Sprite))
+
+
+
+           /* */
+        }
+
+        public override void Back()
+        {
+           
+            m_Category.ScrollMenu.OnItemPress -= OnCategoryPress;
+            m_Category.ScrollMenu.OnItemPress -= OnSubcategoryPress;
+
+            base.Back();
+        }
+
+        public override void Hide()
+        {
+            m_Category.ScrollMenu.OnItemPress -= OnCategoryPress;
+            m_Category.ScrollMenu.OnItemPress -= OnSubcategoryPress;
+            base.Hide();
+
+        }
+
+        private void OnCategoryPress(int buttonID, int x, int y)
+        {
+            m_Category.ScrollMenu.OnItemPress -= OnCategoryPress;
+
+            // Set recipes with this category
+            //for (int i=0; i<)
+
+        }
+
+        private void OnSubcategoryPress(int buttonID, int x, int y)
+        {
+            m_Category.ScrollMenu.OnItemPress -= OnSubcategoryPress;
+
+            // Set subcategories
+
+            
+           /* m_RecipeUI.Title = m_RecipeData[(ETAG)buttonID].Title;
+
+            if (!string.IsNullOrEmpty(m_RecipeData[(ETAG)buttonID].Sprite))
             {
                 SetPicture();
             }
@@ -137,7 +179,8 @@ namespace RecipeApp
             {
                 SetInfo();
             }
-            m_RecipeUI.Show();
+            m_RecipeUI.Show();*/
+
         }
 
         #region Menu
