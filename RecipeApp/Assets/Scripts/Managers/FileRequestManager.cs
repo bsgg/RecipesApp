@@ -1,4 +1,5 @@
 ﻿using LitJson;
+using RecipeApp;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -67,9 +68,11 @@ namespace Utility
             get { return m_ProgressText; }
         }
         
-
+        [SerializeField]
+        private List<RecipeModel> m_RecipeList;
         public IEnumerator RequestFiles()
         {
+            m_RecipeList = new List<RecipeModel>();
             m_FileData = new FileData();
             m_PercentProgress = 0.0f;
             m_ProgressText = m_PercentProgress.ToString() + " % ";
@@ -111,6 +114,10 @@ namespace Utility
                         m_ProgressText = m_PercentProgress.ToString() + " % ";
 
                         m_FileData.Data[i].Data = www.text;
+                        //RecipeModel recipe = JsonUtility.FromJson<RecipeModel>(www.text);
+                        //m_RecipeList.Add(recipe);
+                        //m_RecipeList.Add(JsonMapper.ToObject<RecipeModel>(www.text));
+
 
                         Debug.LogWarning("<color=yellow>" + "[FileRequestManager] Data Retrieved: " + m_FileData.Data[i].Data +  "</color>");
                     }

@@ -1,4 +1,4 @@
-﻿using LitJson;
+﻿//using LitJson;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -103,7 +103,7 @@ namespace RecipeApp
                     {
                         if (!string.IsNullOrEmpty(data))
                         {
-                            m_RecipeList.Add(JsonMapper.ToObject<RecipeModel>(data));
+                            m_RecipeList.Add(JsonUtility.FromJson<RecipeModel>(data));
                         }
                         else
                         {
