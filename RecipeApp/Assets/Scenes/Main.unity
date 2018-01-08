@@ -511,7 +511,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ce6e578e12901a4b81a5b0cda7fd445, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RecipeList: []
   m_RecipeUI: {fileID: 1118205987}
   m_Category: {fileID: 880633376}
 --- !u!114 &226900391
@@ -1292,7 +1291,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 226900391}
         m_MethodName: Back
         m_Mode: 1
         m_Arguments:

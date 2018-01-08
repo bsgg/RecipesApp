@@ -43,12 +43,14 @@ namespace RecipeApp
 
     public class RecipeControl : Base
     {
-        [SerializeField]
-        private List<RecipeModel> m_RecipeList;
+        /*[SerializeField]
+        private List<RecipeModel> m_RecipeList;*/
 
 
         [SerializeField]
         private Dictionary<ETAG, List<RecipeModel>> m_RecipeData;
+
+        public enum ETAG { BREAKFAST = 0, HIGHCARB, LOWCARB, DESSERT, TREAT, NUM };
 
         [SerializeField]
         private RecipeUI m_RecipeUI;
@@ -58,11 +60,7 @@ namespace RecipeApp
 
         private int m_SelectedRecipeID;
         private ETAG m_SelectedCategory;
-
-
-
-
-        public enum ETAG { BREAKFAST = 0, HIGHCARB, LOWCARB, DESSERT, TREAT, NUM };
+        private bool m_SubcategoryVisible = false;  
 
         public override void Init()
         {
@@ -78,7 +76,7 @@ namespace RecipeApp
             }
 
 
-            m_RecipeList = new List<RecipeModel>();
+           // m_RecipeList = new List<RecipeModel>();
             if (FileRequestManager.Instance.FileData.Data != null)
             {
                 for (int i = 0; i < FileRequestManager.Instance.FileData.Data.Count; i++)
@@ -111,7 +109,7 @@ namespace RecipeApp
                 }
             }
 
-            m_SelectedRecipeID = 0;
+           /* m_SelectedRecipeID = 0;
 
             // Set categories
             List<string> categories = new List<string>();
@@ -119,8 +117,10 @@ namespace RecipeApp
             {
                 categories.Add(((ETAG)i).ToString());
             }
-            m_Category.ScrollMenu.InitScroll(categories);
+            m_Category.ScrollMenu.InitScroll(categories);*/
         }
+
+        
 
         public override void Show()
         {
@@ -129,16 +129,33 @@ namespace RecipeApp
             // Show recipe
 
             m_RecipeUI.Hide();
-            m_Category.ScrollMenu.OnItemPress += OnCategoryPress;
-            m_Category.Show();
-           /* */
+
+            SetCategories();
+            /*m_Category.ScrollMenu.OnItemPress += OnCategoryPress;
+            m_Category.Show();*/
+            /* */
         }
 
         public override void Back()
         {
-           
-            m_Category.ScrollMenu.OnItemPress -= OnCategoryPress;
-            m_Category.ScrollMenu.OnItemPress -= OnSubcategoryPress;
+            // Check if categories is visible
+            if (m_Category.Visible)
+            {                
+                if (m_SubcategoryVisible) // Show categories
+                {
+                    m_SubcategoryVisible = false;
+                    SetCategories();
+                }else // Show main menu
+                {
+                    Hide();
+                }
+            }
+            else // Show subcategories
+            {
+                m_RecipeUI.Hide();
+                SetSubcategories();
+                m_Category.Show();
+            }
 
             base.Back();
         }
@@ -147,9 +164,31 @@ namespace RecipeApp
         {
             m_Category.ScrollMenu.OnItemPress -= OnCategoryPress;
             m_Category.ScrollMenu.OnItemPress -= OnSubcategoryPress;
-            base.Hide();
+            m_Category.Hide();
 
+            base.Hide();
         }
+
+
+        private void SetCategories()
+        {
+            m_SelectedRecipeID = 0;
+            // Set categories
+            List<string> categories = new List<string>();
+            for (int i = 0; i < (int)ETAG.NUM; i++)
+            {
+                categories.Add(((ETAG)i).ToString());
+            }
+
+            m_Category.ScrollMenu.InitScroll(categories);
+
+            m_SubcategoryVisible = false;
+            m_Category.ScrollMenu.OnItemPress += OnCategoryPress;
+            m_Category.Show();
+        }
+
+       
+
 
         private void OnCategoryPress(int buttonID, int x, int y)
         {
@@ -157,18 +196,27 @@ namespace RecipeApp
 
             m_Category.ScrollMenu.OnItemPress -= OnCategoryPress;
 
-            // Set recipes with this category
-
-            List<string> subCat = new List<string>();
             m_SelectedCategory = (ETAG)buttonID;
+            SetSubcategories();
 
-            for (int i=0; i< m_RecipeData[m_SelectedCategory].Count; i++)
+
+        }
+
+        private void SetSubcategories()
+        {
+            // Set recipes with this category
+            List<string> subCat = new List<string>();
+
+            for (int i = 0; i < m_RecipeData[m_SelectedCategory].Count; i++)
             {
                 subCat.Add(m_RecipeData[m_SelectedCategory][i].Title);
             }
+
+            m_SubcategoryVisible = true;
             m_Category.ScrollMenu.InitScroll(subCat);
             m_Category.ScrollMenu.OnItemPress += OnSubcategoryPress;
         }
+
 
         private void OnSubcategoryPress(int buttonID, int x, int y)
         {
@@ -184,11 +232,8 @@ namespace RecipeApp
              {
                  SetPicture();
              }
-             else
-             {
-                 SetInfo();
-             }
 
+             SetInfo();
              m_Category.Hide();
              m_RecipeUI.Show();
         }
@@ -208,8 +253,8 @@ namespace RecipeApp
             info += "\n" + "- Total Time " + (m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].PreparationTime + m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].CookTime) + " min\n";
             info += "\n" + "- Servings " + m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Serves + "\n";
             info += "\n" + "- Calories " + m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Calories + " Kcal\n";
-            info += "\n" + "- Difficulty " + m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Difficulty + "\n";
-            info += "\n" + "- Tags " + m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Tags + "\n";
+            info += "\n" + "- Difficulty " + m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Difficulty;
+            //info += "\n" + "- Tags " + m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Tags + "\n";
 
             m_RecipeUI.LongText = info;
         }
