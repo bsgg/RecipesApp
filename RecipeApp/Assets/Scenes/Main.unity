@@ -512,7 +512,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_RecipeList: []
-  m_SpriteSet: []
   m_RecipeUI: {fileID: 1118205987}
   m_Category: {fileID: 880633376}
 --- !u!114 &226900391
@@ -1676,7 +1675,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 870e2cdade5f95f46b5606ed59d15153, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ItemScrollPrefab: {fileID: 0}
+  m_ItemScrollPrefab: {fileID: 1007205308130366, guid: f3a209bfd68600343a6f62cd5f2e6472,
+    type: 2}
   m_ContentRecTransform: {fileID: 377416684}
   m_GridContent: {fileID: 377416685}
   m_ScrollObject: {fileID: 815764558}
@@ -1887,7 +1887,7 @@ CanvasGroup:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 880633374}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0

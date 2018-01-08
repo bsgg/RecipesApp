@@ -57,8 +57,10 @@ namespace RecipeApp
         private CategoriesUI m_Category;
 
         private int m_SelectedRecipeID;
+        private ETAG m_SelectedCategory;
 
-        
+
+
 
         public enum ETAG { BREAKFAST = 0, HIGHCARB, LOWCARB, DESSERT, TREAT, NUM };
 
@@ -129,10 +131,6 @@ namespace RecipeApp
             m_RecipeUI.Hide();
             m_Category.ScrollMenu.OnItemPress += OnCategoryPress;
             m_Category.Show();
-
-
-
-
            /* */
         }
 
@@ -155,11 +153,21 @@ namespace RecipeApp
 
         private void OnCategoryPress(int buttonID, int x, int y)
         {
+            Debug.Log("OnCategoryPress " + buttonID);
+
             m_Category.ScrollMenu.OnItemPress -= OnCategoryPress;
 
             // Set recipes with this category
-            //for (int i=0; i<)
 
+            List<string> subCat = new List<string>();
+            m_SelectedCategory = (ETAG)buttonID;
+
+            for (int i=0; i< m_RecipeData[m_SelectedCategory].Count; i++)
+            {
+                subCat.Add(m_RecipeData[m_SelectedCategory][i].Title);
+            }
+            m_Category.ScrollMenu.InitScroll(subCat);
+            m_Category.ScrollMenu.OnItemPress += OnSubcategoryPress;
         }
 
         private void OnSubcategoryPress(int buttonID, int x, int y)
@@ -167,20 +175,22 @@ namespace RecipeApp
             m_Category.ScrollMenu.OnItemPress -= OnSubcategoryPress;
 
             // Set subcategories
+            Debug.Log("OnSubcategoryPress " + buttonID);
+            m_SelectedRecipeID = buttonID;
 
-            
-           /* m_RecipeUI.Title = m_RecipeData[(ETAG)buttonID].Title;
+             m_RecipeUI.Title = m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Title;
 
-            if (!string.IsNullOrEmpty(m_RecipeData[(ETAG)buttonID].Sprite))
-            {
-                SetPicture();
-            }
-            else
-            {
-                SetInfo();
-            }
-            m_RecipeUI.Show();*/
+             if (!string.IsNullOrEmpty(m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Sprite))
+             {
+                 SetPicture();
+             }
+             else
+             {
+                 SetInfo();
+             }
 
+             m_Category.Hide();
+             m_RecipeUI.Show();
         }
 
         #region Menu
@@ -193,13 +203,13 @@ namespace RecipeApp
         {
             string info = string.Empty;
 
-            info = "\n" + "- Preparation Time " + m_RecipeList[m_SelectedRecipeID].PreparationTime + " min\n";
-            info += "\n" + "- Cook Time " + m_RecipeList[m_SelectedRecipeID].CookTime + " min\n";
-            info += "\n" + "- Total Time " + (m_RecipeList[m_SelectedRecipeID].PreparationTime + m_RecipeList[m_SelectedRecipeID].CookTime) + " min\n";
-            info += "\n" + "- Servings " + m_RecipeList[m_SelectedRecipeID].Serves + "\n";
-            info += "\n" + "- Calories " + m_RecipeList[m_SelectedRecipeID].Calories + " Kcal\n";
-            info += "\n" + "- Difficulty " + m_RecipeList[m_SelectedRecipeID].Difficulty + "\n";
-            info += "\n" + "- Tags " + m_RecipeList[m_SelectedRecipeID].Tags + "\n";
+            info = "\n" + "- Preparation Time " + m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].PreparationTime + " min\n";
+            info += "\n" + "- Cook Time " + m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].CookTime + " min\n";
+            info += "\n" + "- Total Time " + (m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].PreparationTime + m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].CookTime) + " min\n";
+            info += "\n" + "- Servings " + m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Serves + "\n";
+            info += "\n" + "- Calories " + m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Calories + " Kcal\n";
+            info += "\n" + "- Difficulty " + m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Difficulty + "\n";
+            info += "\n" + "- Tags " + m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Tags + "\n";
 
             m_RecipeUI.LongText = info;
         }
@@ -208,9 +218,9 @@ namespace RecipeApp
         public void SetIngredients()
         {
             string info = string.Empty;
-            for (int i=0; i< m_RecipeList[m_SelectedRecipeID].Ingredients.Count; i++)
+            for (int i=0; i< m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Ingredients.Count; i++)
             {
-                info += "\n - " + m_RecipeList[m_SelectedRecipeID].Ingredients[i] + "\n";
+                info += "\n - " + m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Ingredients[i] + "\n";
                 
             }
 
@@ -220,9 +230,9 @@ namespace RecipeApp
         public void SetInstructions()
         {
             string info = string.Empty;
-            for (int i = 0; i < m_RecipeList[m_SelectedRecipeID].Instructions.Count; i++)
+            for (int i = 0; i < m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Instructions.Count; i++)
             {
-                info += "\n - " + m_RecipeList[m_SelectedRecipeID].Instructions[i] + "\n";
+                info += "\n - " + m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Instructions[i] + "\n";
 
             }
 
