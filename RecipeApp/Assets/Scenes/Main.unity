@@ -215,6 +215,7 @@ MonoBehaviour:
   m_FileDataUrl: http://beatrizcv.com/Data/Recipes/FileData.json
   m_FileData:
     Data: []
+  m_RecipeList: []
 --- !u!4 &42466797
 Transform:
   m_ObjectHideFlags: 0
@@ -510,22 +511,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ce6e578e12901a4b81a5b0cda7fd445, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_DataPath: Recipes
-  m_RecipeSet:
-  - FileName: Recipe1
-    Recipe:
-      Title: 
-      Sprite: 
-      PreparationTime: 0
-      CookTime: 0
-      Serves: 0
-      Calories: 0
-      Difficulty: 0
-      Tags: []
-      Ingredients: []
-      Instructions: []
-    Sprite: {fileID: 0}
   m_RecipeUI: {fileID: 1118205987}
+  m_Category: {fileID: 880633376}
 --- !u!114 &226900391
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1304,7 +1291,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 226900391}
         m_MethodName: Back
         m_Mode: 1
         m_Arguments:
@@ -1687,7 +1674,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 870e2cdade5f95f46b5606ed59d15153, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ItemScrollPrefab: {fileID: 0}
+  m_ItemScrollPrefab: {fileID: 1007205308130366, guid: f3a209bfd68600343a6f62cd5f2e6472,
+    type: 2}
   m_ContentRecTransform: {fileID: 377416684}
   m_GridContent: {fileID: 377416685}
   m_ScrollObject: {fileID: 815764558}
@@ -1869,7 +1857,7 @@ RectTransform:
   m_Children:
   - {fileID: 815764554}
   m_Father: {fileID: 1654747554}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0.89}
@@ -1898,7 +1886,7 @@ CanvasGroup:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 880633374}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
@@ -2137,7 +2125,7 @@ RectTransform:
   m_Children:
   - {fileID: 1767858107}
   m_Father: {fileID: 1654747554}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0.89}
@@ -2167,7 +2155,7 @@ CanvasGroup:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1118205985}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
@@ -2956,8 +2944,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 932691510}
-  - {fileID: 880633375}
   - {fileID: 1118205986}
+  - {fileID: 880633375}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

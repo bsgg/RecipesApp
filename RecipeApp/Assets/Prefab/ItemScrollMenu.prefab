@@ -22,7 +22,8 @@ GameObject:
   - component: {fileID: 222930173471353558}
   - component: {fileID: 114995754553796242}
   - component: {fileID: 114489096174410898}
-  - component: {fileID: 114928230719649880}
+  - component: {fileID: 114447695863288932}
+  - component: {fileID: 114974113708636046}
   m_Layer: 5
   m_Name: ItemScrollMenu
   m_TagString: Untagged
@@ -59,7 +60,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -70,7 +71,7 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: e2a25f027203879448466d89448382bd, type: 3}
     m_FontSize: 20
     m_FontStyle: 1
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 0
     m_MaxSize: 30
     m_Alignment: 4
@@ -80,6 +81,19 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: TITLE LESSON
+--- !u!114 &114447695863288932
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1007205308130366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c081f315cbb9d54b893f8cc7627e024, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TextButton: {fileID: 114039530512007268}
+  m_ButtonComponent: {fileID: 114489096174410898}
 --- !u!114 &114489096174410898
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -121,7 +135,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &114928230719649880
+--- !u!114 &114974113708636046
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -129,11 +143,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 1007205308130366}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e563e08d0dc3a046911c6df4637dd7c, type: 3}
+  m_Script: {fileID: -1862395651, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_LabelTitleButton: {fileID: 114039530512007268}
-  m_ButtonComponent: {fileID: 114489096174410898}
+  m_Delegates:
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 114447695863288932}
+          m_MethodName: OnPress
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
+        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  delegates: []
 --- !u!114 &114995754553796242
 MonoBehaviour:
   m_ObjectHideFlags: 1

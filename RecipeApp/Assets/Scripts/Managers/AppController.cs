@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Utility;
 
 namespace RecipeApp
 {
@@ -34,6 +35,8 @@ namespace RecipeApp
         [SerializeField]
         private RecipeControl m_RecipeControl;
 
+
+        private Base m_CurrentControl;
 
         /* [Header("Controls")]
          [SerializeField]
@@ -70,10 +73,15 @@ namespace RecipeApp
         
         private IEnumerator Init()
         {
-            yield return Utility.FileRequestManager.Instance.RequestFiles();
+            yield return FileRequestManager.Instance.RequestFiles();
+
+            
 
             m_RecipeControl.Init();
-            m_RecipeControl.Show();
+
+            m_CurrentControl = m_RecipeControl;
+
+            m_CurrentControl.Show();
 
         }
 
@@ -88,6 +96,7 @@ namespace RecipeApp
         
         public void Back()
         {
+            m_CurrentControl.Back();
             /*if (m_CurrentControl == m_MainMenuController)
             {
                 Application.Quit();
@@ -96,9 +105,7 @@ namespace RecipeApp
             {
                 m_CurrentControl.Back();
             }*/
-        }     
-
-       
+        }
 
     }
 }
