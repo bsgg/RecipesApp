@@ -1,0 +1,29 @@
+{
+  "Title": "French Toast with Blueberry Maple Syrup",
+  "Sprite": "Frenchtoastblueberry",
+  "Link": "https://www.tastemade.com/shows/healthy-af/healthy-french-toast-with-blueberry-maple-syrup",
+  "PreparationTime": 10,
+  "CookTime": 15,
+  "Serves": 4,
+  "Calories": 0,
+  "Tags": [ "0", "1" ],
+  "Difficulty": 2,
+  "Ingredients": [
+    "4 eggs",
+    "1/2 cup (8 tablespoons) almond milk",
+    "1/2 teaspoon vanilla extract",
+    "1/4 teaspoon ground cinnamon",
+    "6-8 slices of thick whole wheat bread",
+    "1/2 teaspoon coconut oil, for greasing pan",
+    "1 cup (16 tablespoons) pure maple syrup",
+    "2 cups fresh blueberries, divided",
+    "1 tablespoon freshly squeezed lemon juice"
+  ],
+  "Instructions": [
+    "In a large mixing bowl, combine the eggs, almond milk, vanilla extract, and cinnamon and whisk together.",
+    "Heat a griddle or large frying pan over medium-high heat then add the coconut oil.",
+    "Taking one slice of bread at a time, dip the bread into the egg mixture and fully submerge, allowing the bread to soak up the egg mixture. Once fully coated, remove it and allow the excess mixture to drip off (careful not to let the bread get too soggy).",
+    "Transfer the bread to the hot griddle and cook for 2 to 3 minutes before flipping and cooking the other side for an another 2 to 3 minutes, or until both sides are golden-brown and all the egg is fully cooked. Repeat with the remaining bread slices.",
+    "For the blueberry maple syrup: combine the 1.5 blueberries, lemon juice and syrup then add the mixture to a saucepan in medium-high heat. Bring the pan to a boil then reduce the heat to the medium and let simmer for 10 minutes. After 10 minutes has elapsed, turn off the heat and add the remaining blueberries."
+  ]
+}
