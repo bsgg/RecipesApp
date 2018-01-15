@@ -8,6 +8,37 @@ namespace RecipeApp
 {
     public class RecipeUI : UIBase
     {
+        [Header("Menu")]
+        [SerializeField]
+        private GameObject m_PictureBtn;
+        public GameObject PictureBtn
+        {
+            get { return m_PictureBtn; }
+        }
+
+        [SerializeField]
+        private GameObject m_InfoBtn;
+        public GameObject InfoBtn
+        {
+            get { return m_InfoBtn; }
+        }
+
+        [SerializeField]
+        private GameObject m_IngredientsBtn;
+        public GameObject IngredientsBtn
+        {
+            get { return m_IngredientsBtn; }
+        }
+
+        [SerializeField]
+        private GameObject m_InstructionsBtn;
+        public GameObject InstructionsBtn
+        {
+            get { return m_InstructionsBtn; }
+        }
+
+
+        [Header("Body")]
         [SerializeField]
         private Text m_Title;
         public string Title
