@@ -28,6 +28,13 @@ namespace RecipeApp
             get { return m_Sprite.sprite; }
         }
 
+        [SerializeField]
+        private GameObject m_SpriteContainer;
+        public GameObject SpriteContainer
+        {
+            get { return m_SpriteContainer; }
+        }
+
 
         [SerializeField]
         private Text m_LongText;
@@ -35,6 +42,13 @@ namespace RecipeApp
         {
             set { m_LongText.text = value; }
             get { return m_LongText.text; }
+        }
+
+        [SerializeField]
+        private GameObject m_LongTextContainer;
+        public GameObject LongTextContainer
+        {
+            get { return m_LongTextContainer; }
         }
     }
 }

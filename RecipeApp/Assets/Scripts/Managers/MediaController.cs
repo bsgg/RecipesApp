@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace JapaneseApp
+namespace RecipeApp
 {
     public class MediaController : MonoBehaviour
     {
@@ -29,22 +29,22 @@ namespace JapaneseApp
 
         [Header("Sprites")]
         [SerializeField]
-        private List<Sprite> m_AnimalSprites;
+        private List<Sprite> m_Sprites;
 
-        /*public Sprite GetAnymalSpriteByName(VocabularyControl.ECategory category,string name)
+        public Sprite GetSprite(string name)
         {
-            for (int i = 0; i < m_AnimalSprites.Count; i++)
+            for (int i = 0; i < m_Sprites.Count; i++)
             {
-                Debug.Log("Sprite: " + m_AnimalSprites[i].name);
-                if (m_AnimalSprites[i].name.Equals(name))
+                Debug.Log("Sprite: " + m_Sprites[i].name);
+                if (m_Sprites[i].name.Equals(name))
                 {
-                    return m_AnimalSprites[i];
+                    return m_Sprites[i];
                 }
             }
 
             return null;
 
-        }*/
+        }
 
     }
 }

@@ -226,22 +226,38 @@ namespace RecipeApp
             Debug.Log("OnSubcategoryPress " + buttonID);
             m_SelectedRecipeID = buttonID;
 
-             m_RecipeUI.Title = m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Title;
+            m_RecipeUI.Title = m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Title;
 
-             if (!string.IsNullOrEmpty(m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Sprite))
-             {
-                 SetPicture();
-             }
+            if (!string.IsNullOrEmpty(m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Sprite))
+            {
+                SetPicture();
+            }
+            else
+            {
 
-             SetInfo();
-             m_Category.Hide();
-             m_RecipeUI.Show();
+                SetInfo();
+            }
+            m_Category.Hide();
+            m_RecipeUI.Show();
         }
 
         #region Menu
         public void SetPicture()
         {
+            m_RecipeUI.SpriteContainer.SetActive(false);
+            m_RecipeUI.LongTextContainer.SetActive(true);
 
+            string spriteID = m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Sprite;
+            if (!string.IsNullOrEmpty(spriteID))
+            {
+                Sprite spr = MediaController.Instance.GetSprite(spriteID);
+                if (spr != null)
+                {
+                    m_RecipeUI.SpriteObject = spr;
+                    m_RecipeUI.SpriteContainer.SetActive(true);
+                    m_RecipeUI.LongTextContainer.SetActive(false);
+                }
+            }
         }
 
         public void SetInfo()
@@ -257,6 +273,8 @@ namespace RecipeApp
             //info += "\n" + "- Tags " + m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Tags + "\n";
 
             m_RecipeUI.LongText = info;
+            m_RecipeUI.SpriteContainer.SetActive(false);
+            m_RecipeUI.LongTextContainer.SetActive(true);
         }
 
 
@@ -270,6 +288,8 @@ namespace RecipeApp
             }
 
             m_RecipeUI.LongText = info;
+            m_RecipeUI.SpriteContainer.SetActive(false);
+            m_RecipeUI.LongTextContainer.SetActive(true);
         }
 
         public void SetInstructions()
@@ -282,6 +302,8 @@ namespace RecipeApp
             }
 
             m_RecipeUI.LongText = info;
+            m_RecipeUI.SpriteContainer.SetActive(false);
+            m_RecipeUI.LongTextContainer.SetActive(true);
         }
 
         #endregion Menu
