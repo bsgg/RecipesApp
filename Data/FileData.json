@@ -13,6 +13,10 @@
 	  {
         "FileName": "Peanut Butter Chocolate Cookies",
         "URL": "beatrizcv.com//Data/Recipes/Data/PeanutButterChocolateCookies.json"
+      },
+	  {
+        "FileName": "Peanut Butter Chocolate Cake",
+        "URL": "beatrizcv.com//Data/Recipes/Data/PeanutButterChocolateCake.json"
       }
     ]      
 	}

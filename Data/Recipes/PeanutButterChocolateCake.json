@@ -1,0 +1,26 @@
+{
+  "Title": "Peanut Butter Chocolate Cake",
+  "Sprite": "PeanutButterChocolateCake",
+  "Link": "https://www.tastemade.co.uk/videos/easy-peanut-butter-and-chocolate-cake",
+  "PreparationTime": 20,
+  "CookTime": 60,
+  "Serves": 8,
+  "Calories": 0,
+  "Tags": [ "0", "1" ],
+  "Difficulty": 2,
+  "Ingredients": [
+    "100 grams peanut Butter",
+    "50 grams hazelnuts",
+    "100 grams Medjool dates",
+    "0.6 tablespoons coconut oil",
+	"0.6 tablespoons honey",
+	"Fresh raspberries (Side)",
+	"Coconut yogurt (Side)"
+  ],
+  "Instructions": [
+    "Place all the ingredients into the food processor and blend.",
+    "Put the mixture in a cake tin",
+    "Place in the freezer for 1 hour then into the fridge until set",
+    "Serve with raspberries and yogurt"
+  ]
+}
