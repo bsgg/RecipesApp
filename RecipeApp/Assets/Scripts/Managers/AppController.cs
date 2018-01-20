@@ -29,62 +29,46 @@ namespace RecipeApp
         }
         #endregion Instance
 
-       // public enum EMenu { NONE = -1, KANJI = 0, KANA = 1, ROMAJI = 2, DESCRIPTION = 3, EXAMPLES = 4, NEXT = 5, SOUND = 6 };
+        // public enum EMenu { NONE = -1, KANJI = 0, KANA = 1, ROMAJI = 2, DESCRIPTION = 3, EXAMPLES = 4, NEXT = 5, SOUND = 6 };
 
         [Header("Controls")]
+
+        [SerializeField]
+        private LauncherControl m_Launcher;
+        public LauncherControl Launcher
+        {
+            get { return m_Launcher; }
+        }
+
         [SerializeField]
         private RecipeControl m_RecipeControl;
 
-
         private Base m_CurrentControl;
-
-        /* [Header("Controls")]
-         [SerializeField]
-         private VocabularyControl m_VocabularyControl;
-
-         [SerializeField]
-         private GrammarControl m_GrammarControl;
-
-         [SerializeField]
-         private MainMenuController m_MainMenuController;
-
-         [SerializeField]
-         private ABCControl m_HiraganaController;
-
-         [SerializeField]
-         private ABCControl m_KatakanaController;
-
-         [SerializeField]
-         private DialogControl m_DialogControl;
-
-         [SerializeField]
-         private TopBar m_TopBar;
-         private Base m_CurrentControl;*/
 
 
         void Start ()
         {
 
-            // Load files
-            // Utility.FileRequestManager.Instance.RequestFiles();
-
-            StartCoroutine(Init());
-        }
-        
-        private IEnumerator Init()
-        {
-            yield return FileRequestManager.Instance.RequestFiles();
-
-            
-
-            m_RecipeControl.Init();
-
-            m_CurrentControl = m_RecipeControl;
+            m_Launcher.OnGetDataEnd += OnLauncherGetDataEnd;
+            m_CurrentControl = m_Launcher;
 
             m_CurrentControl.Show();
 
         }
 
+        private void OnLauncherGetDataEnd()
+        {
+            m_Launcher.OnGetDataEnd -= OnLauncherGetDataEnd;
+
+            m_RecipeControl.Init();
+
+            m_CurrentControl.Hide();
+
+            m_CurrentControl = m_RecipeControl;
+
+            m_CurrentControl.Show();
+        }
+        
         
         private void Update()
         {
@@ -96,15 +80,7 @@ namespace RecipeApp
         
         public void Back()
         {
-            m_CurrentControl.Back();
-            /*if (m_CurrentControl == m_MainMenuController)
-            {
-                Application.Quit();
-            }
-            else
-            {
-                m_CurrentControl.Back();
-            }*/
+            m_CurrentControl.Back();            
         }
 
     }

@@ -25,7 +25,7 @@ namespace RecipeApp
                 return m_Instance;
             }
         }
-        #endregion Instance
+        #endregion Instance       
 
         [Header("Sprites")]
         [SerializeField]
@@ -45,6 +45,5 @@ namespace RecipeApp
             return null;
 
         }
-
     }
 }

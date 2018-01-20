@@ -39,14 +39,8 @@ namespace RecipeApp
         public Sprite Sprite; 
     }
 
-    
-
     public class RecipeControl : Base
     {
-        /*[SerializeField]
-        private List<RecipeModel> m_RecipeList;*/
-
-
         [SerializeField]
         private Dictionary<ETAG, List<RecipeModel>> m_RecipeData;
 
@@ -75,13 +69,12 @@ namespace RecipeApp
                 m_RecipeData.Add((ETAG)i,new List<RecipeModel>());
             }
 
-
            // m_RecipeList = new List<RecipeModel>();
-            if (FileRequestManager.Instance.FileData.Data != null)
+            if (AppController.Instance.Launcher.FileData.Data != null)
             {
-                for (int i = 0; i < FileRequestManager.Instance.FileData.Data.Count; i++)
+                for (int i = 0; i < AppController.Instance.Launcher.FileData.Data.Count; i++)
                 {
-                    string data =FileRequestManager.Instance.FileData.Data[i].Data;
+                    string data = AppController.Instance.Launcher.FileData.Data[i].Data;
 
                     try
                     {
