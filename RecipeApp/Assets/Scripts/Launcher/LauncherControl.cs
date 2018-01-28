@@ -72,7 +72,7 @@ namespace RecipeApp
 
             if (string.IsNullOrEmpty(m_FileDataUrl))
             {
-                Debug.LogWarning("<color=yellow>" + "[FileRequestManager] File Data Url is null or empty" + "</color>");
+                Debug.LogWarning("<color=yellow>" + "[LauncherControl.DelayedShow] File Data Url is null or empty" + "</color>");
                 yield return null;
             }
 
@@ -85,7 +85,7 @@ namespace RecipeApp
                 {
                     m_FileData = JsonMapper.ToObject<FileData>(jsonData);
 
-                    Debug.LogWarning("<color=yellow>" + "[FileRequestManager] Requesting... " + m_FileData.Data.Count + " Files " + "</color>");
+                    Debug.LogWarning("<color=yellow>" + "[LauncherControl.DelayedShow] Requesting... " + m_FileData.Data.Count + " Files " + "</color>");
                     for (int i = 0; i < m_FileData.Data.Count; i++)
                     {
                         if (string.IsNullOrEmpty(m_FileData.Data[i].URL))
@@ -94,7 +94,7 @@ namespace RecipeApp
                         }
 
                         // Request
-                        Debug.LogWarning("<color=yellow>" + "[FileRequestManager] Requesting: " + (i + 1) + "/" + m_FileData.Data.Count + " : " + m_FileData.Data[i].FileName + "</color>");
+                        Debug.LogWarning("<color=yellow>" + "[LauncherControl.DelayedShow] Requesting: " + (i + 1) + "/" + m_FileData.Data.Count + " : " + m_FileData.Data[i].FileName + "</color>");
                         WWW www = new WWW(m_FileData.Data[i].URL);
                         while (!www.isDone)
                         {
@@ -109,13 +109,13 @@ namespace RecipeApp
                         m_FileData.Data[i].Data = www.text;
 
 
-                        Debug.LogWarning("<color=yellow>" + "[FileRequestManager] Data Retrieved: " + m_FileData.Data[i].Data + "</color>");
+                        Debug.LogWarning("<color=yellow>" + "[LauncherControl.DelayedShow] Data Retrieved: " + m_FileData.Data[i].Data + "</color>");
                     }
                 }
             }
             else
             {
-                Debug.LogWarning("<color=yellow>" + "[FileRequestManager] File Data Json is null or empty" + "</color>");
+                Debug.LogWarning("<color=yellow>" + "[LauncherControl.DelayedShow] File Data Json is null or empty" + "</color>");
             }
 
             if (OnGetDataEnd != null)

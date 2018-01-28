@@ -44,7 +44,8 @@ namespace RecipeApp
         [SerializeField]
         private Dictionary<ETAG, List<RecipeModel>> m_RecipeData;
 
-        public enum ETAG { BREAKFAST = 0, HIGHCARB, LOWCARB, DESSERT, TREAT, NUM };
+        public enum ETAG { BREAKFAST = 0, HIGHCARB = 1, LOWCARB = 2, DESSERT = 3, TREAT = 4, NUM };
+        private string[] m_TagTitles = { "Breakfast", "High Carb", "Low Carb", "Dessert", "Treat"};
 
         [SerializeField]
         private RecipeUI m_RecipeUI;
@@ -52,6 +53,8 @@ namespace RecipeApp
         [SerializeField]
         private CategoriesUI m_Category;
 
+        private enum ESELECTEDLEVEL { NONE = 0, FOODTYPE, RECIPELIST, RECIPE };
+        private int m_SelectedLevel = 0;
         private int m_SelectedRecipeID;
         private ETAG m_SelectedCategory;
         private bool m_SubcategoryVisible = false;  
@@ -83,34 +86,27 @@ namespace RecipeApp
                             RecipeModel rData = JsonUtility.FromJson<RecipeModel>(data);
 
                             // Check tags
-                            for (int tag=0; tag < rData.Tags.Count; tag++)
+                            for (int t=0; t < rData.Tags.Count; t++)
                             {
-                                m_RecipeData[(ETAG)tag].Add(rData);
+                                ETAG tag = (ETAG)rData.Tags[t];
+
+                                m_RecipeData[tag].Add(rData);
                             }
                             //m_RecipeList.Add(JsonUtility.FromJson<RecipeModel>(data));
 
                         }
                         else
                         {
-                            Debug.Log("[RecipeControl.Init] JSON not found: " + FileRequestManager.Instance.FileData.Data[i].FileName + " Data: " + data);
+                            Debug.Log("[RecipeControl.Init] JSON not found: " + AppController.Instance.Launcher.FileData.Data[i].FileName + " Data: " + data);
                         }
                     }
                     catch (Exception e)
                     {
-                        Debug.LogError("[RecipeControl.Init] Bad Format JSON File: " + FileRequestManager.Instance.FileData.Data[i].FileName + " Data: " + data);
+                        Debug.LogError("[RecipeControl.Init] Bad Format JSON File: " + AppController.Instance.Launcher.FileData.Data[i].FileName + " Data: " + data);
                     }
                 }
             }
-
-           /* m_SelectedRecipeID = 0;
-
-            // Set categories
-            List<string> categories = new List<string>();
-            for (int i=0; i<(int)ETAG.NUM; i++)
-            {
-                categories.Add(((ETAG)i).ToString());
-            }
-            m_Category.ScrollMenu.InitScroll(categories);*/
+            
         }
 
         
@@ -120,13 +116,13 @@ namespace RecipeApp
             base.Show();
 
             // Show recipe
-
             m_RecipeUI.Hide();
 
+            m_SelectedLevel = (int)ESELECTEDLEVEL.NONE;
+
             SetCategories();
-            /*m_Category.ScrollMenu.OnItemPress += OnCategoryPress;
-            m_Category.Show();*/
-            /* */
+
+            m_Category.ScrollMenu.OnItemPress -= OnCategoryPress;
         }
 
         public override void Back()
@@ -156,7 +152,7 @@ namespace RecipeApp
         public override void Hide()
         {
             m_Category.ScrollMenu.OnItemPress -= OnCategoryPress;
-            m_Category.ScrollMenu.OnItemPress -= OnSubcategoryPress;
+            //m_Category.ScrollMenu.OnItemPress -= OnSubcategoryPress;
             m_Category.Hide();
 
             base.Hide();
@@ -170,27 +166,48 @@ namespace RecipeApp
             List<string> categories = new List<string>();
             for (int i = 0; i < (int)ETAG.NUM; i++)
             {
-                categories.Add(((ETAG)i).ToString());
+                categories.Add(m_TagTitles[i]);
             }
 
             m_Category.ScrollMenu.InitScroll(categories);
 
             m_SubcategoryVisible = false;
-            m_Category.ScrollMenu.OnItemPress += OnCategoryPress;
+            //m_Category.ScrollMenu.OnItemPress += OnCategoryPress;
             m_Category.Show();
         }
 
-       
-
-
         private void OnCategoryPress(int buttonID, int x, int y)
         {
+            // Add 1 level
+            m_SelectedLevel += 1;
+
+            switch(m_SelectedLevel)
+            {
+                case (int)ESELECTEDLEVEL.FOODTYPE:
+
+                    // Set categories
+                    SetCategories();
+                break;
+                case (int)ESELECTEDLEVEL.RECIPELIST:
+
+                    // Set categories
+                    SetSubcategories();
+                break;
+                case (int)ESELECTEDLEVEL.RECIPE:
+
+
+                break;
+            }
+
             Debug.Log("OnCategoryPress " + buttonID);
 
-            m_Category.ScrollMenu.OnItemPress -= OnCategoryPress;
+            
 
-            m_SelectedCategory = (ETAG)buttonID;
-            SetSubcategories();
+
+            //m_Category.ScrollMenu.OnItemPress -= OnCategoryPress;
+
+           // m_SelectedCategory = (ETAG)buttonID;
+            //SetSubcategories();
 
 
         }
@@ -207,13 +224,13 @@ namespace RecipeApp
 
             m_SubcategoryVisible = true;
             m_Category.ScrollMenu.InitScroll(subCat);
-            m_Category.ScrollMenu.OnItemPress += OnSubcategoryPress;
+            //m_Category.ScrollMenu.OnItemPress += OnSubcategoryPress;
         }
 
 
         private void OnSubcategoryPress(int buttonID, int x, int y)
         {
-            m_Category.ScrollMenu.OnItemPress -= OnSubcategoryPress;
+            //m_Category.ScrollMenu.OnItemPress -= OnSubcategoryPress;
 
             // Set subcategories
             Debug.Log("OnSubcategoryPress " + buttonID);

@@ -6,7 +6,7 @@
   "CookTime": 15,
   "Serves": 4,
   "Calories": 0,
-  "Tags": [ "0", "1" ],
+  "Tags": [ 0,4  ],
   "Difficulty": 2,
   "Ingredients": [
     "4 eggs",

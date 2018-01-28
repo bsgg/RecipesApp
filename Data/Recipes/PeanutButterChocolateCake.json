@@ -6,7 +6,7 @@
   "CookTime": 60,
   "Serves": 8,
   "Calories": 0,
-  "Tags": [ "0", "1" ],
+  "Tags": [ 0,4  ],
   "Difficulty": 2,
   "Ingredients": [
     "100 grams peanut Butter",
