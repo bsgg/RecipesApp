@@ -20,6 +20,10 @@
 	  {
         "FileName": "Shepherd’s Pie With Cauliflower Mash",
         "URL": "beatrizcv.com//Data/Recipes/Data/ShepherdsPieCauliflower.json"
+      },
+	  {
+        "FileName": "Blueberry oatmeal muffins",
+        "URL": "beatrizcv.com//Data/Recipes/Data/BlueberryOatmealMuffins.json"
       }
     ]      
 }
