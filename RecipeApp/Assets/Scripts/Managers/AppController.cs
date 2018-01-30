@@ -29,7 +29,6 @@ namespace RecipeApp
         }
         #endregion Instance
 
-        // public enum EMenu { NONE = -1, KANJI = 0, KANA = 1, ROMAJI = 2, DESCRIPTION = 3, EXAMPLES = 4, NEXT = 5, SOUND = 6 };
 
         [Header("Controls")]
 

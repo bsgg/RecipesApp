@@ -92,7 +92,6 @@ namespace RecipeApp
 
                                 m_RecipeData[tag].Add(rData);
                             }
-                            //m_RecipeList.Add(JsonUtility.FromJson<RecipeModel>(data));
 
                         }
                         else
@@ -105,11 +104,8 @@ namespace RecipeApp
                         Debug.LogError("[RecipeControl.Init] Bad Format JSON File: " + AppController.Instance.Launcher.FileData.Data[i].FileName + " Data: " + data);
                     }
                 }
-            }
-            
+            }            
         }
-
-        
 
         public override void Show()
         {
@@ -118,33 +114,106 @@ namespace RecipeApp
             // Show recipe
             m_RecipeUI.Hide();
 
-            m_SelectedLevel = (int)ESELECTEDLEVEL.NONE;
+            // Start on Food level type
+            m_SelectedLevel = (int)ESELECTEDLEVEL.FOODTYPE;
+            SetCategoryByLevel();
+            m_Category.ScrollMenu.OnItemPress += OnCategoryPress;            
 
-            SetCategories();
-
-            m_Category.ScrollMenu.OnItemPress -= OnCategoryPress;
         }
+
+        /// <summary>
+        /// Sets category scroll menu according to the seletcted level
+        /// </summary>
+        public void SetCategoryByLevel()
+        {
+            switch (m_SelectedLevel)
+            {
+                case (int)ESELECTEDLEVEL.NONE: // Hide all
+
+                    Hide();
+                    break;
+
+                case (int)ESELECTEDLEVEL.FOODTYPE: // Set list of foods
+
+                    m_SelectedCategory = 0;
+                    m_SelectedRecipeID = 0;
+                    // Set categories
+                    List<string> foodTypes = new List<string>();
+                    for (int i = 0; i < (int)ETAG.NUM; i++)
+                    {
+                        foodTypes.Add(m_TagTitles[i]);
+                    }
+                    m_Category.ScrollMenu.InitScroll(foodTypes);
+                    m_RecipeUI.Hide();
+                    m_Category.Show();
+                    break;
+
+                case (int)ESELECTEDLEVEL.RECIPELIST:
+
+                    // Check at least 1 recipe in this category
+                    // Set recipes with this category    
+                    List<string> recipeList = new List<string>();
+                    for (int i = 0; i < m_RecipeData[m_SelectedCategory].Count; i++)
+                    {
+                        recipeList.Add(m_RecipeData[m_SelectedCategory][i].Title);
+                    }
+                    if (recipeList.Count > 0)
+                    {
+                       
+                        m_Category.ScrollMenu.InitScroll(recipeList);
+                        m_RecipeUI.Hide();
+                    }else
+                    {
+                        // No recipes, it will stay in Food Type
+                        m_SelectedLevel = (int)ESELECTEDLEVEL.FOODTYPE;
+                    }                        
+                    m_Category.Show();
+
+                break;
+                case (int)ESELECTEDLEVEL.RECIPE:
+                    m_RecipeUI.Title = m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Title;
+                    if (!string.IsNullOrEmpty(m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Sprite))
+                    {
+                        SetPicture();
+                    }
+                    else
+                    {
+
+                        SetInfo();
+                    }
+                    m_Category.Hide();
+                    m_RecipeUI.Show();
+               break;
+            }
+        }
+
+        private void OnCategoryPress(int buttonID, int x, int y)
+        {
+            Debug.Log("OnCategoryPress " + buttonID);
+
+            switch (m_SelectedLevel)
+            {
+                case (int)ESELECTEDLEVEL.FOODTYPE:
+                    m_SelectedRecipeID = 0;
+                    m_SelectedCategory = (ETAG)buttonID;
+                break;
+
+                case (int)ESELECTEDLEVEL.RECIPELIST:
+                    m_SelectedRecipeID = buttonID;
+                break;
+            }
+
+            // Add 1 level
+            m_SelectedLevel += 1;
+            SetCategoryByLevel();
+        }
+
 
         public override void Back()
         {
-            // Check if categories is visible
-            if (m_Category.Visible)
-            {                
-                if (m_SubcategoryVisible) // Show categories
-                {
-                    m_SubcategoryVisible = false;
-                    SetCategories();
-                }else // Show main menu
-                {
-                    Hide();
-                }
-            }
-            else // Show subcategories
-            {
-                m_RecipeUI.Hide();
-                SetSubcategories();
-                m_Category.Show();
-            }
+            // Subctract 1 level
+            m_SelectedLevel -= 1;
+            SetCategoryByLevel();
 
             base.Back();
         }
@@ -152,14 +221,16 @@ namespace RecipeApp
         public override void Hide()
         {
             m_Category.ScrollMenu.OnItemPress -= OnCategoryPress;
-            //m_Category.ScrollMenu.OnItemPress -= OnSubcategoryPress;
             m_Category.Hide();
+            m_RecipeUI.Hide();
+            m_SelectedCategory = 0;
+            m_SelectedRecipeID = 0;
 
             base.Hide();
         }
 
 
-        private void SetCategories()
+        /*private void SetCategories()
         {
             m_SelectedRecipeID = 0;
             // Set categories
@@ -176,41 +247,7 @@ namespace RecipeApp
             m_Category.Show();
         }
 
-        private void OnCategoryPress(int buttonID, int x, int y)
-        {
-            // Add 1 level
-            m_SelectedLevel += 1;
-
-            switch(m_SelectedLevel)
-            {
-                case (int)ESELECTEDLEVEL.FOODTYPE:
-
-                    // Set categories
-                    SetCategories();
-                break;
-                case (int)ESELECTEDLEVEL.RECIPELIST:
-
-                    // Set categories
-                    SetSubcategories();
-                break;
-                case (int)ESELECTEDLEVEL.RECIPE:
-
-
-                break;
-            }
-
-            Debug.Log("OnCategoryPress " + buttonID);
-
-            
-
-
-            //m_Category.ScrollMenu.OnItemPress -= OnCategoryPress;
-
-           // m_SelectedCategory = (ETAG)buttonID;
-            //SetSubcategories();
-
-
-        }
+        
 
         private void SetSubcategories()
         {
@@ -249,7 +286,7 @@ namespace RecipeApp
             }
             m_Category.Hide();
             m_RecipeUI.Show();
-        }
+        }*/
 
         #region Menu
         public void SetPicture()

@@ -756,7 +756,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Preparing recipes....
+  m_Text: Preparing ....
 --- !u!222 &1003229115
 CanvasRenderer:
   m_ObjectHideFlags: 0
