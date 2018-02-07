@@ -1,0 +1,33 @@
+﻿{
+  "Title": "",
+  "Sprite": "",
+  "Link": "https://www.thedietchefs.com/healthy-low-calorie-brownies/",
+  "PreparationTime": 10,
+  "CookTime": 40,
+  "Serves": 1,
+  "Calories": 60,
+  "Tags": [ 0 ],
+  "Difficulty": 3,
+  "Ingredients": [
+    "Dry: 1/2 Cup (60g) white whole wheat flour or oats flour",
+    "Dry: 1/2 Tsp Baking Powder",
+    "Dry: 1/2 Cup (30g) unsweetened cocoa powder",
+    "Dry: A pinch of salt",
+	"1/2 Cup (168g) of hone",
+	"1/2Cup (121g) unsweetened apple sauce",
+	"2 Tbsps (28g) coconut oil",
+	"1/2 Tsp vanilla extract",
+	"1 Egg"
+  ],
+  "Instructions": [
+    "In a microwavable safe bowl add the honey Microwave 30-45 sec (or until liquid-y)",
+    "Add in the unsweetened cocoa powder and mix until combined",
+    "Set that bowl aside and get out a larger bowl for your dry ingredients",
+    "Add all dry ingredients to the bowl and combine well",
+	"Set that bowl aside and bring back your honey mixture",
+	"Add the rest of your wet ingredients to the honey mixture and mix until smooth and chocolate",
+	"Now pour the wet ingredients into the dry and combine all of the ingredients until smooth",
+	"In an 8x8 baking tray add your batter and bake at 350 degrees | 177 Celsius for around 25 minutes",
+	"Cool in the tray for about 5 minutes and then transfer to a wire rack to finish cooling"
+  ]
+}

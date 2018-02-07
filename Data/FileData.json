@@ -24,6 +24,10 @@
 	  {
         "FileName": "Blueberry oatmeal muffins",
         "URL": "beatrizcv.com//Data/Recipes/Data/BlueberryOatmealMuffins.json"
+      },
+	  {
+        "FileName": "Healthy Low Calories Brownies",
+        "URL": "beatrizcv.com//Data/Recipes/Data/HealthyLowCaloriesBrownies.json"
       }
     ]      
 }
