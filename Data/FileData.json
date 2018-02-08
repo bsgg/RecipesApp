@@ -11,19 +11,19 @@
         "FileName": "French Toast Blueberry Maple Syrup",
         "URL": "beatrizcv.com//Data/Recipes/Data/FrenchToastBlueberryMapleSyrup.json",
 		"ImageName":"Frenchtoastblueberry",
-        "ImageExtension":"png"
+        "ImageExtension":"jpg"
       },
 	  {
         "FileName": "Peanut Butter Chocolate Cookies",
         "URL": "beatrizcv.com//Data/Recipes/Data/PeanutButterChocolateCookies.json",
 		"ImageName":"PeanutButterChocolateCookies",
-        "ImageExtension":"png"
+        "ImageExtension":"jpg"
       },
 	  {
         "FileName": "Peanut Butter Chocolate Cake",
         "URL": "beatrizcv.com//Data/Recipes/Data/PeanutButterChocolateCake.json",
 		"ImageName":"PeanutButterChocolateCake",
-        "ImageExtension":"png"
+        "ImageExtension":"jpg"
       },
 	  {
         "FileName": "Shepherd’s Pie With Cauliflower Mash",
@@ -34,14 +34,14 @@
 	  {
         "FileName": "Blueberry oatmeal muffins",
         "URL": "beatrizcv.com//Data/Recipes/Data/BlueberryOatmealMuffins.json",
-		"ImageName":"",
-        "ImageExtension":""
+		"ImageName":"BlueberryOatmealMuffins",
+        "ImageExtension":"jpg"
       },
 	  {
         "FileName": "Healthy Low Calories Brownies",
         "URL": "beatrizcv.com//Data/Recipes/Data/HealthyLowCaloriesBrownies.json",
-		"ImageName":"",
-        "ImageExtension":""
+		"ImageName":"HealthyLowCaloriesBrownies",
+        "ImageExtension":"jpg"
       }
     ]      
 }
