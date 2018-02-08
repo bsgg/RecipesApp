@@ -111,7 +111,7 @@ namespace RecipeApp
                 {
                     m_FileData = JsonMapper.ToObject<FileData>(jsonData);
 
-                    Debug.LogWarning("<color=blue>" + "[LauncherControl.DelayedShow] Requesting... " + m_FileData.Data.Count + " Files " + "</color>");
+                    Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] Requesting... " + m_FileData.Data.Count + " Files " + "</color>");
                     for (int i = 0; i < m_FileData.Data.Count; i++)
                     {
                         if (string.IsNullOrEmpty(m_FileData.Data[i].URL))
@@ -140,7 +140,7 @@ namespace RecipeApp
                     }
 
                     // Load images
-                    Debug.LogWarning("<color=blue>" + "[LauncherControl.DelayedShow] Retrieve pictures: " +  "</color>");
+                    Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] Retrieve pictures: " +  "</color>");
                     yield return RequestPictures();
 
                     Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] RequestPicturesfinished " + "</color>");
