@@ -3,31 +3,45 @@
     [
       {
         "FileName": "Healthy Flapjacks",
-        "URL": "beatrizcv.com//Data/Recipes/Data/HealthyFlapjacks.json"
+        "URL": "beatrizcv.com//Data/Recipes/Data/HealthyFlapjacks.json",
+		"ImageName":"",
+        "ImageExtension":""
       },
       {
         "FileName": "French Toast Blueberry Maple Syrup",
-        "URL": "beatrizcv.com//Data/Recipes/Data/FrenchToastBlueberryMapleSyrup.json"
+        "URL": "beatrizcv.com//Data/Recipes/Data/FrenchToastBlueberryMapleSyrup.json",
+		"ImageName":"test",
+        "ImageExtension":"jpg"
       },
 	  {
         "FileName": "Peanut Butter Chocolate Cookies",
-        "URL": "beatrizcv.com//Data/Recipes/Data/PeanutButterChocolateCookies.json"
+        "URL": "beatrizcv.com//Data/Recipes/Data/PeanutButterChocolateCookies.json",
+		"ImageName":"",
+        "ImageExtension":""
       },
 	  {
         "FileName": "Peanut Butter Chocolate Cake",
-        "URL": "beatrizcv.com//Data/Recipes/Data/PeanutButterChocolateCake.json"
+        "URL": "beatrizcv.com//Data/Recipes/Data/PeanutButterChocolateCake.json",
+		"ImageName":"",
+        "ImageExtension":""
       },
 	  {
         "FileName": "Shepherd’s Pie With Cauliflower Mash",
-        "URL": "beatrizcv.com//Data/Recipes/Data/ShepherdsPieCauliflower.json"
+        "URL": "beatrizcv.com//Data/Recipes/Data/ShepherdsPieCauliflower.json",
+		"ImageName":"",
+        "ImageExtension":""
       },
 	  {
         "FileName": "Blueberry oatmeal muffins",
-        "URL": "beatrizcv.com//Data/Recipes/Data/BlueberryOatmealMuffins.json"
+        "URL": "beatrizcv.com//Data/Recipes/Data/BlueberryOatmealMuffins.json",
+		"ImageName":"",
+        "ImageExtension":""
       },
 	  {
         "FileName": "Healthy Low Calories Brownies",
-        "URL": "beatrizcv.com//Data/Recipes/Data/HealthyLowCaloriesBrownies.json"
+        "URL": "beatrizcv.com//Data/Recipes/Data/HealthyLowCaloriesBrownies.json",
+		"ImageName":"",
+        "ImageExtension":""
       }
     ]      
 }

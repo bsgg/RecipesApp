@@ -32,12 +32,7 @@ namespace RecipeApp
 
     #endregion DataModel
 
-    [System.Serializable]
-    public class SpriteData
-    {
-        public string ID;
-        public Sprite Sprite; 
-    }
+    
 
     public class RecipeControl : Base
     {
@@ -297,7 +292,7 @@ namespace RecipeApp
             string spriteID = m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Sprite;
             if (!string.IsNullOrEmpty(spriteID))
             {
-                Sprite spr = MediaController.Instance.GetSprite(spriteID);
+                Sprite spr = AppController.Instance.Launcher.FileData.GetSprite(spriteID);
                 if (spr != null)
                 {
                     m_RecipeUI.SpriteObject = spr;
