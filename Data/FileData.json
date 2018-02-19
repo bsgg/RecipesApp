@@ -42,6 +42,24 @@
         "URL": "beatrizcv.com//Data/Recipes/Data/HealthyLowCaloriesBrownies.json",
 		"ImageName":"HealthyLowCaloriesBrownies",
         "ImageExtension":"jpg"
+      },
+	  {
+        "FileName": "Pancakes: Chocolate Protein",
+        "URL": "beatrizcv.com//Data/Recipes/Data/PancakesProteinChocolate.json",
+		"ImageName":"PancakesProteinChocolate",
+        "ImageExtension":"jpg"
+      },
+	  {
+        "FileName": "Pancakes: Oatmeal Raisin",
+        "URL": "beatrizcv.com//Data/Recipes/Data/PancakesProteinOatmealReaisins.json",
+		"ImageName":"PancakesProteinOatmealReaisins",
+        "ImageExtension":"jpg"
+      },
+	  {
+        "FileName": "Pancakes: Strawberries Protein",
+        "URL": "beatrizcv.com//Data/Recipes/Data/PancakesProteinStrawberries.json",
+		"ImageName":"PancakesProteinStrawberries",
+        "ImageExtension":"jpg"
       }
     ]      
 }

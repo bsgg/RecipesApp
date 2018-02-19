@@ -1,0 +1,30 @@
+{
+  "Title": "Pancakes: Chocolate Protein",
+  "Sprite": "PancakesProteinChocolate",
+  "Link": "https://www.tastemade.com/shows/healthy-af/protein-pancakes-4-ways",
+  "PreparationTime": 15,
+  "CookTime": 20,
+  "Serves": 6,
+  "Calories": 0,
+  "Tags": [ 0 ],
+  "Difficulty": 2,
+  "Ingredients": [
+    "3/4 cup unsweetened almond milk",
+	"3/4 cup rolled oats",
+	"1 ripe banana",
+	"2 scoops chocolate protein powder",
+	"1 egg",
+	"2 teaspoon dark cocoa powder",
+	"2 teaspoons baking powder",
+	"1/4 cup chocolate chips",
+	"Coconut oil, for frying"
+  ],
+  "Instructions": [
+    "Combine everything in the blender except for oil and chocolate chips. Blend until smooth.",
+	"Heat skillet over medium high heat and add the oil, allowing it to melt.",
+	"Pour approx. 1/4 cup of the batter onto the hot griddle and cook for 2-3 minutes or until golden on bottom side.",
+	"Sprinkle a few chocolate chips over the top before flipping.",
+	"Carefully flip and cook other side until golden. Repeat with remaining batter.",
+	"To serve, top with chocolate morsels and pure maple syrup."
+  ]
+}

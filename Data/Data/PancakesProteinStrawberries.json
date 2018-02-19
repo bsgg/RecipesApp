@@ -1,0 +1,28 @@
+{
+  "Title": "Pancakes: Strawberries Protein",
+  "Sprite": "PancakesProteinStrawberries",
+  "Link": "https://www.tastemade.com/shows/healthy-af/protein-pancakes-4-ways",
+  "PreparationTime": 15,
+  "CookTime": 20,
+  "Serves": 6,
+  "Calories": 0,
+  "Tags": [ 0 ],
+  "Difficulty": 2,
+  "Ingredients": [
+    "10 large strawberries",
+	"1/2 banana",
+	"2 scoops vanilla protein powder",
+	"1/2 cup rolled oats",
+	"2 teaspoon baking powder",
+	"1/2 cup unsweetened almond milk",
+	"1 egg"
+  ],
+  "Instructions": 
+  [
+    "Combine everything in the blender except for oil. Blend until smooth.",
+	"Heat skillet over medium high heat and add the oil, allowing it to melt.",
+	"Pour approx. 1/4 cup of the batter onto the hot griddle and cook for 2-3 minutes or until golden on bottom side.",
+	"Carefully flip and cook other side until golden. Repeat with remaining batter.",
+	"To serve, top with sliced strawberries and pure maple syrup."
+  ]
+}
