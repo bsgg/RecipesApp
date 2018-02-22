@@ -60,6 +60,12 @@
         "URL": "beatrizcv.com//Data/Recipes/Data/PancakesProteinStrawberries.json",
 		"ImageName":"PancakesProteinStrawberries",
         "ImageExtension":"jpg"
+      },
+	  {
+        "FileName": "Light Blueberry Muffins",
+        "URL": "beatrizcv.com//Data/Recipes/Data/BlueberryMuffin.json",
+		"ImageName":"BlueberryMuffin",
+        "ImageExtension":"jpg"
       }
     ]      
 }

@@ -1,0 +1,33 @@
+{
+  "Title": "Light Blueberry Muffins",
+  "Sprite": "BlueberryMuffin",
+  "Link": "https://www.thedietchefs.com/blueberry-muffin-recipe-easy-healthy/",
+  "PreparationTime": 20,
+  "CookTime": 20,
+  "Serves": 12,
+  "Calories": 160,
+  "Tags": [ 0,4  ],
+  "Difficulty": 3,
+  "Ingredients": [
+    "Whole Wheat Flour: 1 + 1/2 Cups",
+	"Vanilla Protein Powder: 2 Scoops (60g)",
+	"Stevia Sugar: 1/4 Cup + 1 Tea spoon for Topping (50g)",
+	"Salt: 1/2 Tea spoon",
+	"Baking Powder: 2 Tea spoons",
+	"Unsweetened Applesauce: 1 Cup (122g)",
+	"Vanilla Extract: 2 Tea spoons",
+	"Egg: 1 Large",
+	"Blueberries: 1 Cup (140g)"
+  ],
+  "Instructions": [
+    "Add all dry ingredients (except for 1 tsp of stevia and the blueberries) to a large bowl and mix until combined.",
+	"Add all wet ingredients to a medium bowl and mix until combined.",
+	"Pour wet ingredients into the dry and mix with a spatula until a batter forms (DO NOT OVER MIX).",
+	"Once the batter forms fold in 2/3 cup of blueberries.",
+	"Now line a regular sized muffin tray with 8 paper liners, coat them with baking spray, and add the batter equally to each tin.",
+	"Top the tins with a few blueberries and a dash of sugar.",
+	"Bake at 375 degrees / 190 Celsius for around 15 - 20 minutes.",
+	"Let cool on the baking tray.",
+	"Store in an air-tight container and refrigerate for several days. Or freeze the muffins for up to a few months. Makes 8 Servings."
+  ]
+}
