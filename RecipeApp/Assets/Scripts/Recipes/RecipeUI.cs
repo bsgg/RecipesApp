@@ -10,31 +10,39 @@ namespace RecipeApp
     {
         [Header("Menu")]
         [SerializeField]
-        private GameObject m_PictureBtn;
-        public GameObject PictureBtn
+        private Button m_PictureBtn;
+        public Button PictureBtn
         {
             get { return m_PictureBtn; }
         }
 
         [SerializeField]
-        private GameObject m_InfoBtn;
-        public GameObject InfoBtn
+        private Button m_InfoBtn;
+        public Button InfoBtn
         {
             get { return m_InfoBtn; }
         }
 
         [SerializeField]
-        private GameObject m_IngredientsBtn;
-        public GameObject IngredientsBtn
+        private Button m_IngredientsBtn;
+        public Button IngredientsBtn
         {
             get { return m_IngredientsBtn; }
         }
 
         [SerializeField]
-        private GameObject m_InstructionsBtn;
-        public GameObject InstructionsBtn
+        private Button m_InstructionsBtn;
+        public Button InstructionsBtn
         {
             get { return m_InstructionsBtn; }
+        }
+
+
+        [SerializeField]
+        private Button m_LinkBtn;
+        public Button LinkBtn
+        {
+            get { return m_LinkBtn; }
         }
 
 

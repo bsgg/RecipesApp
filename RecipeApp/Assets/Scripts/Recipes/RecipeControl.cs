@@ -13,6 +13,7 @@ namespace RecipeApp
     {
         public string Title;
         public string Sprite;
+        public string Link;
         public int PreparationTime;
         public int CookTime;
         public int Serves;
@@ -31,8 +32,6 @@ namespace RecipeApp
     }
 
     #endregion DataModel
-
-    
 
     public class RecipeControl : Base
     {
@@ -175,10 +174,37 @@ namespace RecipeApp
 
                         SetInfo();
                     }
+
+                    UpdateMenu();
                     m_Category.Hide();
                     m_RecipeUI.Show();
                break;
             }
+        }
+
+        private void UpdateMenu()
+        {
+            if (string.IsNullOrEmpty(m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Link))
+            {
+                m_RecipeUI.LinkBtn.interactable = false;
+            }
+            else
+            {
+                m_RecipeUI.LinkBtn.interactable = true;
+            }
+
+            if (string.IsNullOrEmpty(m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Sprite))
+            {
+                m_RecipeUI.PictureBtn.interactable = false;
+            }
+            else
+            {
+                m_RecipeUI.PictureBtn.interactable = true;
+            }
+
+            m_RecipeUI.InfoBtn.interactable = true;
+            m_RecipeUI.IngredientsBtn.interactable = true;
+            m_RecipeUI.InstructionsBtn.interactable = true;
         }
 
         private void OnCategoryPress(int buttonID, int x, int y)
@@ -201,7 +227,6 @@ namespace RecipeApp
             m_SelectedLevel += 1;
             SetCategoryByLevel();
         }
-
 
         public override void Back()
         {
@@ -289,6 +314,15 @@ namespace RecipeApp
             m_RecipeUI.LongText = info;
             m_RecipeUI.SpriteContainer.SetActive(false);
             m_RecipeUI.LongTextContainer.SetActive(true);
+        }
+
+        public void OnTitleURLPress()
+        {
+            string url = m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Link;
+            if (!string.IsNullOrEmpty(url))
+            {
+                Application.OpenURL(url);
+            }
         }
 
         #endregion Menu
