@@ -316,7 +316,7 @@ namespace RecipeApp
             m_RecipeUI.LongTextContainer.SetActive(true);
         }
 
-        public void OnTitleURLPress()
+        public void OnURLPress()
         {
             string url = m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Link;
             if (!string.IsNullOrEmpty(url))
