@@ -1,0 +1,22 @@
+{
+  "Title": "Peanut Butter Banana Milkshake",
+  "Sprite": "PeanutbutterBananaMilkshake",
+  "Link": "",
+  "PreparationTime": 10,
+  "CookTime": 5,
+  "Serves": 1,
+  "Calories": 0,
+  "Tags": [ 0  ],
+  "Difficulty": 1,
+  "Ingredients": [
+    "250ml Almond milk",
+	"Half banana (ripe if possible)",
+	"1 Tablespoon peanut butter",
+	"1 scoop chocolate protein powder",
+	"1 Tablespoon Coffee (optional)",
+	"1 Tablespoon Chia seeds (optional)"
+  ],
+  "Instructions": [
+    "Add all ingredients to the blender and mix."
+  ]
+}

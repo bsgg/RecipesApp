@@ -66,6 +66,12 @@
         "URL": "beatrizcv.com//Data/Recipes/Data/BlueberryMuffin.json",
 		"ImageName":"BlueberryMuffin",
         "ImageExtension":"jpg"
+      },
+	  {
+        "FileName": "Peanut Butter Banana Milkshake",
+        "URL": "beatrizcv.com//Data/Recipes/Data/PeanutbutterBananaMilkshake.json",
+		"ImageName":"PeanutbutterBananaMilkshake",
+        "ImageExtension":"jpg"
       }
     ]      
 }
