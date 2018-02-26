@@ -90,8 +90,8 @@ namespace RecipeApp
         {
             m_FileData = new FileData();
             m_PercentProgress = 0.0f;
-            m_LauncherUI.Progress =  m_PercentProgress.ToString() + " % ";
-
+            m_LauncherUI.Progress =  "Progress " + m_PercentProgress.ToString() + " % ";
+            m_LauncherUI.Description = "";
             if (string.IsNullOrEmpty(m_DataUrl) || string.IsNullOrEmpty(m_IndexFileName))
             {
                 
@@ -99,6 +99,7 @@ namespace RecipeApp
             }
 
             string urlFile = Path.Combine(m_DataUrl, m_IndexFileName);
+            m_LauncherUI.Description = "Getting recipes from " + urlFile;
 
             Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] Requesting data from: " + urlFile + "</color>");
 
@@ -106,45 +107,46 @@ namespace RecipeApp
             yield return wwwFile;
             string jsonData = wwwFile.text;
             if (!string.IsNullOrEmpty(jsonData))
-            {
-                if (!string.IsNullOrEmpty(jsonData))
+            {                
+                m_FileData = JsonMapper.ToObject<FileData>(jsonData);
+
+                Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] Requesting... " + m_FileData.Data.Count + " Files " + "</color>");
+                for (int i = 0; i < m_FileData.Data.Count; i++)
                 {
-                    m_FileData = JsonMapper.ToObject<FileData>(jsonData);
-
-                    Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] Requesting... " + m_FileData.Data.Count + " Files " + "</color>");
-                    for (int i = 0; i < m_FileData.Data.Count; i++)
+                    if (string.IsNullOrEmpty(m_FileData.Data[i].URL))
                     {
-                        if (string.IsNullOrEmpty(m_FileData.Data[i].URL))
-                        {
-                            continue;
-                        }
-
-                        // Request
-                        Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] Requesting: " + (i + 1) + "/" + m_FileData.Data.Count + " : " + m_FileData.Data[i].FileName + "</color>");
-                        WWW www = new WWW(m_FileData.Data[i].URL);
-                        while (!www.isDone)
-                        {
-                            m_PercentProgress = www.progress * 100.0f;
-                            m_LauncherUI.Progress = m_PercentProgress.ToString() + " % ";
-                            yield return null;
-                        }
-
-                        m_PercentProgress = www.progress * 100.0f;
-                        m_LauncherUI.Progress = m_PercentProgress.ToString() + " % ";
-
-                        m_FileData.Data[i].Data = www.text;
-
-
-                        Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] Data Retrieved: " + m_FileData.Data[i].Data + "</color>");
-                        
+                        continue;
                     }
 
-                    // Load images
-                    Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] Retrieve pictures: " +  "</color>");
-                    yield return RequestPictures();
+                    m_LauncherUI.Description += "\n- "  +(i + 1) + "/" + m_FileData.Data.Count + " : " + m_FileData.Data[i].FileName;
 
-                    Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] RequestPicturesfinished " + "</color>");
+                    // Request
+                    Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] Requesting: " + (i + 1) + "/" + m_FileData.Data.Count + " : " + m_FileData.Data[i].FileName + "</color>");
+                    WWW www = new WWW(m_FileData.Data[i].URL);
+                    while (!www.isDone)
+                    {
+                        m_PercentProgress = www.progress * 100.0f;
+                        m_LauncherUI.Progress = m_PercentProgress.ToString() + " % ";
+                        yield return null;
+                    }
+
+                    m_PercentProgress = www.progress * 100.0f;
+                    m_LauncherUI.Progress = m_PercentProgress.ToString() + " % ";
+
+                    m_FileData.Data[i].Data = www.text;
+
+
+                    Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] Data Retrieved: " + m_FileData.Data[i].Data + "</color>");
+                        
                 }
+
+                m_LauncherUI.Description += "Completed";
+                // Load images
+                Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] Retrieve pictures: " +  "</color>");
+                yield return RequestPictures();
+
+                Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] RequestPicturesfinished " + "</color>");
+                
             }
             else
             {
