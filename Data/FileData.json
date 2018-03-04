@@ -78,6 +78,12 @@
         "URL": "beatrizcv.com//Data/Recipes/Data/PeanutButterOatChocolateCookies.json",
 		"ImageName":"PeanutButterOatChocolateCookies",
         "ImageExtension":"jpg"
+      },
+	  {
+        "FileName": "Feta Spinach and Red Pepper Egg Bites",
+        "URL": "beatrizcv.com//Data/Recipes/Data/FetaSpinachRedPepperEggBites.json",
+		"ImageName":"FetaSpinachRedPepperEggBites",
+        "ImageExtension":"jpg"
       }
     ]      
 }
