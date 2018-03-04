@@ -72,6 +72,12 @@
         "URL": "beatrizcv.com//Data/Recipes/Data/PeanutbutterBananaMilkshake.json",
 		"ImageName":"PeanutbutterBananaMilkshake",
         "ImageExtension":"jpg"
+      },
+	  {
+        "FileName": "Peanut Butter Chocolate Chip Cookies",
+        "URL": "beatrizcv.com//Data/Recipes/Data/PeanutButterOatChocolateCookies.json",
+		"ImageName":"PeanutButterOatChocolateCookies",
+        "ImageExtension":"jpg"
       }
     ]      
 }
