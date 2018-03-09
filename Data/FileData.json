@@ -84,6 +84,18 @@
         "URL": "beatrizcv.com//Data/Recipes/Data/FetaSpinachRedPepperEggBites.json",
 		"ImageName":"FetaSpinachRedPepperEggBites",
         "ImageExtension":"jpg"
+      },
+	  {
+        "FileName": "Blueberry Cheesecake Light",
+        "URL": "beatrizcv.com//Data/Recipes/Data/BlueberryCheeseCakeLight.json",
+		"ImageName":"BlueberryCheeseCakeLight",
+        "ImageExtension":"jpg"
+      },
+	  {
+        "FileName": "Chocolate Quinoa Bites",
+        "URL": "beatrizcv.com//Data/Recipes/Data/ChocolateQuinoaBites.json",
+		"ImageName":"ChocolateQuinoaBites",
+        "ImageExtension":"jpg"
       }
     ]      
 }
