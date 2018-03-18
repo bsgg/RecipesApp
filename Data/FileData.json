@@ -96,6 +96,12 @@
         "URL": "beatrizcv.com//Data/Recipes/Data/ChocolateQuinoaBites.json",
 		"ImageName":"ChocolateQuinoaBites",
         "ImageExtension":"jpg"
+      },
+	  {
+        "FileName": "Carrot Cake",
+        "URL": "beatrizcv.com//Data/Recipes/Data/CarrotCake.json",
+		"ImageName":"CarrotCake",
+        "ImageExtension":"jpg"
       }
     ]      
 }
