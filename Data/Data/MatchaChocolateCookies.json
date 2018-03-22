@@ -1,0 +1,34 @@
+{
+  "Title": "Matcha Chocolate Cookies",
+  "Sprite": "MatchaChocolateCookies",
+  "Link": "https://www.thehealthymaven.com/2015/03/matcha-green-tea-chocolate-chip-cookies.html",
+  "PreparationTime": 20,
+  "CookTime": 20,
+  "Serves": 12,
+  "Calories": 100,
+  "Tags": [ 0,4  ],
+  "Difficulty": 2,
+  "Ingredients": [
+    "2 1/2 cups oat flour (ground oats)",
+	"1 tsp baking soda",
+	"1/4 tsp sea salt",
+	"1/2 cup coconut sugar or Stevia",
+	"1/2 cup coconut oil, melted",
+	"1/2 cup unsweetened applesauce",
+	"1 egg",
+	"1 teaspoon vanilla extract",
+	"2-3 Teaspoon matcha green tea powder",
+	"1/3 cup Chocolate chips"
+  ],
+  "Instructions": [
+    "In a large bowl combine oat flour, baking soda, sea salt and coconut sugar.",
+	"In a separate bowl combine coconut oil, applesauce, egg and vanilla.",
+	"Slowly add the wet ingredients to the dry.",
+	"Stir in matcha powder.",
+	"Stir in chocolate chips.",
+	"Cover bowl with plastic wrap and place in fridge for 1 hour.",
+	"Preheat oven to 375 degrees F.",
+	"Scoop out balls and flatten onto a parchment or silicone-lined baking sheet.",
+	"Place 1 tray into the oven and bake for 10 - 20 minutes."
+  ]
+}
