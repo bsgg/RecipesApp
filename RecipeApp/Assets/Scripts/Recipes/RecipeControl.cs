@@ -207,7 +207,7 @@ namespace RecipeApp
             m_RecipeUI.InstructionsBtn.interactable = true;
         }
 
-        private void OnCategoryPress(int buttonID, int x, int y)
+        private void OnCategoryPress(int buttonID)
         {
             if (m_SelectedLevel == 0) m_SelectedLevel = (int)ESELECTEDLEVEL.FOODTYPE;
 

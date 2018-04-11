@@ -20,10 +20,11 @@ GameObject:
   m_Component:
   - component: {fileID: 224861067960467938}
   - component: {fileID: 222930173471353558}
+  - component: {fileID: 225849044163704468}
   - component: {fileID: 114995754553796242}
   - component: {fileID: 114489096174410898}
-  - component: {fileID: 114447695863288932}
   - component: {fileID: 114974113708636046}
+  - component: {fileID: 114395710292441374}
   m_Layer: 5
   m_Name: ItemScrollMenu
   m_TagString: Untagged
@@ -81,7 +82,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: TITLE LESSON
---- !u!114 &114447695863288932
+--- !u!114 &114395710292441374
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -89,11 +90,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1007205308130366}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c081f315cbb9d54b893f8cc7627e024, type: 3}
+  m_Script: {fileID: 11500000, guid: bb67deb61191c554389169cbd8e00a11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TextButton: {fileID: 114039530512007268}
+  m_CanvasGroup: {fileID: 225849044163704468}
   m_ButtonComponent: {fileID: 114489096174410898}
+  m_Title: {fileID: 114039530512007268}
 --- !u!114 &114489096174410898
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -151,7 +153,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 114447695863288932}
+        - m_Target: {fileID: 0}
           m_MethodName: OnPress
           m_Mode: 1
           m_Arguments:
@@ -241,3 +243,14 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &225849044163704468
+CanvasGroup:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1007205308130366}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0

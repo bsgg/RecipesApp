@@ -11,8 +11,8 @@ namespace RecipeApp
         [Header("CategoriesUI")]
 
         [SerializeField]
-        private Scroll m_ScrollMenu;
-        public Scroll ScrollMenu
+        private ScrollUI m_ScrollMenu;
+        public ScrollUI ScrollMenu
         {
             get { return m_ScrollMenu; }
             set { m_ScrollMenu = value; }
