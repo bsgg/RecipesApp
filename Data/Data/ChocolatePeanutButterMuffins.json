@@ -1,0 +1,33 @@
+{
+  "Title": "Chocolate Peanut Butter Muffins (JoannaSoh)",
+  "Sprite": "ChocolatePeanutButterMuffins",
+  "Link": "http://joannasoh.com/foods/recipes-1/3-skinny-breakfast-muffins-healthy-recipes",
+  "PreparationTime": 20,
+  "CookTime": 15,
+  "Serves": 12,
+  "Calories": 159,
+  "Tags": [ 0,4  ],
+  "Difficulty": 3,
+  "Ingredients": [
+    "3/4 cup Oat Flour 300Cals",
+	"1 tbsp. Chia Seeds + 3 tbsps. Water 70Cals",
+	"1/2 cup Soy Milk (or any other Milk) 50Cals",
+	"2 tbsps. Maple Syrup 104Cals",
+	"1 tbsp. Coconut Oil 117Cals",
+	"1/2 tsp. Vanilla Extract 6Cals",
+	"1/4 tsp. Baking Soda/ Baking powder",
+	"1/4 cup unsweetened Cocoa Powder 48Cals",
+	"2 tbsps. Peanut Butter 188Cals",
+	"2 tbsps. (25g) Chocolate Chips 70Cals"
+  ],
+  "Instructions": [
+    "In a small bowl, mix 1 tbsp of chia seeds with 3 tbsps. of water. ",
+	"Allow the mixture to sit for about 5 minutes until it becomes pudding like, just like a raw egg yolk.",
+	"Add the wet ingredients to the chia mix",
+	"In a large bowl, add all the dry ingredients",
+	"Combine the dry and wet ingredients",
+	"Scoop the batter into 6 muffin tins",
+	"Bake in a pre-heated oven at 180 degrees Celsius or 350 degree Fahrenheit for about 15 minutes, until a toothpick inserted comes out clean."
+  ]
+
+}

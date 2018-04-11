@@ -108,6 +108,12 @@
         "URL": "beatrizcv.com//Data/Recipes/Data/MatchaChocolateCookies.json",
 		"ImageName":"MatchaChocolateCookies",
         "ImageExtension":"jpg"
+      },
+	  {
+        "FileName": "Chocolate Peanut Butter Muffins (JoannaSoh)",
+        "URL": "beatrizcv.com//Data/Recipes/Data/ChocolatePeanutButterMuffins.json",
+		"ImageName":"ChocolatePeanutButterMuffins",
+        "ImageExtension":"jpg"
       }
     ]      
 }
