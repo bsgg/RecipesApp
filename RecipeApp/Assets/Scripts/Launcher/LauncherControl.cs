@@ -31,7 +31,6 @@ namespace RecipeApp
         {
             for (int i = 0; i < Data.Count; i++)
             {
-                Debug.Log("Sprite: " + Data[i].ImageName);
                 if (Data[i].ImageName.Equals(name))
                 {
                     return Data[i].Sprite;
@@ -48,9 +47,6 @@ namespace RecipeApp
 
         public delegate void LauncherAction();
         public event LauncherAction OnGetDataEnd;
-
-       // [SerializeField]
-        //private string m_FileDataUrl = "http://beatrizcv.com/Data/FileData.json";
 
         [SerializeField] private string m_DataUrl = "http://beatrizcv.com/Data/";
 

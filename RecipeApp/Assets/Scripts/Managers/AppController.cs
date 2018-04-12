@@ -47,12 +47,9 @@ namespace RecipeApp
 
         void Start ()
         {
-
             m_Launcher.OnGetDataEnd += OnLauncherGetDataEnd;
             m_CurrentControl = m_Launcher;
-
             m_CurrentControl.Show();
-
         }
 
         private void OnLauncherGetDataEnd()

@@ -136,7 +136,7 @@ namespace RecipeApp
                     {
                         foodTypes.Add(m_TagTitles[i]);
                     }
-                    m_Category.ScrollMenu.InitScroll(foodTypes);
+                    StartCoroutine(m_Category.ScrollMenu.InitScroll(foodTypes));
                     m_RecipeUI.Hide();
                     m_Category.Show();
                     break;
@@ -152,8 +152,8 @@ namespace RecipeApp
                     }
                     if (recipeList.Count > 0)
                     {
-                       
-                        m_Category.ScrollMenu.InitScroll(recipeList);
+
+                        StartCoroutine(m_Category.ScrollMenu.InitScroll(recipeList));
                         m_RecipeUI.Hide();
                     }else
                     {

@@ -39,13 +39,14 @@ namespace Utility
 	    /// </summary>
 	    /// <param name="data">Data to fill the scroll</param>
         public IEnumerator InitScroll(List<string> data)
-        {
+        {          
+
             // Clear list elements
             ClearListElements();
             m_ListElements = new List<GameObject>();
 
-
             m_GridContent.cellSize = new Vector2(m_ContentRecTransform.rect.size.x - m_SidePadding, m_GridContent.cellSize.y);
+
             m_GridContent.padding.top = m_TopPadding;
 
             yield return new WaitForEndOfFrame();
