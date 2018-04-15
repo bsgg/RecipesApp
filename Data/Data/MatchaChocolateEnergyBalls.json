@@ -1,0 +1,25 @@
+{
+  "Title": "Matcha Chocolate Energy Balls",
+  "Sprite": "MatchaChocolateEnergyBalls",
+  "Link": "https://www.thehealthymaven.com/2014/05/chocolate-matcha-energy-balls-energy-ball-round.html",
+  "PreparationTime": 15,
+  "CookTime": 20,
+  "Serves": 6,
+  "Calories": 160,
+  "Tags": [ 0,4  ],
+  "Difficulty": 3,
+  "Ingredients": [
+    "170g of Pitted Dates",
+	"170g of Raw Almonds",
+	"85g of Unsweetened Cocoa Powder",
+	"2 Tbsp of Slimzest Matcha Tea",
+	"1 Tbsp of Unsweetened Almond Milk"
+  ],
+  "Instructions": [
+    "Add almonds and dates to a food processor",
+	"Process until they come together into a sticky ball.",
+	"Break up the ball and add in cocoa powder, 1 tbsp of matcha and almond milk.",
+	"Process until all ingredients have been combined and form into a large sticky ball again.",
+	"Roll into 10 small balls and dust with remaining matcha and serve"
+  ]
+}

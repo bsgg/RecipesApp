@@ -1,4 +1,4 @@
-{
+ {
     "Data": 
     [
       {
@@ -113,6 +113,18 @@
         "FileName": "Chocolate Peanut Butter Muffins (JoannaSoh)",
         "URL": "beatrizcv.com//Data/Recipes/Data/ChocolatePeanutButterMuffins.json",
 		"ImageName":"ChocolatePeanutButterMuffins",
+        "ImageExtension":"jpg"
+      },
+	  {
+        "FileName": "Nutty Banana Muffin (JoannaSoh)",
+        "URL": "beatrizcv.com//Data/Recipes/Data/NuttyBananaMuffin.json",
+		"ImageName":"NuttyBananaMuffin",
+        "ImageExtension":"jpg"
+      },
+	  {
+        "FileName": "Matcha Chocolate Energy Balls",
+        "URL": "beatrizcv.com//Data/Recipes/Data/MatchaChocolateEnergyBalls.json",
+		"ImageName":"MatchaChocolateEnergyBalls",
         "ImageExtension":"jpg"
       }
     ]      
