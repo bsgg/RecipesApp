@@ -126,6 +126,12 @@
         "URL": "beatrizcv.com//Data/Recipes/Data/MatchaChocolateEnergyBalls.json",
 		"ImageName":"MatchaChocolateEnergyBalls",
         "ImageExtension":"jpg"
+      },
+	  {
+        "FileName": "Cloud Bread",
+        "URL": "beatrizcv.com//Data/Recipes/Data/CloudBread.json",
+		"ImageName":"CloudBread",
+        "ImageExtension":"jpg"
       }
     ]      
 }

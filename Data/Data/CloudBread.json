@@ -1,0 +1,30 @@
+{
+  "Title": "Cloud Bread",
+  "Sprite": "CloudBread",
+  "Link": "https://www.youtube.com/watch?v=aRQxf7Xkl_M&feature=youtu.be",
+  "PreparationTime": 20,
+  "CookTime": 20,
+  "Serves": 12,
+  "Calories": 42,
+  "Tags": [ 0,4  ],
+  "Difficulty": 3,
+  "Ingredients": [
+    "4 Large eggs",
+	"56g Low-fat creamcheese",
+	"1 Tsp Italian seasoning",
+	"1/8 Tsp garlic powder",
+	"1/8 tsp - 1/4tsp salt",
+	"1/2 Tsp cream of tartar or baking powder"
+  ],
+  "Instructions": [
+    "Separate the egg yolks from the whites",
+	"Add the yolks to a large bowl, along with all of the ingredients listed above, except for the cream of tartar",
+	"Use a hand mixer to combine all of those ingredients into one another and set aside",
+	"In another large bowl add the egg whites and cream of tartar and beat until super thick peaks develop in the bowl",
+	"Once they do gently add the whites mixture in with the yolks",
+	"Try to keep as much fluffiness to the whites as you can while doing this",
+	"Once combined, add to large spoonfuls -per slice of cloud bread - to a baking sheet lined with parchment paper (the recipe makes 10 pieces, so you'll need two trays)",
+	"Bake the trays at 300 Degrees for about 15-20 minutes",
+	"Let the cloud bread cool completely in the tray"
+  ]
+}
