@@ -1,4 +1,5 @@
 ﻿using LitJson;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -44,7 +45,6 @@ namespace RecipeApp
 
     public class LauncherControl : Base
     {
-
         public delegate void LauncherAction();
         public event LauncherAction OnGetDataEnd;
 
@@ -97,16 +97,28 @@ namespace RecipeApp
             string urlFile = Path.Combine(m_DataUrl, m_IndexFileName);
             m_LauncherUI.Description = "Getting recipes from " + urlFile;
 
-            Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] Requesting data from: " + urlFile + "</color>");
+            string localIndexFile = Path.Combine(Application.persistentDataPath, m_IndexFileName);
 
-            WWW wwwFile = new WWW(urlFile);
-            yield return wwwFile;
-            string jsonData = wwwFile.text;
-            if (!string.IsNullOrEmpty(jsonData))
-            {                
-                m_FileData = JsonMapper.ToObject<FileData>(jsonData);
+            // Check if file exits in local
+            if (File.Exists(localIndexFile))
+            {
+                Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] File Index EXITS at : " + localIndexFile + "</color>");
 
-                Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] Requesting... " + m_FileData.Data.Count + " Files " + "</color>");
+                // Read from local
+                //byte[] fileData = File.ReadAllBytes(localIndexFile);
+
+                // Retrive file
+                StreamReader reader = new StreamReader(localIndexFile);
+
+                string text = reader.ReadToEnd();
+
+                reader.Close();
+                
+
+                yield return new WaitForEndOfFrame();
+
+                m_FileData = JsonMapper.ToObject<FileData>(text);
+
                 for (int i = 0; i < m_FileData.Data.Count; i++)
                 {
                     if (string.IsNullOrEmpty(m_FileData.Data[i].URL))
@@ -114,44 +126,97 @@ namespace RecipeApp
                         continue;
                     }
 
-                    m_LauncherUI.Description += "\n- "  +(i + 1) + "/" + m_FileData.Data.Count + " : " + m_FileData.Data[i].FileName;
-
-                    // Request
-                    Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] Requesting: " + (i + 1) + "/" + m_FileData.Data.Count + " : " + m_FileData.Data[i].FileName + "</color>");
-                    WWW www = new WWW(m_FileData.Data[i].URL);
-                    while (!www.isDone)
-                    {
-                        m_PercentProgress = www.progress * 100.0f;
-                        m_LauncherUI.Progress = m_PercentProgress.ToString() + " % ";
-                        yield return null;
-                    }
-
-                    m_PercentProgress = www.progress * 100.0f;
-                    m_LauncherUI.Progress = m_PercentProgress.ToString() + " % ";
-
-                    m_FileData.Data[i].Data = www.text;
-
-
-                    Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] Data Retrieved: " + m_FileData.Data[i].Data + "</color>");
-                        
+                    m_LauncherUI.Description += "\n- " + (i + 1) + "/" + m_FileData.Data.Count + " : " + m_FileData.Data[i].FileName;
                 }
 
-                m_LauncherUI.Description += "Completed";
-                // Load images
-                Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] Retrieve pictures: " +  "</color>");
-                yield return RequestPictures();
-
-                Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] RequestPicturesfinished " + "</color>");
-                
             }
             else
             {
-                Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] File Data Json is null or empty" + "</color>");
+                Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] File Index NOT EXISTS at : " + localIndexFile + "</color>");
+
+                // Try to get file if internet reachable
+
+                Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] Requesting data from: " + urlFile + "</color>");
+
+                WWW wwwFile = new WWW(urlFile);
+                yield return wwwFile;
+                string jsonData = wwwFile.text;
+
+                // Save file in local
+                SaveFileToLocal(localIndexFile, wwwFile);
+                yield return new WaitForEndOfFrame();
+
+
+                if (!string.IsNullOrEmpty(jsonData))
+                {                
+                    m_FileData = JsonMapper.ToObject<FileData>(jsonData);
+
+                    Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] Requesting... " + m_FileData.Data.Count + " Files " + "</color>");
+                    for (int i = 0; i < m_FileData.Data.Count; i++)
+                    {
+                        if (string.IsNullOrEmpty(m_FileData.Data[i].URL))
+                        {
+                            continue;
+                        }
+
+                        m_LauncherUI.Description += "\n- "  +(i + 1) + "/" + m_FileData.Data.Count + " : " + m_FileData.Data[i].FileName;
+
+                        // Request
+                        Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] Requesting: " + (i + 1) + "/" + m_FileData.Data.Count + " : " + m_FileData.Data[i].FileName + "</color>");
+                        WWW www = new WWW(m_FileData.Data[i].URL);
+                        while (!www.isDone)
+                        {
+                            m_PercentProgress = www.progress * 100.0f;
+                            m_LauncherUI.Progress = m_PercentProgress.ToString() + " % ";
+                            yield return null;
+                        }
+
+                        m_PercentProgress = www.progress * 100.0f;
+                        m_LauncherUI.Progress = m_PercentProgress.ToString() + " % ";
+
+                        m_FileData.Data[i].Data = www.text;
+
+
+                        Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] Data Retrieved: " + m_FileData.Data[i].Data + "</color>");
+                        
+                    }
+
+                    m_LauncherUI.Description += "Completed";
+                    // Load images
+                    Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] Retrieve pictures: " +  "</color>");
+                    yield return RequestPictures();
+
+                    Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] RequestPicturesfinished " + "</color>");
+                
+                }
+                else
+                {
+                    Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] File Data Json is null or empty" + "</color>");
+                }
             }
 
             if (OnGetDataEnd != null)
             {
-                OnGetDataEnd();
+                //OnGetDataEnd();
+            }
+        }
+
+
+        private void SaveFileToLocal(string url, WWW request)
+        {
+            try
+            {
+                if (File.Exists(url))// File exists
+                {
+                    File.Delete(url);
+                }
+                // Save file
+                byte[] bytes = request.bytes;
+                File.WriteAllBytes(url, bytes);
+            }
+            catch (Exception e)
+            {
+                Debug.Log("<color=purple>" + "[DataManager] Unable to store " + url + "</color>");
             }
         }
 
