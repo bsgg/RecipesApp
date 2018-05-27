@@ -62,6 +62,12 @@
         "ImageExtension":"jpg"
       },
 	  {
+        "FileName": "Pancakes: Peanut Butter Protein",
+        "URL": "beatrizcv.com//Data/Recipes/Data/PancakesProteinPeanutButter.json",
+		"ImageName":"PancakesProteinPeanutButter",
+        "ImageExtension":"jpg"
+      },
+	  {
         "FileName": "Light Blueberry Muffins",
         "URL": "beatrizcv.com//Data/Recipes/Data/BlueberryMuffin.json",
 		"ImageName":"BlueberryMuffin",
