@@ -70,7 +70,8 @@ namespace RecipeApp
             {
                 for (int i = 0; i < AppController.Instance.Launcher.FileData.Data.Count; i++)
                 {
-                    string data = AppController.Instance.Launcher.FileData.Data[i].Data;
+                    //string data = AppController.Instance.Launcher.FileData.Data[i].Data;
+                    string data = AppController.Instance.Launcher.FileData.Data[i].FileExtension;
 
                     try
                     {

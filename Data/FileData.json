@@ -2,141 +2,123 @@
     "Data": 
     [
       {
-        "FileName": "Healthy Flapjacks",
-        "URL": "beatrizcv.com//Data/Recipes/Data/HealthyFlapjacks.json",
-		"ImageName":"HealthyFlapjacks",
+        "Title": "Healthy Flapjacks",
+		"FileName":"HealthyFlapjacks",
+		"FileExtension":"json",
         "ImageExtension":"png"
       },
       {
-        "FileName": "French Toast Blueberry Maple Syrup",
-        "URL": "beatrizcv.com//Data/Recipes/Data/FrenchToastBlueberryMapleSyrup.json",
+        "Title": "French Toast Blueberry Maple Syrup",
 		"ImageName":"Frenchtoastblueberry",
+		"FileExtension":"json",
         "ImageExtension":"jpg"
       },
 	  {
-        "FileName": "Peanut Butter Chocolate Cookies",
-        "URL": "beatrizcv.com//Data/Recipes/Data/PeanutButterChocolateCookies.json",
-		"ImageName":"PeanutButterChocolateCookies",
+        "Title": "Peanut Butter Chocolate Cookies",
+		"FileName":"PeanutButterChocolateCookies",
+		"FileExtension":"json",
+        "ImageExtension":"jpg"
+      },	  
+	  {
+        "Title": "Shepherd’s Pie With Cauliflower Mash",
+		"FileName":"ShepherdsPieCauliflower",
+		"FileExtension":"json",
         "ImageExtension":"jpg"
       },
 	  {
-        "FileName": "Peanut Butter Chocolate Cake",
-        "URL": "beatrizcv.com//Data/Recipes/Data/PeanutButterChocolateCake.json",
-		"ImageName":"PeanutButterChocolateCake",
+        "Title": "Healthy Low Calories Brownies",
+		"FileName":"HealthyLowCaloriesBrownies",
+		"FileExtension":"json",
         "ImageExtension":"jpg"
       },
 	  {
-        "FileName": "Shepherd’s Pie With Cauliflower Mash",
-        "URL": "beatrizcv.com//Data/Recipes/Data/ShepherdsPieCauliflower.json",
-		"ImageName":"ShepherdsPieCauliflower",
+        "Title": "Pancakes: Chocolate Protein",
+		"FileName":"PancakesProteinChocolate",
+		"FileExtension":"json",
         "ImageExtension":"jpg"
       },
 	  {
-        "FileName": "Blueberry oatmeal muffins",
-        "URL": "beatrizcv.com//Data/Recipes/Data/BlueberryOatmealMuffins.json",
-		"ImageName":"BlueberryOatmealMuffins",
+        "Title": "Pancakes: Oatmeal Raisin",
+		"FileName":"PancakesProteinOatmealReaisins",
+		"FileExtension":"json",
         "ImageExtension":"jpg"
       },
 	  {
-        "FileName": "Healthy Low Calories Brownies",
-        "URL": "beatrizcv.com//Data/Recipes/Data/HealthyLowCaloriesBrownies.json",
-		"ImageName":"HealthyLowCaloriesBrownies",
+        "Title": "Pancakes: Strawberries Protein",
+		"FileName":"PancakesProteinStrawberries",
+		"FileExtension":"json",
         "ImageExtension":"jpg"
       },
 	  {
-        "FileName": "Pancakes: Chocolate Protein",
-        "URL": "beatrizcv.com//Data/Recipes/Data/PancakesProteinChocolate.json",
-		"ImageName":"PancakesProteinChocolate",
+        "Title": "Pancakes: Peanut Butter Protein",
+		"FileName":"PancakesProteinPeanutButter",
+		"FileExtension":"json",
         "ImageExtension":"jpg"
       },
 	  {
-        "FileName": "Pancakes: Oatmeal Raisin",
-        "URL": "beatrizcv.com//Data/Recipes/Data/PancakesProteinOatmealReaisins.json",
-		"ImageName":"PancakesProteinOatmealReaisins",
+        "Title": "Light Blueberry Muffins",
+		"FileName":"BlueberryMuffin",
+		"FileExtension":"json",
         "ImageExtension":"jpg"
       },
 	  {
-        "FileName": "Pancakes: Strawberries Protein",
-        "URL": "beatrizcv.com//Data/Recipes/Data/PancakesProteinStrawberries.json",
-		"ImageName":"PancakesProteinStrawberries",
+        "Title": "Peanut Butter Banana Milkshake",
+		"FileName":"PeanutbutterBananaMilkshake",
+		"FileExtension":"json",
         "ImageExtension":"jpg"
       },
 	  {
-        "FileName": "Pancakes: Peanut Butter Protein",
-        "URL": "beatrizcv.com//Data/Recipes/Data/PancakesProteinPeanutButter.json",
-		"ImageName":"PancakesProteinPeanutButter",
+        "Title": "Peanut Butter Chocolate Chip Cookies",
+		"FileName":"PeanutButterOatChocolateCookies",
+		"FileExtension":"json",
         "ImageExtension":"jpg"
       },
 	  {
-        "FileName": "Light Blueberry Muffins",
-        "URL": "beatrizcv.com//Data/Recipes/Data/BlueberryMuffin.json",
-		"ImageName":"BlueberryMuffin",
+        "Title": "Feta Spinach and Red Pepper Egg Bites",
+		"FileName":"FetaSpinachRedPepperEggBites",
+		"FileExtension":"json",
         "ImageExtension":"jpg"
       },
 	  {
-        "FileName": "Peanut Butter Banana Milkshake",
-        "URL": "beatrizcv.com//Data/Recipes/Data/PeanutbutterBananaMilkshake.json",
-		"ImageName":"PeanutbutterBananaMilkshake",
+        "Title": "Blueberry Cheesecake Light",
+		"FileName":"BlueberryCheeseCakeLight",
+		"FileExtension":"json",
         "ImageExtension":"jpg"
       },
 	  {
-        "FileName": "Peanut Butter Chocolate Chip Cookies",
-        "URL": "beatrizcv.com//Data/Recipes/Data/PeanutButterOatChocolateCookies.json",
-		"ImageName":"PeanutButterOatChocolateCookies",
+        "Title": "Chocolate Quinoa Bites",
+		"FileName":"ChocolateQuinoaBites",
+		"FileExtension":"json",
         "ImageExtension":"jpg"
       },
 	  {
-        "FileName": "Feta Spinach and Red Pepper Egg Bites",
-        "URL": "beatrizcv.com//Data/Recipes/Data/FetaSpinachRedPepperEggBites.json",
-		"ImageName":"FetaSpinachRedPepperEggBites",
+        "Title": "Carrot Cake",
+		"FileName":"CarrotCake",
+		"FileExtension":"json",
         "ImageExtension":"jpg"
       },
 	  {
-        "FileName": "Blueberry Cheesecake Light",
-        "URL": "beatrizcv.com//Data/Recipes/Data/BlueberryCheeseCakeLight.json",
-		"ImageName":"BlueberryCheeseCakeLight",
+        "Title": "Matcha Chocolate Cookies",
+		"FileName":"MatchaChocolateCookies",
+		"FileExtension":"json",
         "ImageExtension":"jpg"
       },
 	  {
-        "FileName": "Chocolate Quinoa Bites",
-        "URL": "beatrizcv.com//Data/Recipes/Data/ChocolateQuinoaBites.json",
-		"ImageName":"ChocolateQuinoaBites",
+        "Title": "Chocolate Peanut Butter Muffins (JoannaSoh)",
+		"FileName":"ChocolatePeanutButterMuffins",
+		"FileExtension":"json",
         "ImageExtension":"jpg"
       },
 	  {
-        "FileName": "Carrot Cake",
-        "URL": "beatrizcv.com//Data/Recipes/Data/CarrotCake.json",
-		"ImageName":"CarrotCake",
+        "Title": "Nutty Banana Muffin (JoannaSoh)",
+		"FileName":"NuttyBananaMuffin",
+		"FileExtension":"json",
         "ImageExtension":"jpg"
       },
 	  {
-        "FileName": "Matcha Chocolate Cookies",
-        "URL": "beatrizcv.com//Data/Recipes/Data/MatchaChocolateCookies.json",
-		"ImageName":"MatchaChocolateCookies",
-        "ImageExtension":"jpg"
-      },
-	  {
-        "FileName": "Chocolate Peanut Butter Muffins (JoannaSoh)",
-        "URL": "beatrizcv.com//Data/Recipes/Data/ChocolatePeanutButterMuffins.json",
-		"ImageName":"ChocolatePeanutButterMuffins",
-        "ImageExtension":"jpg"
-      },
-	  {
-        "FileName": "Nutty Banana Muffin (JoannaSoh)",
-        "URL": "beatrizcv.com//Data/Recipes/Data/NuttyBananaMuffin.json",
-		"ImageName":"NuttyBananaMuffin",
-        "ImageExtension":"jpg"
-      },
-	  {
-        "FileName": "Matcha Chocolate Energy Balls",
-        "URL": "beatrizcv.com//Data/Recipes/Data/MatchaChocolateEnergyBalls.json",
-		"ImageName":"MatchaChocolateEnergyBalls",
-        "ImageExtension":"jpg"
-      },
-	  {
-        "FileName": "Cloud Bread",
-        "URL": "beatrizcv.com//Data/Recipes/Data/CloudBread.json",
-		"ImageName":"CloudBread",
+        "Title": "Matcha Chocolate Energy Balls",
+		"FileName":"MatchaChocolateEnergyBalls",
+		"FileExtension":"json",
         "ImageExtension":"jpg"
       }
     ]      
