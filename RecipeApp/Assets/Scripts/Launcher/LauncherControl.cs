@@ -206,15 +206,17 @@ namespace RecipeApp
             //Debug.Log("<color=blue>" + "[LauncherControl.RequestRecipe] Requesting data from: " + m_FileData.Data[id].URL + "</color>");
 
             // TODO: FIX THIS
-            string url = m_FileData.Data[id].FileName;
+            string fileName = m_FileData.Data[id].FileName + m_FileData.Data[id].FileExtension;
+            string url = Path.Combine(m_DataUrl+ "\\Data\\", fileName);
 
            WWW wwwFile = new WWW(url);
             yield return wwwFile;
             string jsonData = wwwFile.text;
 
             // Save file in local
-            string localFile = Path.Combine(localDirectory, m_FileData.Data[id].FileName);
-            SaveFileToLocal(localDirectory, wwwFile);
+            // TODO SAVE FILE WITH EXTENSION
+            string localFile = Path.Combine(localDirectory, fileName);
+            SaveFileToLocal(localFile, wwwFile);
             yield return new WaitForEndOfFrame();
 
 
