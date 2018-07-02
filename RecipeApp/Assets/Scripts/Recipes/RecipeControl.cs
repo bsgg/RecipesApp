@@ -110,7 +110,7 @@ namespace RecipeApp
             // Start on Food level type
             m_SelectedLevel = (int)ESELECTEDLEVEL.FOODTYPE;
             SetCategoryByLevel();
-            m_Category.ScrollMenu.OnItemPress += OnCategoryPress;            
+            //m_Category.ScrollMenu.OnItemPress += OnCategoryPress;            
 
         }
 
@@ -136,7 +136,7 @@ namespace RecipeApp
                     {
                         foodTypes.Add(m_TagTitles[i]);
                     }
-                    StartCoroutine(m_Category.ScrollMenu.InitScroll(foodTypes));
+                    //StartCoroutine(m_Category.ScrollMenu.InitScroll(foodTypes));
                     m_RecipeUI.Hide();
                     m_Category.Show();
                     break;
@@ -153,7 +153,7 @@ namespace RecipeApp
                     if (recipeList.Count > 0)
                     {
 
-                        StartCoroutine(m_Category.ScrollMenu.InitScroll(recipeList));
+                        //StartCoroutine(m_Category.ScrollMenu.InitScroll(recipeList));
                         m_RecipeUI.Hide();
                     }else
                     {
@@ -242,7 +242,7 @@ namespace RecipeApp
 
         public override void Hide()
         {
-            m_Category.ScrollMenu.OnItemPress -= OnCategoryPress;
+            //m_Category.ScrollMenu.OnItemPress -= OnCategoryPress;
             m_Category.Hide();
             m_RecipeUI.Hide();
             m_SelectedCategory = 0;

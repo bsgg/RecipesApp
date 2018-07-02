@@ -8,8 +8,11 @@ namespace Utility
 {
     public class ScrollUI : MonoBehaviour
     {
-        public delegate void ItemPressAction(int indexButton);
-        public ItemPressAction OnItemPress;
+        //public delegate void ItemPressAction(int indexButton);
+        //public ItemPressAction OnItemPress;
+
+        /*public delegate void ScrollItemAction(ScrollButton button);
+        public event ScrollItemAction OnScrollItemClicked;*/
 
         [Header("Prefab Item")]
         [SerializeField] protected GameObject m_ItemScrollPrefab;
@@ -38,7 +41,7 @@ namespace Utility
 	    /// Method to init menu
 	    /// </summary>
 	    /// <param name="data">Data to fill the scroll</param>
-        public IEnumerator InitScroll(List<string> data)
+        public IEnumerator InitScroll(List<string> data, ButtonWithText.ButtonWithTextAction ScrollItemAction)
         {          
 
             // Clear list elements
@@ -65,10 +68,10 @@ namespace Utility
                 element.transform.parent = m_ContentRecTransform.transform;
                 element.transform.localScale = new Vector3(1, 1, 1);
 
-                TextButton buttonText = element.GetComponent<TextButton>();
-                if (buttonText != null)
+                ButtonWithText scrollButton = element.GetComponent<ButtonWithText>();
+                if (scrollButton != null)
                 {
-                    buttonText.Set(data[i], i, ButtonText_OnButtonClicked);
+                    scrollButton.Set( i,data[i], ScrollItemAction);
                 }
                             
             }
@@ -76,13 +79,13 @@ namespace Utility
             yield return new WaitForEndOfFrame();
         }
 
-        private void ButtonText_OnButtonClicked(TextButton button)
+        /*private void ButtonText_OnButtonClicked(ScrollButton button)
         {
             if (OnItemPress != null)
             {
                 OnItemPress(button.IdButton);
             }
-        }
+        }*/
 
         protected void ClearListElements()
         {

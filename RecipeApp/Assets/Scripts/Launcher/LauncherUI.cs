@@ -22,5 +22,13 @@ namespace RecipeApp
             set { m_Description.text = value; }
             get { return m_Description.text; }
         }
+
+        [SerializeField]
+        private ScrollUI m_ScrollList;
+        public ScrollUI ScrollList
+        {
+            get { return m_ScrollList; }
+        }
+        
     }
 }

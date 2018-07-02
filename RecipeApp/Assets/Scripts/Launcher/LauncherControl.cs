@@ -84,6 +84,55 @@ namespace RecipeApp
 
         }
 
+        private IEnumerator RefreshScrollList()
+        {
+            if (m_FileData.Data == null) yield break;
+            
+            List<string> lRecipes = new List<string>();
+            for (int i = 0; i < m_FileData.Data.Count; i++)
+            {
+                // Initialize scroll list
+                lRecipes.Add(m_FileData.Data[i].FileName);
+            }
+
+            yield return (m_LauncherUI.ScrollList.InitScroll(lRecipes, OnScrollItemClicked));
+
+            if (m_LauncherUI.ScrollList.ListElements != null)
+            {
+                for (int i = 0; i < m_LauncherUI.ScrollList.ListElements.Count; i++)
+                {
+                    if (m_LauncherUI.ScrollList.ListElements[i].transform.childCount > 1)
+                    {
+                        Transform downloadObjectChild = m_LauncherUI.ScrollList.ListElements[i].transform.GetChild(1);
+                        ButtonWithText downloadBtn = downloadObjectChild.GetComponent<ButtonWithText>();
+                        if (downloadBtn != null)
+                        {
+                            downloadBtn.Set(i, "", OnScrollItemDownloadClicked);
+                        }
+                    }
+                    
+                }
+            }
+        }
+
+        private void OnScrollItemClicked(ButtonWithText button)
+        {
+            Debug.Log("OnScrollItemClicked: " + button.IdButton);
+
+            AppController.Instance.PopupWithButtons.ShowPopup("Test", "You want to see recipe: " + button.IdButton, "Ok", OnOkPopup, string.Empty, null, string.Empty, null);
+        }
+
+        private void OnOkPopup(ButtonWithText button)
+        {
+            AppController.Instance.PopupWithButtons.Hide();
+        }
+
+        private void OnScrollItemDownloadClicked(ButtonWithText button)
+        {
+            Debug.Log("OnScrollItemDownloadClicked: " + button.IdButton);
+            AppController.Instance.PopupWithButtons.ShowPopup("Test", "You want to download recipe: " + button.IdButton, "Ok", OnOkPopup, string.Empty, null, string.Empty, null);
+        }
+
         private IEnumerator DelayedShow()
         {
             m_FileData = new FileData();
@@ -91,23 +140,16 @@ namespace RecipeApp
             //m_LauncherUI.Progress =  "Progress " + m_PercentProgress.ToString() + " % ";
             m_LauncherUI.Description = "";
             if (string.IsNullOrEmpty(m_DataUrl) || string.IsNullOrEmpty(m_IndexFileName))
-            {
-                
+            {                
                 yield return null;
             }
-
 
             m_LocalIndexFileURL = Path.Combine(Application.persistentDataPath, m_IndexFileName);
 
             // Check if file exits in local
             if (File.Exists(m_LocalIndexFileURL))
             {
-
-
-                Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] File Index EXITS at : " + m_LocalIndexFileURL + "</color>");
-
-                // Read from local
-                //byte[] fileData = File.ReadAllBytes(localIndexFile);
+                Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] File Index exits at : " + m_LocalIndexFileURL + "</color>");
 
                 // Retrive file
                 StreamReader reader = new StreamReader(m_LocalIndexFileURL);
@@ -119,94 +161,24 @@ namespace RecipeApp
 
                 yield return new WaitForEndOfFrame();
 
-                m_FileData = JsonMapper.ToObject<FileData>(text);
+                m_FileData = JsonUtility.FromJson<FileData>(text);
 
-                for (int i = 0; i < m_FileData.Data.Count; i++)
-                {
-                    if (string.IsNullOrEmpty(m_FileData.Data[i].URL))
-                    {
-                        continue;
-                    }
+                yield return RefreshScrollList();                
 
-                    m_LauncherUI.Description += "\n- " + (i + 1) + "/" + m_FileData.Data.Count + " : " + m_FileData.Data[i].FileName;
-                }
+                /* if (OnGetDataEnd != null)
+                 {
+                     OnGetDataEnd();
+                 }*/
 
             }
             else
             {
-                m_LauncherUI.Progress = "No Recipes found in local, please download the list of recipes";
-
-                /*string urlFile = Path.Combine(m_DataUrl, m_IndexFileName);
-                m_LauncherUI.Description = "Getting recipes from " + urlFile;
-
-                Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] File Index NOT EXISTS at : " + localIndexFile + "</color>");
-
-                // Try to get file if internet reachable
-
-                Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] Requesting data from: " + urlFile + "</color>");
-
-                WWW wwwFile = new WWW(urlFile);
-                yield return wwwFile;
-                string jsonData = wwwFile.text;
-
-                // Save file in local
-                SaveFileToLocal(localIndexFile, wwwFile);
-                yield return new WaitForEndOfFrame();
-
-
-                if (!string.IsNullOrEmpty(jsonData))
-                {                
-                    m_FileData = JsonMapper.ToObject<FileData>(jsonData);
-
-                    Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] Requesting... " + m_FileData.Data.Count + " Files " + "</color>");
-                    for (int i = 0; i < m_FileData.Data.Count; i++)
-                    {
-                        if (string.IsNullOrEmpty(m_FileData.Data[i].URL))
-                        {
-                            continue;
-                        }
-
-                        m_LauncherUI.Description += "\n- "  +(i + 1) + "/" + m_FileData.Data.Count + " : " + m_FileData.Data[i].FileName;
-
-                        // Request
-                        Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] Requesting: " + (i + 1) + "/" + m_FileData.Data.Count + " : " + m_FileData.Data[i].FileName + "</color>");
-                        WWW www = new WWW(m_FileData.Data[i].URL);
-                        while (!www.isDone)
-                        {
-                            m_PercentProgress = www.progress * 100.0f;
-                            m_LauncherUI.Progress = m_PercentProgress.ToString() + " % ";
-                            yield return null;
-                        }
-
-                        m_PercentProgress = www.progress * 100.0f;
-                        m_LauncherUI.Progress = m_PercentProgress.ToString() + " % ";
-
-                        m_FileData.Data[i].Data = www.text;
-
-
-                        Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] Data Retrieved: " + m_FileData.Data[i].Data + "</color>");
-                        
-                    }
-
-                    m_LauncherUI.Description += "Completed";
-                    // Load images
-                    Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] Retrieve pictures: " +  "</color>");
-                    yield return RequestPictures();
-
-                    Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] RequestPicturesfinished " + "</color>");
-                
-                }
-                else
-                {
-                    Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] File Data Json is null or empty" + "</color>");
-                }*/
-            }
-
-            if (OnGetDataEnd != null)
-            {
-                //OnGetDataEnd();
+                m_LauncherUI.Progress = "No Recipes found in local, please download the list of recipes";               
             }
         }
+
+        
+
 
         public void OnDownloadIndexFile()
         {
@@ -228,7 +200,7 @@ namespace RecipeApp
             string urlFile = Path.Combine(m_DataUrl, m_IndexFileName);
             m_LauncherUI.Description = "Getting recipes from " + urlFile;
 
-            Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] File Index NOT EXISTS at : " + m_LocalIndexFileURL + "</color>");
+            //Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] File Index NOT EXISTS at : " + m_LocalIndexFileURL + "</color>");
 
             // Try to get file if internet reachable
 
@@ -247,19 +219,26 @@ namespace RecipeApp
             {
                 m_FileData = JsonMapper.ToObject<FileData>(jsonData);
 
+                yield return RefreshScrollList();
+
                 Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] Requesting... " + m_FileData.Data.Count + " Files " + "</color>");
                 for (int i = 0; i < m_FileData.Data.Count; i++)
                 {
-                    if (string.IsNullOrEmpty(m_FileData.Data[i].URL))
+                    /*if (string.IsNullOrEmpty(m_FileData.Data[i].URL))
                     {
                         continue;
-                    }
+                    }*/
 
-                    m_LauncherUI.Description += "\n- " + (i + 1) + "/" + m_FileData.Data.Count + " : " + m_FileData.Data[i].FileName;
+                   // m_LauncherUI.Description += "\n- " + (i + 1) + "/" + m_FileData.Data.Count + " : " + m_FileData.Data[i].FileName;
 
                     // Request
-                    Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] Requesting: " + (i + 1) + "/" + m_FileData.Data.Count + " : " + m_FileData.Data[i].FileName + "</color>");
-                    WWW www = new WWW(m_FileData.Data[i].URL);
+                   // Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] Requesting: " + (i + 1) + "/" + m_FileData.Data.Count + " : " + m_FileData.Data[i].FileName + "</color>");
+
+                    // Generate list of recipes
+
+
+
+                    /*WWW www = new WWW(m_FileData.Data[i].URL);
                     while (!www.isDone)
                     {
                         m_PercentProgress = www.progress * 100.0f;
@@ -271,18 +250,19 @@ namespace RecipeApp
                     m_LauncherUI.Progress = m_PercentProgress.ToString() + " % ";
 
                     m_FileData.Data[i].Data = www.text;
+                    */
 
 
-                    Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] Data Retrieved: " + m_FileData.Data[i].Data + "</color>");
+                   // Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] Data Retrieved: " + m_FileData.Data[i].Data + "</color>");
 
                 }
 
-                m_LauncherUI.Description += "Completed";
+               // m_LauncherUI.Description += "Completed";
                 // Load images
-                Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] Retrieve pictures: " + "</color>");
-                yield return RequestPictures();
+                //Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] Retrieve pictures: " + "</color>");
+                //yield return RequestPictures();
 
-                Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] RequestPicturesfinished " + "</color>");
+                //Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] RequestPicturesfinished " + "</color>");
 
             }
             else

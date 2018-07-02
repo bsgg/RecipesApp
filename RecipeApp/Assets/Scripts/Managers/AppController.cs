@@ -30,8 +30,15 @@ namespace RecipeApp
         #endregion Instance
 
 
-        [Header("Controls")]
+        [Header("UI")]
+        [SerializeField]
+        private Utility.UI.PopupWithButtons m_PopupWithButtons;
+        public Utility.UI.PopupWithButtons PopupWithButtons
+        {
+            get { return m_PopupWithButtons; }
+        }
 
+        [Header("Controls")]
         [SerializeField]
         private LauncherControl m_Launcher;
         public LauncherControl Launcher
@@ -47,6 +54,7 @@ namespace RecipeApp
 
         void Start ()
         {
+            m_PopupWithButtons.Hide();
             m_Launcher.OnGetDataEnd += OnLauncherGetDataEnd;
             m_CurrentControl = m_Launcher;
             m_CurrentControl.Show();
