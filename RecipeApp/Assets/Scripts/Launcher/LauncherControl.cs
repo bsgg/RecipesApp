@@ -16,6 +16,7 @@ namespace RecipeApp
         public string FileExtension;
         public string ImageExtension;
         public Sprite Sprite;
+        public RecipeModel Recipe;
     }
 
     [System.Serializable]
@@ -84,7 +85,6 @@ namespace RecipeApp
 
             StartCoroutine(DelayedShow());
         }
-
         
 
         private IEnumerator DelayedShow()
@@ -114,6 +114,10 @@ namespace RecipeApp
                 yield return new WaitForEndOfFrame();
 
                 m_FileData = JsonUtility.FromJson<FileData>(text);
+
+                // TODO:: Load DATA IF EXITS
+
+
 
                 yield return RefreshScrollList();  
 
@@ -153,7 +157,6 @@ namespace RecipeApp
             SaveFileToLocal(m_LocalIndexFileURL, wwwFile);
             yield return new WaitForEndOfFrame();
 
-
             if (!string.IsNullOrEmpty(jsonData))
             {
                 m_FileData = JsonMapper.ToObject<FileData>(jsonData);
@@ -188,13 +191,16 @@ namespace RecipeApp
 
         private IEnumerator RequestRecipe(int id)
         {
-
-
-
-            string localDirectory = Path.Combine(Application.persistentDataPath, m_RecipesFolder);
-            if (!Directory.Exists(localDirectory))
+            string localRecipeDirectory = Path.Combine(Application.persistentDataPath, m_RecipesFolder);
+            if (!Directory.Exists(localRecipeDirectory))
             {
-                Directory.CreateDirectory(localDirectory);
+                Directory.CreateDirectory(localRecipeDirectory);
+            }
+
+            string localPictureDirectory = Path.Combine(Application.persistentDataPath, m_PicturesFolder);
+            if (!Directory.Exists(localPictureDirectory))
+            {
+                Directory.CreateDirectory(localPictureDirectory);
             }
 
             if (m_FileData.Data == null) yield break;
@@ -202,46 +208,82 @@ namespace RecipeApp
             if ((id < 0) || (id > m_FileData.Data.Count)) yield break;
 
 
+            AppController.Instance.PopupWithButtons.ShowPopup("Downlad Recipe", "Downloading recipe " + m_FileData.Data[id].Title + "\n Wait..", string.Empty, null, string.Empty, null, string.Empty, null);
 
-            //Debug.Log("<color=blue>" + "[LauncherControl.RequestRecipe] Requesting data from: " + m_FileData.Data[id].URL + "</color>");
+            string fileName = m_FileData.Data[id].FileName + "." + m_FileData.Data[id].FileExtension; 
+            string recipeFolder = Path.Combine(m_DataUrl, m_RecipesFolder);
+            string recipeUrl = Path.Combine(recipeFolder, fileName);
 
-            // TODO: FIX THIS
-            string fileName = m_FileData.Data[id].FileName + m_FileData.Data[id].FileExtension;
-            string url = Path.Combine(m_DataUrl+ "\\Data\\", fileName);
+            Debug.Log("<color=blue>" + "[LauncherControl.RequestRecipe] Requesting File: " + fileName + " URL: " + recipeUrl + "</color>");
 
-           WWW wwwFile = new WWW(url);
+            WWW wwwFile = new WWW(recipeUrl);
             yield return wwwFile;
             string jsonData = wwwFile.text;
 
             // Save file in local
-            // TODO SAVE FILE WITH EXTENSION
-            string localFile = Path.Combine(localDirectory, fileName);
+            string localFile = Path.Combine(localRecipeDirectory, fileName);
             SaveFileToLocal(localFile, wwwFile);
             yield return new WaitForEndOfFrame();
 
-
             if (!string.IsNullOrEmpty(jsonData))
             {
-
-                //m_FileData = JsonMapper.ToObject<FileData>(jsonData);
-                RecipeModel rData = JsonUtility.FromJson<RecipeModel>(jsonData);
+                m_FileData.Data[id].Recipe = JsonUtility.FromJson<RecipeModel>(jsonData);
 
             }
             else
             {
-                Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] File Data Json is null or empty" + "</color>");
+                AppController.Instance.PopupWithButtons.MessageText = "There was an error trying to download the file" + fileName + "\n Try again later";
+                Debug.Log("<color=blue>" + "[LauncherControl.RequestRecipe] File Data Json is null or empty" + "</color>");
             }
 
+            string pictureName = m_FileData.Data[id].FileName + "." + m_FileData.Data[id].ImageExtension;
+            string pictureFolder = Path.Combine(m_DataUrl, m_PicturesFolder);
+            string pictureUrl = Path.Combine(pictureFolder, pictureName);
+
+            AppController.Instance.PopupWithButtons.MessageText = "Downloading picture " + m_FileData.Data[id].Title + "\n Wait..";
+
+            Debug.Log("<color=blue>" + "[LauncherControl.RequestRecipe] Requesting Picture: " + pictureName + " URL: " + pictureUrl + "</color>");
+
+            WWW wwwPictureFile = new WWW(pictureUrl);
+            yield return wwwPictureFile;
+            if (wwwPictureFile.texture != null)
+            {
+                Debug.Log("<color=blue>" + "[LauncherControl.RequestRecipe] Texture: (" + wwwFile.texture.width + " x " + wwwFile.texture.height + ")" + "</color>");
+
+                Texture2D texture = new Texture2D(wwwPictureFile.texture.width, wwwPictureFile.texture.height, TextureFormat.DXT1, false);
+                wwwPictureFile.LoadImageIntoTexture(texture);
+
+                Rect rec = new Rect(0, 0, texture.width, texture.height);
+
+                m_FileData.Data[id].Sprite = Sprite.Create(texture, rec, new Vector2(0.5f, 0.5f), 100);
+
+                yield return new WaitForEndOfFrame();
+
+                string localPicture = Path.Combine(localPictureDirectory, pictureName);
+                SaveFileToLocal(localPicture, wwwPictureFile);
+            }
+            else
+            {
+                AppController.Instance.PopupWithButtons.MessageText = "There was an error trying to download  the picture" + pictureName + "\n Try again later";
+                Debug.Log("<color=blue>" + "[LauncherControl.RequestRecipe] No texture:" + "</color>");
+
+                yield return new WaitForSeconds(0.5f);
+                AppController.Instance.PopupWithButtons.Hide();
+            }
+
+            wwwFile.Dispose();
+            wwwFile = null;
+
+            AppController.Instance.PopupWithButtons.MessageText = "Completed! ";
+            yield return new WaitForSeconds(0.3f);
+
+            AppController.Instance.PopupWithButtons.Hide();
         }
 
         private IEnumerator RequestPictures()
         {
-            string localDirectory = Path.Combine(Application.persistentDataPath, m_PicturesFolder);
-            if (!Directory.Exists(localDirectory))
-            {
-                Directory.CreateDirectory(localDirectory);
-            }
 
+            string localDirectory = string.Empty;
             for (int i = 0; i < m_FileData.Data.Count; i++)
             {
                 
@@ -342,7 +384,7 @@ namespace RecipeApp
             for (int i = 0; i < m_FileData.Data.Count; i++)
             {
                 // Initialize scroll list
-                lRecipes.Add(m_FileData.Data[i].FileName);
+                lRecipes.Add(m_FileData.Data[i].Title);
             }
 
             yield return (m_LauncherUI.ScrollList.InitScroll(lRecipes, OnScrollItemClicked));
@@ -369,24 +411,26 @@ namespace RecipeApp
         {
             Debug.Log("OnScrollItemClicked: " + button.IdButton);
 
-
-
             AppController.Instance.PopupWithButtons.ShowPopup("Test", "You want to see recipe: " + button.IdButton, "Ok", OnOkPopup, string.Empty, null, string.Empty, null);
         }
 
-        private void OnOkPopup(ButtonWithText button)
-        {
-            AppController.Instance.PopupWithButtons.Hide();
-        }
+        
 
         private void OnScrollItemDownloadClicked(ButtonWithText button)
         {
             Debug.Log("OnScrollItemDownloadClicked: " + button.IdButton);
 
+            
+
             StartCoroutine(RequestRecipe(button.IdButton));
 
             
-            AppController.Instance.PopupWithButtons.ShowPopup("Test", "You want to download recipe: " + button.IdButton, "Ok", OnOkPopup, string.Empty, null, string.Empty, null);
+            
+        }
+
+        private void OnOkPopup(ButtonWithText button)
+        {
+            AppController.Instance.PopupWithButtons.Hide();
         }
 
         #endregion ScrollList

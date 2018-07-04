@@ -5,104 +5,54 @@
         "Title": "Healthy Flapjacks",
 		"FileName":"HealthyFlapjacks",
 		"FileExtension":"json",
-        "ImageExtension":"png"
+        "ImageExtension":"jpg"
       },
       {
         "Title": "French Toast Blueberry Maple Syrup",
-		"ImageName":"Frenchtoastblueberry",
+		"FileName":"FrenchToastBlueberry",
 		"FileExtension":"json",
         "ImageExtension":"jpg"
-      },
+      },	  
 	  {
         "Title": "Peanut Butter Chocolate Cookies",
 		"FileName":"PeanutButterChocolateCookies",
 		"FileExtension":"json",
         "ImageExtension":"jpg"
-      },	  
+      },
+	  
 	  {
-        "Title": "Shepherd’s Pie With Cauliflower Mash",
-		"FileName":"ShepherdsPieCauliflower",
+        "Title": "Pancakes: Chocolate",
+		"FileName":"PancakesChocolate",
 		"FileExtension":"json",
         "ImageExtension":"jpg"
       },
+	  
 	  {
-        "Title": "Healthy Low Calories Brownies",
-		"FileName":"HealthyLowCaloriesBrownies",
+        "Title": "Pancakes: Peanut Butter Protein",
+		"FileName":"PancakesPeanutButter",
 		"FileExtension":"json",
         "ImageExtension":"jpg"
       },
-	  {
-        "Title": "Pancakes: Chocolate Protein",
-		"FileName":"PancakesProteinChocolate",
-		"FileExtension":"json",
-        "ImageExtension":"jpg"
-      },
+	  
 	  {
         "Title": "Pancakes: Oatmeal Raisin",
-		"FileName":"PancakesProteinOatmealReaisins",
+		"FileName":"PancakesOatmealRaisins",
 		"FileExtension":"json",
         "ImageExtension":"jpg"
       },
 	  {
         "Title": "Pancakes: Strawberries Protein",
-		"FileName":"PancakesProteinStrawberries",
+		"FileName":"PancakesStrawberries",
 		"FileExtension":"json",
         "ImageExtension":"jpg"
-      },
-	  {
-        "Title": "Pancakes: Peanut Butter Protein",
-		"FileName":"PancakesProteinPeanutButter",
-		"FileExtension":"json",
-        "ImageExtension":"jpg"
-      },
-	  {
-        "Title": "Light Blueberry Muffins",
-		"FileName":"BlueberryMuffin",
-		"FileExtension":"json",
-        "ImageExtension":"jpg"
-      },
+      },	  
 	  {
         "Title": "Peanut Butter Banana Milkshake",
-		"FileName":"PeanutbutterBananaMilkshake",
+		"FileName":"PeanutButterBananaMilkshake",
 		"FileExtension":"json",
         "ImageExtension":"jpg"
       },
-	  {
-        "Title": "Peanut Butter Chocolate Chip Cookies",
-		"FileName":"PeanutButterOatChocolateCookies",
-		"FileExtension":"json",
-        "ImageExtension":"jpg"
-      },
-	  {
-        "Title": "Feta Spinach and Red Pepper Egg Bites",
-		"FileName":"FetaSpinachRedPepperEggBites",
-		"FileExtension":"json",
-        "ImageExtension":"jpg"
-      },
-	  {
-        "Title": "Blueberry Cheesecake Light",
-		"FileName":"BlueberryCheeseCakeLight",
-		"FileExtension":"json",
-        "ImageExtension":"jpg"
-      },
-	  {
-        "Title": "Chocolate Quinoa Bites",
-		"FileName":"ChocolateQuinoaBites",
-		"FileExtension":"json",
-        "ImageExtension":"jpg"
-      },
-	  {
-        "Title": "Carrot Cake",
-		"FileName":"CarrotCake",
-		"FileExtension":"json",
-        "ImageExtension":"jpg"
-      },
-	  {
-        "Title": "Matcha Chocolate Cookies",
-		"FileName":"MatchaChocolateCookies",
-		"FileExtension":"json",
-        "ImageExtension":"jpg"
-      },
+	  
 	  {
         "Title": "Chocolate Peanut Butter Muffins (JoannaSoh)",
 		"FileName":"ChocolatePeanutButterMuffins",
@@ -116,8 +66,32 @@
         "ImageExtension":"jpg"
       },
 	  {
-        "Title": "Matcha Chocolate Energy Balls",
-		"FileName":"MatchaChocolateEnergyBalls",
+        "Title": "Light Blueberry Muffins",
+		"FileName":"LightBlueberryMuffin",
+		"FileExtension":"json",
+        "ImageExtension":"jpg"
+      },
+	  
+	   
+	  
+	  {
+        "Title": "Shepherd’s Pie With Cauliflower Mash",
+		"FileName":"CauliflowerShepherdsPie",
+		"FileExtension":"json",
+        "ImageExtension":"jpg"
+      },
+	  
+	  
+	  
+	  {
+        "Title": "Blueberry Cheesecake Light",
+		"FileName":"BlueberryCheeseCakeLight",
+		"FileExtension":"json",
+        "ImageExtension":"jpg"
+      },	 
+	  {
+        "Title": "Carrot Cake",
+		"FileName":"CarrotCake",
 		"FileExtension":"json",
         "ImageExtension":"jpg"
       }
