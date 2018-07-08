@@ -6,53 +6,43 @@ using Utility;
 
 namespace RecipeApp
 {
-    #region DataModel
-
-    [System.Serializable]
-    public class RecipeModel
-    {
-        public string Title;
-        public string Sprite;
-        public string Link;
-        public int PreparationTime;
-        public int CookTime;
-        public int Serves;
-        public int Calories;
-        public int Difficulty;
-        public List<int> Tags;
-        public List<string> Ingredients;
-        public List<string> Instructions;
-
-        public RecipeModel()
-        {
-            Tags = new List<int>();
-            Ingredients = new List<string>();
-            Instructions = new List<string>();
-        }
-    }
-
-    #endregion DataModel
 
     public class RecipeControl : Base
     {
+
+        private RecipeModel m_CurrentRecipe;
+        public RecipeModel CurrentRecipe
+        {
+            get { return m_CurrentRecipe; }
+            set { m_CurrentRecipe = value; }
+        }
+
+        [SerializeField]
+        private RecipeUI m_RecipeUI;
+
+
+        /*
+
+
         [SerializeField]
         private Dictionary<ETAG, List<RecipeModel>> m_RecipeData;
 
         public enum ETAG { BREAKFAST = 0, HIGHCARB = 1, LOWCARB = 2, DESSERT = 3, TREAT = 4, NUM };
         private string[] m_TagTitles = { "Breakfast", "High Carb", "Low Carb", "Dessert", "Treat"};
 
-        [SerializeField]
-        private RecipeUI m_RecipeUI;
-
+       
         [SerializeField]
         private CategoriesUI m_Category;
 
         private enum ESELECTEDLEVEL { NONE = 0, FOODTYPE, RECIPELIST, RECIPE };
         private int m_SelectedLevel = 0;
         private int m_SelectedRecipeID;
-        private ETAG m_SelectedCategory;
+        private ETAG m_SelectedCategory;*/
 
-        public override void Init()
+
+
+
+        /*public override void Init()
         {
             base.Init();
 
@@ -99,18 +89,30 @@ namespace RecipeApp
                     }
                 }
             }            
-        }
+        }*/
+
+
 
         public override void Show()
         {
             base.Show();
 
+            m_RecipeUI.Title = m_CurrentRecipe.Title;
+            if (m_CurrentRecipe.Sprite != null)
+            {
+                SetPicture();
+            }
+            else
+            {
+
+                SetInfo();
+            }
             // Show recipe
-            m_RecipeUI.Hide();
+            m_RecipeUI.Show();
 
             // Start on Food level type
-            m_SelectedLevel = (int)ESELECTEDLEVEL.FOODTYPE;
-            SetCategoryByLevel();
+            //m_SelectedLevel = (int)ESELECTEDLEVEL.FOODTYPE;
+           // SetCategoryByLevel();
             //m_Category.ScrollMenu.OnItemPress += OnCategoryPress;            
 
         }
@@ -118,7 +120,7 @@ namespace RecipeApp
         /// <summary>
         /// Sets category scroll menu according to the seletcted level
         /// </summary>
-        public void SetCategoryByLevel()
+        /*public void SetCategoryByLevel()
         {
             switch (m_SelectedLevel)
             {
@@ -181,9 +183,9 @@ namespace RecipeApp
                     m_RecipeUI.Show();
                break;
             }
-        }
+        }*/
 
-        private void UpdateMenu()
+       /* private void UpdateMenu()
         {
             if (string.IsNullOrEmpty(m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Link))
             {
@@ -206,9 +208,9 @@ namespace RecipeApp
             m_RecipeUI.InfoBtn.interactable = true;
             m_RecipeUI.IngredientsBtn.interactable = true;
             m_RecipeUI.InstructionsBtn.interactable = true;
-        }
+        }*/
 
-        private void OnCategoryPress(int buttonID)
+        /*private void OnCategoryPress(int buttonID)
         {
             if (m_SelectedLevel == 0) m_SelectedLevel = (int)ESELECTEDLEVEL.FOODTYPE;
 
@@ -227,27 +229,27 @@ namespace RecipeApp
             // Add 1 level
             m_SelectedLevel += 1;
             SetCategoryByLevel();
-        }
+        }*/
 
         public override void Back()
         {
             // Subctract 1 level
-            m_SelectedLevel -= 1;
+            //m_SelectedLevel -= 1;
 
-            if (m_SelectedLevel < 0) m_SelectedLevel = 0;
+            //if (m_SelectedLevel < 0) m_SelectedLevel = 0;
 
-            SetCategoryByLevel();
-
+            //SetCategoryByLevel();
+            m_RecipeUI.Hide();
             base.Back();
         }
 
         public override void Hide()
         {
             //m_Category.ScrollMenu.OnItemPress -= OnCategoryPress;
-            m_Category.Hide();
+           // m_Category.Hide();
             m_RecipeUI.Hide();
-            m_SelectedCategory = 0;
-            m_SelectedRecipeID = 0;
+           // m_SelectedCategory = 0;
+           // m_SelectedRecipeID = 0;
 
             base.Hide();
         }
@@ -258,29 +260,21 @@ namespace RecipeApp
             m_RecipeUI.SpriteContainer.SetActive(false);
             m_RecipeUI.LongTextContainer.SetActive(true);
 
-            string spriteID = m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Sprite;
-            if (!string.IsNullOrEmpty(spriteID))
-            {
-                Sprite spr = AppController.Instance.Launcher.FileData.GetSprite(spriteID);
-                if (spr != null)
-                {
-                    m_RecipeUI.SpriteObject = spr;
-                    m_RecipeUI.SpriteContainer.SetActive(true);
-                    m_RecipeUI.LongTextContainer.SetActive(false);
-                }
-            }
+            m_RecipeUI.SpriteObject = m_CurrentRecipe.Image;
+            m_RecipeUI.SpriteContainer.SetActive(true);
+            m_RecipeUI.LongTextContainer.SetActive(false);            
         }
 
         public void SetInfo()
         {
             string info = string.Empty;
 
-            info = "\n" + "- Preparation Time " + m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].PreparationTime + " min\n";
-            info += "\n" + "- Cook Time " + m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].CookTime + " min\n";
-            info += "\n" + "- Total Time " + (m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].PreparationTime + m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].CookTime) + " min\n";
-            info += "\n" + "- Servings " + m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Serves + "\n";
-            info += "\n" + "- Calories " + m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Calories + " Kcal\n";
-            info += "\n" + "- Difficulty " + m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Difficulty;
+            info = "\n" + "- Preparation Time " + m_CurrentRecipe.PreparationTime + " min\n";
+            info += "\n" + "- Cook Time " + m_CurrentRecipe.CookTime + " min\n";
+            info += "\n" + "- Total Time " + (m_CurrentRecipe.PreparationTime + m_CurrentRecipe.CookTime) + " min\n";
+            info += "\n" + "- Servings " + m_CurrentRecipe.Serves + "\n";
+            info += "\n" + "- Calories " + m_CurrentRecipe.Calories + " Kcal\n";
+            info += "\n" + "- Difficulty " + m_CurrentRecipe.Difficulty;
             //info += "\n" + "- Tags " + m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Tags + "\n";
 
             m_RecipeUI.LongText = info;
@@ -292,9 +286,9 @@ namespace RecipeApp
         public void SetIngredients()
         {
             string info = string.Empty;
-            for (int i=0; i< m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Ingredients.Count; i++)
+            for (int i=0; i< m_CurrentRecipe.Ingredients.Count; i++)
             {
-                info += "\n - " + m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Ingredients[i] + "\n";
+                info += "\n - " + m_CurrentRecipe.Ingredients[i] + "\n";
                 
             }
 
@@ -306,9 +300,9 @@ namespace RecipeApp
         public void SetInstructions()
         {
             string info = string.Empty;
-            for (int i = 0; i < m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Instructions.Count; i++)
+            for (int i = 0; i < m_CurrentRecipe.Instructions.Count; i++)
             {
-                info += "\n - " + m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Instructions[i] + "\n";
+                info += "\n - " + m_CurrentRecipe.Instructions[i] + "\n";
 
             }
 
@@ -319,7 +313,7 @@ namespace RecipeApp
 
         public void OnURLPress()
         {
-            string url = m_RecipeData[m_SelectedCategory][m_SelectedRecipeID].Link;
+            string url = m_CurrentRecipe.Link;
             if (!string.IsNullOrEmpty(url))
             {
                 Application.OpenURL(url);

@@ -9,14 +9,49 @@ using Utility;
 namespace RecipeApp
 {
     [System.Serializable]
+    public class RecipeModel
+    {
+        public string Title;
+        
+        public string Link;
+        public int PreparationTime;
+        public int CookTime;
+        public int Serves;
+        public int Calories;
+        public int Difficulty;
+        public List<int> Tags;
+        public List<string> Ingredients;
+        public List<string> Instructions;
+
+        public string Sprite;
+        public Sprite Image;
+
+
+        public RecipeModel()
+        {
+            Tags = new List<int>();
+            Ingredients = new List<string>();
+            Instructions = new List<string>();
+
+            Image = null;
+        }
+    }
+
+    [System.Serializable]
     public class IndexFile
     {
         public string Title;
         public string FileName;
         public string FileExtension;
         public string ImageExtension;
-        public Sprite Sprite;
+        
         public RecipeModel Recipe;
+        public bool Loaded;       
+
+        public IndexFile()
+        {
+            Loaded = false;
+        }
     }
 
     [System.Serializable]
@@ -27,27 +62,13 @@ namespace RecipeApp
         {
             Data = new List<IndexFile>();
         }
-
-        public Sprite GetSprite(string name)
-        {
-            for (int i = 0; i < Data.Count; i++)
-            {
-                if (Data[i].FileName.Equals(name))
-                {
-                    return Data[i].Sprite;
-                }
-            }
-
-            return null;
-
-        }
     }
     
 
     public class LauncherControl : Base
     {
-        public delegate void LauncherAction();
-        public event LauncherAction OnGetDataEnd;
+        public delegate void LauncherAction(RecipeModel Recipe);
+        public event LauncherAction OnRequestRecipeEnd;
 
         [SerializeField] private string m_DataUrl = "http://beatrizcv.com/Data/";
 
@@ -98,26 +119,120 @@ namespace RecipeApp
 
             m_LocalIndexFileURL = Path.Combine(Application.persistentDataPath, m_IndexFileName);
 
+
+            string localRecipeDirectory = Path.Combine(Application.persistentDataPath, m_RecipesFolder);
+            if (!Directory.Exists(localRecipeDirectory))
+            {
+                Directory.CreateDirectory(localRecipeDirectory);
+            }
+
+            string localPictureDirectory = Path.Combine(Application.persistentDataPath, m_PicturesFolder);
+            if (!Directory.Exists(localPictureDirectory))
+            {
+                Directory.CreateDirectory(localPictureDirectory);
+            }
+
             // Check if file exits in local
             if (File.Exists(m_LocalIndexFileURL))
             {
                 Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] File Index exits at : " + m_LocalIndexFileURL + "</color>");
 
                 // Retrive file
-                StreamReader reader = new StreamReader(m_LocalIndexFileURL);
+                bool error = false;
+                try
+                {
+                    StreamReader reader = new StreamReader(m_LocalIndexFileURL);
 
-                string text = reader.ReadToEnd();
+                    string text = reader.ReadToEnd();
 
-                reader.Close();
-                
+                    reader.Close();
+
+                    m_FileData = JsonUtility.FromJson<FileData>(text);
+
+                }
+                catch (Exception e)
+                {
+                    Debug.Log("<color=red>" + "[LauncherControl.DelayedShow] There was an error trying to get file (index recipes) " + m_LocalIndexFileURL + " ERROR: " + e.Message + "</color>");
+                }
 
                 yield return new WaitForEndOfFrame();
 
-                m_FileData = JsonUtility.FromJson<FileData>(text);
 
-                // TODO:: Load DATA IF EXITS
+                for (int i=0;i< m_FileData.Data.Count; i++)
+                {
+                    String localRecipeURL = Path.Combine(localRecipeDirectory,m_FileData.Data[i].FileName + "." + m_FileData.Data[i].FileExtension);
+                    String localPictureURL = Path.Combine(localPictureDirectory, m_FileData.Data[i].FileName + "." + m_FileData.Data[i].ImageExtension);
 
+                    Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] Retrieving Recipe (" + i + "/" + m_FileData.Data.Count + ") - " + m_FileData.Data[i].FileName + " </color>");
 
+                    // Recipe
+                    error = false;
+                    if (File.Exists(localRecipeURL))
+                    {
+                        // Retrive file
+                        try
+                        {
+                            StreamReader readerRecipe = new StreamReader(localRecipeURL);
+
+                            string recipeJSON = readerRecipe.ReadToEnd();
+
+                            m_FileData.Data[i].Recipe = JsonUtility.FromJson<RecipeModel>(recipeJSON);                           
+
+                            readerRecipe.Close();
+
+                        }
+                        catch (Exception e)
+                        {
+                            error = true;
+                            Debug.Log("<color=red>" + "[LauncherControl.DelayedShow] There was an error trying to get file (recipe) " + localRecipeURL + " ERROR: " + e.Message + "</color>");
+                        }
+                    }else
+                    {
+                        Debug.Log("<color=red>" + "[LauncherControl.DelayedShow] File (recipe) " + localRecipeURL + " doesn't exits " + "</color>");
+                    }
+
+                    if (error) continue;
+
+                    // Image
+                    //m_FileData.Data[i].Sprite = null;
+
+                    if (File.Exists(localPictureURL))
+                    {
+                        Texture2D texture = new Texture2D(2, 2);
+                      
+                        // Retrive file
+                        try
+                        {
+                            byte[] pictureData = File.ReadAllBytes(localPictureURL);
+
+                            texture.LoadImage(pictureData);
+
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.Log("<color=red>" + "[LauncherControl.DelayedShow] There was an error trying to get file (image) " + localPictureURL + " ERROR: " + e.Message + "</color>");
+                            error = true;
+                        }
+
+                        if (!error)
+                        {
+                            yield return new WaitForEndOfFrame();
+
+                            Rect rec = new Rect(0, 0, texture.width, texture.width);
+
+                            m_FileData.Data[i].Recipe.Image = Sprite.Create(texture, rec, new Vector2(0.5f, 0.5f), 100);
+
+                            yield return new WaitForEndOfFrame();
+
+                            m_FileData.Data[i].Loaded = true;
+                        }
+
+                    }
+                    else
+                    {
+                        Debug.Log("<color=red>" + "[LauncherControl.DelayedShow] File (image) " + localPictureURL + " doesn't exits " + "</color>");
+                    }
+                }
 
                 yield return RefreshScrollList();  
 
@@ -191,6 +306,7 @@ namespace RecipeApp
 
         private IEnumerator RequestRecipe(int id)
         {
+
             string localRecipeDirectory = Path.Combine(Application.persistentDataPath, m_RecipesFolder);
             if (!Directory.Exists(localRecipeDirectory))
             {
@@ -255,12 +371,14 @@ namespace RecipeApp
 
                 Rect rec = new Rect(0, 0, texture.width, texture.height);
 
-                m_FileData.Data[id].Sprite = Sprite.Create(texture, rec, new Vector2(0.5f, 0.5f), 100);
+                m_FileData.Data[id].Recipe.Image = Sprite.Create(texture, rec, new Vector2(0.5f, 0.5f), 100);
 
                 yield return new WaitForEndOfFrame();
 
                 string localPicture = Path.Combine(localPictureDirectory, pictureName);
                 SaveFileToLocal(localPicture, wwwPictureFile);
+
+                m_FileData.Data[id].Loaded = true;
             }
             else
             {
@@ -278,88 +396,14 @@ namespace RecipeApp
             yield return new WaitForSeconds(0.3f);
 
             AppController.Instance.PopupWithButtons.Hide();
-        }
 
-        private IEnumerator RequestPictures()
-        {
-
-            string localDirectory = string.Empty;
-            for (int i = 0; i < m_FileData.Data.Count; i++)
+            if (OnRequestRecipeEnd != null)
             {
-                
-                if ((string.IsNullOrEmpty(m_FileData.Data[i].FileName)) || (string.IsNullOrEmpty(m_FileData.Data[i].ImageExtension)))
-                {
-                    continue;
-                }
-
-                string fileName = m_FileData.Data[i].FileName + "." + m_FileData.Data[i].ImageExtension;
-                string localPath = Path.Combine(localDirectory, fileName);
-
-
-                if (File.Exists(localPath))
-                {
-                    Debug.Log("<color=blue>" + "[LauncherControl.RequestFile] File exits at :" + localPath + "</color>");
-
-                    byte[] fileData = File.ReadAllBytes(localPath);
-
-                    Texture2D texture = new Texture2D(2, 2);
-
-                    texture.LoadImage(fileData);
-
-                    yield return new WaitForEndOfFrame();
-
-                    Rect rec = new Rect(0, 0, texture.width, texture.height);
-
-                    m_FileData.Data[i].Sprite = Sprite.Create(texture, rec, new Vector2(0.5f, 0.5f), 100);
-
-                    yield return new WaitForEndOfFrame();
-                }
-                else
-                { 
-                    string directory = Path.Combine(m_DataUrl, m_PicturesFolder);
-                    string url = Path.Combine(directory, fileName);
-
-                    WWW wwwFile = new WWW(url);
-
-                    Debug.Log("<color=blue>" + "[LauncherControl.RequestFile] Requesting file: " + url + "</color>");
-
-                    yield return wwwFile;
-
-                    Debug.Log("<color=blue>" + "[LauncherControl.RequestFile] Requesting file: " + url + "</color>");
-
-                    if (wwwFile.texture != null)
-                    {
-                        Debug.Log("<color=blue>" + "[LauncherControl.RequestFile] Texture: (" + wwwFile.texture.width + " x " + wwwFile.texture.height + ")" + "</color>");
-
-                        Texture2D texture = new Texture2D(wwwFile.texture.width, wwwFile.texture.height, TextureFormat.DXT1, false);
-                        wwwFile.LoadImageIntoTexture(texture);
-
-                        Rect rec = new Rect(0, 0, texture.width, texture.height);
-
-                        m_FileData.Data[i].Sprite = Sprite.Create(texture, rec, new Vector2(0.5f, 0.5f), 100);
-
-                        yield return new WaitForEndOfFrame();
-
-
-                        // Save bytes
-                        byte[] bytes = wwwFile.bytes;
-                        File.WriteAllBytes(localPath, bytes);
-
-                        Debug.Log("<color=blue>" + "[LauncherControl.RequestFile] Writing: " + wwwFile.bytes.Length + "  At: " + localPath + "</color>");
-
-                        yield return new WaitForEndOfFrame();
-                    }
-                    else
-                    {
-                        Debug.Log("<color=blue>" + "[LauncherControl.RequestFile] No texture:" + "</color>");
-                    }
-
-                    wwwFile.Dispose();
-                    wwwFile = null;
-                }
+                OnRequestRecipeEnd(m_FileData.Data[id].Recipe);
             }
-        }
 
+        }
+        
         public override void Hide()
         {
             base.Hide();
@@ -367,12 +411,6 @@ namespace RecipeApp
             // Show UI
             m_LauncherUI.Hide();
         }
-
-        #region RequestFiles
-
-
-        #endregion RequestFiles
-
 
         #region ScrollList
 
@@ -410,21 +448,25 @@ namespace RecipeApp
         private void OnScrollItemClicked(ButtonWithText button)
         {
             Debug.Log("OnScrollItemClicked: " + button.IdButton);
-
-            AppController.Instance.PopupWithButtons.ShowPopup("Test", "You want to see recipe: " + button.IdButton, "Ok", OnOkPopup, string.Empty, null, string.Empty, null);
+            
+            if ((button.IdButton >= 0) && (button.IdButton < m_FileData.Data.Count) && m_FileData.Data[button.IdButton].Loaded)
+            {
+                if (OnRequestRecipeEnd != null)
+                {
+                    OnRequestRecipeEnd(m_FileData.Data[button.IdButton].Recipe);
+                }
+            }else
+            {
+                AppController.Instance.PopupWithButtons.ShowPopup("Error", "Please download the recipe first","OK", OnOkPopup, string.Empty, null, string.Empty, null);
+            }            
         }
-
         
 
         private void OnScrollItemDownloadClicked(ButtonWithText button)
         {
-            Debug.Log("OnScrollItemDownloadClicked: " + button.IdButton);
+            Debug.Log("OnScrollItemDownloadClicked: " + button.IdButton);           
 
-            
-
-            StartCoroutine(RequestRecipe(button.IdButton));
-
-            
+            StartCoroutine(RequestRecipe(button.IdButton));          
             
         }
 

@@ -55,14 +55,28 @@ namespace RecipeApp
         void Start ()
         {
             m_PopupWithButtons.Hide();
-            m_Launcher.OnGetDataEnd += OnLauncherGetDataEnd;
+
+
+            m_Launcher.OnRequestRecipeEnd += OnLauncherRequestRecipeEnd;
+
+            //m_Launcher.OnGetDataEnd += OnLauncherGetDataEnd;
             m_CurrentControl = m_Launcher;
+            
             m_CurrentControl.Show();
         }
 
-        private void OnLauncherGetDataEnd()
+        private void OnLauncherRequestRecipeEnd(RecipeModel recipe)
         {
-            m_Launcher.OnGetDataEnd -= OnLauncherGetDataEnd;
+            m_RecipeControl.CurrentRecipe = recipe;
+            m_CurrentControl.Hide();
+
+            m_CurrentControl = m_RecipeControl;
+            m_CurrentControl.Show();
+        }
+
+       /* private void OnLauncherGetDataEnd()
+        {
+           // m_Launcher.OnGetDataEnd -= OnLauncherGetDataEnd;
 
             m_RecipeControl.Init();
 
@@ -71,9 +85,9 @@ namespace RecipeApp
             m_CurrentControl = m_RecipeControl;
 
             m_CurrentControl.Show();
-        }
-        
-        
+        }*/
+
+
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Escape))
@@ -84,7 +98,12 @@ namespace RecipeApp
         
         public void Back()
         {
-            m_CurrentControl.Back();            
+            if (m_CurrentControl == m_RecipeControl)
+            {
+                m_CurrentControl.Hide();
+                m_CurrentControl = m_Launcher;
+                m_CurrentControl.Show();
+            }         
         }
 
     }
