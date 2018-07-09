@@ -93,13 +93,17 @@ namespace RecipeApp
         [SerializeField]
         private LauncherUI m_LauncherUI;
 
+        [SerializeField] private Utility.UI.ProgressUI m_ProgressUI;
+
         private float m_PercentProgress;
 
         public override void Show()
         {
             base.Show();
 
-            m_LauncherUI.Progress = "Getting recipes...";
+            m_ProgressUI.Hide();
+
+            m_LauncherUI.Progress = "";
 
             // Show UI
             m_LauncherUI.Show();
@@ -135,6 +139,7 @@ namespace RecipeApp
             // Check if file exits in local
             if (File.Exists(m_LocalIndexFileURL))
             {
+                m_LauncherUI.DownloadButton.SetIcon(m_RefreshIcon);
                 Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] File Index exits at : " + m_LocalIndexFileURL + "</color>");
 
                 // Retrive file
@@ -157,6 +162,7 @@ namespace RecipeApp
 
                 yield return new WaitForEndOfFrame();
 
+                m_LauncherUI.Progress = m_FileData.Data.Count + " recipe(s) available";
 
                 for (int i=0;i< m_FileData.Data.Count; i++)
                 {
@@ -192,9 +198,7 @@ namespace RecipeApp
                     }
 
                     if (error) continue;
-
-                    // Image
-                    //m_FileData.Data[i].Sprite = null;
+  
 
                     if (File.Exists(localPictureURL))
                     {
@@ -239,6 +243,7 @@ namespace RecipeApp
             }
             else
             {
+                m_LauncherUI.DownloadButton.SetIcon(m_DownloadIcon);
                 m_LauncherUI.Progress = "No Recipes found in local, please download the list of recipes";               
             }
         }
@@ -323,8 +328,10 @@ namespace RecipeApp
 
             if ((id < 0) || (id > m_FileData.Data.Count)) yield break;
 
+            m_ProgressUI.Show();
+            m_ProgressUI.SetProgress("Downloading Recipe " + m_FileData.Data[id].Title + "\n0 %", 0);
 
-            AppController.Instance.PopupWithButtons.ShowPopup("Downlad Recipe", "Downloading recipe " + m_FileData.Data[id].Title + "\n Wait..", string.Empty, null, string.Empty, null, string.Empty, null);
+            //AppController.Instance.PopupWithButtons.ShowPopup("Downlad Recipe", "Downloading recipe " + m_FileData.Data[id].Title + "\n Wait..", string.Empty, null, string.Empty, null, string.Empty, null);
 
             string fileName = m_FileData.Data[id].FileName + "." + m_FileData.Data[id].FileExtension; 
             string recipeFolder = Path.Combine(m_DataUrl, m_RecipesFolder);
@@ -333,7 +340,18 @@ namespace RecipeApp
             Debug.Log("<color=blue>" + "[LauncherControl.RequestRecipe] Requesting File: " + fileName + " URL: " + recipeUrl + "</color>");
 
             WWW wwwFile = new WWW(recipeUrl);
+
+            while (!wwwFile.isDone)
+            {
+                int progress = (int)(wwwFile.progress * 100);
+
+                m_ProgressUI.SetProgress("Downloading Recipe " + m_FileData.Data[id].Title + "\n" + progress + " %", progress);                
+            }
+
             yield return wwwFile;
+
+            m_ProgressUI.SetProgress("Downloading Recipe " + m_FileData.Data[id].Title + "\n100 %", 100);
+
             string jsonData = wwwFile.text;
 
             // Save file in local
@@ -356,12 +374,26 @@ namespace RecipeApp
             string pictureFolder = Path.Combine(m_DataUrl, m_PicturesFolder);
             string pictureUrl = Path.Combine(pictureFolder, pictureName);
 
-            AppController.Instance.PopupWithButtons.MessageText = "Downloading picture " + m_FileData.Data[id].Title + "\n Wait..";
+
+            m_ProgressUI.SetProgress("Downloading Picture " + m_FileData.Data[id].Title + "\n0 %", 0);
+
+           // AppController.Instance.PopupWithButtons.MessageText = "Downloading picture " + m_FileData.Data[id].Title + "\n Wait..";
 
             Debug.Log("<color=blue>" + "[LauncherControl.RequestRecipe] Requesting Picture: " + pictureName + " URL: " + pictureUrl + "</color>");
 
             WWW wwwPictureFile = new WWW(pictureUrl);
+
+            while (!wwwPictureFile.isDone)
+            {
+                int progress = (int)(wwwPictureFile.progress * 100);
+
+                m_ProgressUI.SetProgress("Downloading Picture " + m_FileData.Data[id].Title + "\n" + progress + " %", progress);
+            }
+
             yield return wwwPictureFile;
+
+            m_ProgressUI.SetProgress("Downloading Picture " + m_FileData.Data[id].Title + "\n100 %", 100);
+
             if (wwwPictureFile.texture != null)
             {
                 Debug.Log("<color=blue>" + "[LauncherControl.RequestRecipe] Texture: (" + wwwFile.texture.width + " x " + wwwFile.texture.height + ")" + "</color>");
@@ -393,14 +425,14 @@ namespace RecipeApp
             wwwFile = null;
 
             AppController.Instance.PopupWithButtons.MessageText = "Completed! ";
+
+            m_ProgressUI.SetProgress("Completed! ", 100);
+
             yield return new WaitForSeconds(0.3f);
 
-            AppController.Instance.PopupWithButtons.Hide();
+            yield return RefreshScrollList();
 
-            if (OnRequestRecipeEnd != null)
-            {
-                OnRequestRecipeEnd(m_FileData.Data[id].Recipe);
-            }
+            m_ProgressUI.Hide();
 
         }
         
@@ -414,15 +446,26 @@ namespace RecipeApp
 
         #region ScrollList
 
+        [SerializeField] private Sprite m_DownloadIcon;
+        [SerializeField] private Sprite m_RefreshIcon;
+
         private IEnumerator RefreshScrollList()
         {
             if (m_FileData.Data == null) yield break;
 
             List<string> lRecipes = new List<string>();
+            List<bool> lRecipesLoaded = new List<bool>();
             for (int i = 0; i < m_FileData.Data.Count; i++)
             {
                 // Initialize scroll list
                 lRecipes.Add(m_FileData.Data[i].Title);
+                if (m_FileData.Data[i].Loaded)
+                {
+                    lRecipesLoaded.Add(true);
+                }else
+                {
+                    lRecipesLoaded.Add(false);
+                }
             }
 
             yield return (m_LauncherUI.ScrollList.InitScroll(lRecipes, OnScrollItemClicked));
@@ -434,10 +477,19 @@ namespace RecipeApp
                     if (m_LauncherUI.ScrollList.ListElements[i].transform.childCount > 1)
                     {
                         Transform downloadObjectChild = m_LauncherUI.ScrollList.ListElements[i].transform.GetChild(1);
+
+                        // Change icon if the recipe is loaded
                         ButtonWithText downloadBtn = downloadObjectChild.GetComponent<ButtonWithText>();
                         if (downloadBtn != null)
                         {
                             downloadBtn.Set(i, "", OnScrollItemDownloadClicked);
+                            if (lRecipesLoaded[i])
+                            {
+                                downloadBtn.SetIcon(m_RefreshIcon);
+                            }else
+                            {
+                                downloadBtn.SetIcon(m_DownloadIcon);
+                            }
                         }
                     }
 

@@ -24,6 +24,14 @@ namespace Utility
             set { m_Title.text = value; }
         }
 
+        [SerializeField] private Image m_Icon;
+        public Image Icon
+        {
+            get { return m_Icon; }
+            set { m_Icon = value; }
+        }
+
+
         private int m_IdButton;
         public int IdButton
         {
@@ -55,6 +63,14 @@ namespace Utility
 
                     m_EventTrigger.triggers.Add(entry);
                 }
+            }
+        }
+
+        public void SetIcon(Sprite icon)
+        {
+            if (m_Icon != null)
+            {
+                m_Icon.sprite = icon;
             }
         }
     }

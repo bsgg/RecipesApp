@@ -89,11 +89,11 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: e2a25f027203879448466d89448382bd, type: 3}
-    m_FontSize: 70
+    m_FontSize: 35
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
-    m_MaxSize: 80
+    m_MaxSize: 50
     m_Alignment: 3
     m_AlignByGeometry: 1
     m_RichText: 1
@@ -142,6 +142,7 @@ MonoBehaviour:
   m_CanvasGroup: {fileID: 225310515538910014}
   m_EventTrigger: {fileID: 114503583238868390}
   m_Title: {fileID: 0}
+  m_Icon: {fileID: 114353838632304316}
 --- !u!114 &114503583238868390
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -175,6 +176,7 @@ MonoBehaviour:
   m_CanvasGroup: {fileID: 0}
   m_EventTrigger: {fileID: 114974113708636046}
   m_Title: {fileID: 114039530512007268}
+  m_Icon: {fileID: 0}
 --- !u!114 &114974113708636046
 MonoBehaviour:
   m_ObjectHideFlags: 1

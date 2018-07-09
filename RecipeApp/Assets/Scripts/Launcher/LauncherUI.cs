@@ -16,12 +16,21 @@ namespace RecipeApp
             get { return m_Progress.text; }
         }
 
+        [SerializeField] private ButtonWithText m_DownloadButton;
+        public ButtonWithText DownloadButton
+        {
+            set { m_DownloadButton = value; }
+            get { return m_DownloadButton; }
+        }
+
         [SerializeField] private Text m_Description;
         public string Description
         {
             set { m_Description.text = value; }
             get { return m_Description.text; }
         }
+
+
 
         [SerializeField]
         private ScrollUI m_ScrollList;

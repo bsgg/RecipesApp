@@ -8,11 +8,6 @@ namespace Utility
 {
     public class ScrollUI : MonoBehaviour
     {
-        //public delegate void ItemPressAction(int indexButton);
-        //public ItemPressAction OnItemPress;
-
-        /*public delegate void ScrollItemAction(ScrollButton button);
-        public event ScrollItemAction OnScrollItemClicked;*/
 
         [Header("Prefab Item")]
         [SerializeField] protected GameObject m_ItemScrollPrefab;
@@ -42,9 +37,7 @@ namespace Utility
 	    /// </summary>
 	    /// <param name="data">Data to fill the scroll</param>
         public IEnumerator InitScroll(List<string> data, ButtonWithText.ButtonWithTextAction ScrollItemAction)
-        {          
-
-            // Clear list elements
+        {   // Clear list elements
             ClearListElements();
             m_ListElements = new List<GameObject>();
 
