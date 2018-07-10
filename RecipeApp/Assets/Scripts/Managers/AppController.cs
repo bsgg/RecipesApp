@@ -54,33 +54,14 @@ namespace RecipeApp
 
         void Start ()
         {
-            m_PopupWithButtons.Hide();
-
-            if (Application.internetReachability == NetworkReachability.NotReachable)
-            {
-                Debug.Log("No Internet");
-                m_PopupWithButtons.ShowPopup("", "Please connect to internet and restart to download recipes.",
-                    "Restart App", OkPopup,
-                    string.Empty, null,
-                    string.Empty, null);
-
-            }
-            else
-            {
-                // Download recipes data
+            m_PopupWithButtons.Hide();          
                 
-                m_Launcher.OnRequestRecipeEnd += OnLauncherRequestRecipeEnd;
-                m_CurrentControl = m_Launcher;
+            m_Launcher.OnRequestRecipeEnd += OnLauncherRequestRecipeEnd;
+            m_CurrentControl = m_Launcher;
 
-                m_CurrentControl.Show();
-                StartCoroutine(m_Launcher.DownloadData());
-            }
-
-
-
-            
-
-            //m_Launcher.OnGetDataEnd += OnLauncherGetDataEnd;
+            m_CurrentControl.Show();
+            StartCoroutine(m_Launcher.DownloadData());
+           
            
         }
 

@@ -110,14 +110,17 @@ namespace RecipeApp
 
             m_ProgressUI.Hide();
 
-            m_LauncherUI.Progress = "";
+            if (m_FileData.Data != null)
+            {
+                m_LauncherUI.Progress = m_FileData.Data.Count + " recipe(s) available";
+            }
             m_LauncherUI.Show();
         }
 
-        public void OnDownloadIndexFile()
+        public void OnRefreshRecipes()
         {
             StopAllCoroutines();
-            StartCoroutine(DownloadIndexFile());
+            StartCoroutine(DownloadData());
         }
 
 
@@ -174,19 +177,31 @@ namespace RecipeApp
             }
             else
             {
-                yield return DownloadIndexFile();
 
-                m_LauncherUI.Progress = m_FileData.Data.Count + " recipe(s) available";
-
-                if (m_FileData.Data != null)
+                if (Application.internetReachability == NetworkReachability.NotReachable)
                 {
-                    for (int i = 0; i < m_FileData.Data.Count; i++)
-                    {
-                        yield return RequestRecipe(i);
-                    }
-                }
+                    m_LauncherUI.Progress = "Unable to download data, no internet connection available";
 
-                yield return RefreshScrollList();
+                }
+                else
+                {
+
+                    yield return DownloadIndexFile();
+
+                    m_LauncherUI.Progress = m_FileData.Data.Count + " recipe(s) available";
+
+                    if (m_FileData.Data != null)
+                    {
+                        for (int i = 0; i < m_FileData.Data.Count; i++)
+                        {
+                            yield return RequestRecipe(i);
+                        }
+                    }
+
+                    yield return RefreshScrollList();
+
+                    m_LauncherUI.DownloadButton.SetIcon(m_RefreshIcon);
+                }
             }
         }
 
@@ -349,17 +364,17 @@ namespace RecipeApp
             {
                 int progress = (int)(wwwFile.progress * 100);
 
-                m_ProgressUI.SetProgress("Downloading " + fileName + "\nWait..", progress);                
+                m_ProgressUI.SetProgress("Downloading " + fileName, progress);                
             }
 
             yield return wwwFile;
 
-            m_ProgressUI.SetProgress("Downloading " + fileName + "\nWait..", 100);
+            m_ProgressUI.SetProgress("Downloading " + fileName, 100);
 
             string jsonData = wwwFile.text;
 
             // Save file in local
-            string localFile = Path.Combine(m_LocalPictureDirectory, fileName);
+            string localFile = Path.Combine(m_LocalRecipeDirectory, fileName);
             SaveFileToLocal(localFile, wwwFile);
             yield return new WaitForEndOfFrame();
 
@@ -379,7 +394,7 @@ namespace RecipeApp
             string pictureUrl = Path.Combine(pictureFolder, pictureName);
 
 
-            m_ProgressUI.SetProgress("Downloading " + fileName + "\nWait..", 0);
+            m_ProgressUI.SetProgress("Downloading " + fileName, 0);
 
             Debug.Log("<color=blue>" + "[LauncherControl.RequestRecipe] Requesting Picture: " + pictureName + " URL: " + pictureUrl + "</color>");
 
@@ -389,12 +404,12 @@ namespace RecipeApp
             {
                 int progress = (int)(wwwPictureFile.progress * 100);
 
-                m_ProgressUI.SetProgress("Downloading " + fileName + "\nWait..", progress);
+                m_ProgressUI.SetProgress("Downloading " + fileName, progress);
             }
 
             yield return wwwPictureFile;
 
-            m_ProgressUI.SetProgress("Downloading " + fileName + "\nWait..", 100);
+            m_ProgressUI.SetProgress("Downloading " + fileName, 100);
 
             if (wwwPictureFile.texture != null)
             {
