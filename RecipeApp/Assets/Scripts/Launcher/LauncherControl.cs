@@ -77,8 +77,12 @@ namespace RecipeApp
 
         [SerializeField]
         private string m_PicturesFolder = "Pictures";
+
+        private string m_LocalRecipeDirectory;
+
         [SerializeField]
         private string m_RecipesFolder = "Recipes";
+        private string m_LocalPictureDirectory;
 
         [SerializeField]
         private FileData m_FileData;
@@ -97,6 +101,9 @@ namespace RecipeApp
 
         private float m_PercentProgress;
 
+        [SerializeField] private Sprite m_DownloadIcon;
+        [SerializeField] private Sprite m_RefreshIcon;
+
         public override void Show()
         {
             base.Show();
@@ -104,37 +111,34 @@ namespace RecipeApp
             m_ProgressUI.Hide();
 
             m_LauncherUI.Progress = "";
-
-            // Show UI
             m_LauncherUI.Show();
-
-            StartCoroutine(DelayedShow());
         }
-        
 
-        private IEnumerator DelayedShow()
+        public void OnDownloadIndexFile()
         {
-            m_FileData = new FileData();
+            StopAllCoroutines();
+            StartCoroutine(DownloadIndexFile());
+        }
 
-            if (string.IsNullOrEmpty(m_DataUrl) || string.IsNullOrEmpty(m_IndexFileName))
-            {                
-                yield return null;
-            }
 
+        public IEnumerator DownloadData()
+        {
+            // Create local Directories
             m_LocalIndexFileURL = Path.Combine(Application.persistentDataPath, m_IndexFileName);
 
-
-            string localRecipeDirectory = Path.Combine(Application.persistentDataPath, m_RecipesFolder);
-            if (!Directory.Exists(localRecipeDirectory))
+            m_LocalRecipeDirectory = Path.Combine(Application.persistentDataPath, m_RecipesFolder);
+            if (!Directory.Exists(m_LocalRecipeDirectory))
             {
-                Directory.CreateDirectory(localRecipeDirectory);
+                Directory.CreateDirectory(m_LocalRecipeDirectory);
             }
 
-            string localPictureDirectory = Path.Combine(Application.persistentDataPath, m_PicturesFolder);
-            if (!Directory.Exists(localPictureDirectory))
+            m_LocalPictureDirectory = Path.Combine(Application.persistentDataPath, m_PicturesFolder);
+            if (!Directory.Exists(m_LocalPictureDirectory))
             {
-                Directory.CreateDirectory(localPictureDirectory);
+                Directory.CreateDirectory(m_LocalPictureDirectory);
             }
+
+            m_FileData = new FileData();
 
             // Check if file exits in local
             if (File.Exists(m_LocalIndexFileURL))
@@ -143,7 +147,6 @@ namespace RecipeApp
                 Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] File Index exits at : " + m_LocalIndexFileURL + "</color>");
 
                 // Retrive file
-                bool error = false;
                 try
                 {
                     StreamReader reader = new StreamReader(m_LocalIndexFileURL);
@@ -164,112 +167,48 @@ namespace RecipeApp
 
                 m_LauncherUI.Progress = m_FileData.Data.Count + " recipe(s) available";
 
-                for (int i=0;i< m_FileData.Data.Count; i++)
+                yield return LoadLocalRecipes();
+
+                yield return RefreshScrollList();
+
+            }
+            else
+            {
+                yield return DownloadIndexFile();
+
+                m_LauncherUI.Progress = m_FileData.Data.Count + " recipe(s) available";
+
+                if (m_FileData.Data != null)
                 {
-                    String localRecipeURL = Path.Combine(localRecipeDirectory,m_FileData.Data[i].FileName + "." + m_FileData.Data[i].FileExtension);
-                    String localPictureURL = Path.Combine(localPictureDirectory, m_FileData.Data[i].FileName + "." + m_FileData.Data[i].ImageExtension);
-
-                    Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] Retrieving Recipe (" + i + "/" + m_FileData.Data.Count + ") - " + m_FileData.Data[i].FileName + " </color>");
-
-                    // Recipe
-                    error = false;
-                    if (File.Exists(localRecipeURL))
+                    for (int i = 0; i < m_FileData.Data.Count; i++)
                     {
-                        // Retrive file
-                        try
-                        {
-                            StreamReader readerRecipe = new StreamReader(localRecipeURL);
-
-                            string recipeJSON = readerRecipe.ReadToEnd();
-
-                            m_FileData.Data[i].Recipe = JsonUtility.FromJson<RecipeModel>(recipeJSON);                           
-
-                            readerRecipe.Close();
-
-                        }
-                        catch (Exception e)
-                        {
-                            error = true;
-                            Debug.Log("<color=red>" + "[LauncherControl.DelayedShow] There was an error trying to get file (recipe) " + localRecipeURL + " ERROR: " + e.Message + "</color>");
-                        }
-                    }else
-                    {
-                        Debug.Log("<color=red>" + "[LauncherControl.DelayedShow] File (recipe) " + localRecipeURL + " doesn't exits " + "</color>");
-                    }
-
-                    if (error) continue;
-  
-
-                    if (File.Exists(localPictureURL))
-                    {
-                        Texture2D texture = new Texture2D(2, 2);
-                      
-                        // Retrive file
-                        try
-                        {
-                            byte[] pictureData = File.ReadAllBytes(localPictureURL);
-
-                            texture.LoadImage(pictureData);
-
-                        }
-                        catch (Exception e)
-                        {
-                            Debug.Log("<color=red>" + "[LauncherControl.DelayedShow] There was an error trying to get file (image) " + localPictureURL + " ERROR: " + e.Message + "</color>");
-                            error = true;
-                        }
-
-                        if (!error)
-                        {
-                            yield return new WaitForEndOfFrame();
-
-                            Rect rec = new Rect(0, 0, texture.width, texture.width);
-
-                            m_FileData.Data[i].Recipe.Image = Sprite.Create(texture, rec, new Vector2(0.5f, 0.5f), 100);
-
-                            yield return new WaitForEndOfFrame();
-
-                            m_FileData.Data[i].Loaded = true;
-                        }
-
-                    }
-                    else
-                    {
-                        Debug.Log("<color=red>" + "[LauncherControl.DelayedShow] File (image) " + localPictureURL + " doesn't exits " + "</color>");
+                        yield return RequestRecipe(i);
                     }
                 }
 
-                yield return RefreshScrollList();  
-
+                yield return RefreshScrollList();
             }
-            else
-            {
-                m_LauncherUI.DownloadButton.SetIcon(m_DownloadIcon);
-                m_LauncherUI.Progress = "No Recipes found in local, please download the list of recipes";               
-            }
-        }
-
-        public void OnDownloadIndexFile()
-        {
-            // TODO: CHECK INTERNET
-            if (Application.internetReachability != NetworkReachability.NotReachable)
-            {
-                StopAllCoroutines();
-                StartCoroutine(DownloadIndexFile());
-            }
-            else
-            {
-
-                m_LauncherUI.Progress = "Please connect to internet to continue";
-            }           
         }
 
         private IEnumerator DownloadIndexFile()
         {
+            m_ProgressUI.Show();
+            m_ProgressUI.SetProgress("Downloading Recipes\nWait..", 0);
             string urlFile = Path.Combine(m_DataUrl, m_IndexFileName);
 
             Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] Requesting data from: " + urlFile + "</color>");
 
             WWW wwwFile = new WWW(urlFile);
+
+            while (!wwwFile.isDone)
+            {
+                int progress = (int)(wwwFile.progress * 100);
+
+                m_ProgressUI.SetProgress("Downloading Recipes\nWait..", progress);
+            }
+
+            m_ProgressUI.SetProgress("Downloading Recipes\nWait..", 100);
+
             yield return wwwFile;
             string jsonData = wwwFile.text;
 
@@ -281,8 +220,7 @@ namespace RecipeApp
             {
                 m_FileData = JsonMapper.ToObject<FileData>(jsonData);
 
-                yield return RefreshScrollList();
-
+                yield return new WaitForEndOfFrame();
             }
             else
             {
@@ -290,6 +228,84 @@ namespace RecipeApp
             }
         }
 
+
+        private IEnumerator LoadLocalRecipes()
+        {
+            bool error = false;
+            for (int i = 0; i < m_FileData.Data.Count; i++)
+            {
+                String localRecipeURL = Path.Combine(m_LocalRecipeDirectory, m_FileData.Data[i].FileName + "." + m_FileData.Data[i].FileExtension);
+                String localPictureURL = Path.Combine(m_LocalPictureDirectory, m_FileData.Data[i].FileName + "." + m_FileData.Data[i].ImageExtension);
+
+                Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] Retrieving Recipe (" + i + "/" + m_FileData.Data.Count + ") - " + m_FileData.Data[i].FileName + " </color>");
+
+                // Recipe
+                error = false;
+                if (File.Exists(localRecipeURL))
+                {
+                    // Retrive file
+                    try
+                    {
+                        StreamReader readerRecipe = new StreamReader(localRecipeURL);
+
+                        string recipeJSON = readerRecipe.ReadToEnd();
+
+                        m_FileData.Data[i].Recipe = JsonUtility.FromJson<RecipeModel>(recipeJSON);
+
+                        readerRecipe.Close();
+
+                    }
+                    catch (Exception e)
+                    {
+                        error = true;
+                        Debug.Log("<color=red>" + "[LauncherControl.DelayedShow] There was an error trying to get file (recipe) " + localRecipeURL + " ERROR: " + e.Message + "</color>");
+                    }
+                }
+                else
+                {
+                    Debug.Log("<color=red>" + "[LauncherControl.DelayedShow] File (recipe) " + localRecipeURL + " doesn't exits " + "</color>");
+                }
+
+                if (error) continue;
+
+                if (File.Exists(localPictureURL))
+                {
+                    Texture2D texture = new Texture2D(2, 2);
+
+                    // Retrive file
+                    try
+                    {
+                        byte[] pictureData = File.ReadAllBytes(localPictureURL);
+
+                        texture.LoadImage(pictureData);
+
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.Log("<color=red>" + "[LauncherControl.DelayedShow] There was an error trying to get file (image) " + localPictureURL + " ERROR: " + e.Message + "</color>");
+                        error = true;
+                    }
+
+                    if (!error)
+                    {
+                        yield return new WaitForEndOfFrame();
+
+                        Rect rec = new Rect(0, 0, texture.width, texture.width);
+
+                        m_FileData.Data[i].Recipe.Image = Sprite.Create(texture, rec, new Vector2(0.5f, 0.5f), 100);
+
+                        yield return new WaitForEndOfFrame();
+
+                        m_FileData.Data[i].Loaded = true;
+                    }
+
+                }
+                else
+                {
+                    Debug.Log("<color=red>" + "[LauncherControl.DelayedShow] File (image) " + localPictureURL + " doesn't exits " + "</color>");
+                }
+            }
+        }
 
         private void SaveFileToLocal(string url, WWW request)
         {
@@ -311,25 +327,13 @@ namespace RecipeApp
 
         private IEnumerator RequestRecipe(int id)
         {
-
-            string localRecipeDirectory = Path.Combine(Application.persistentDataPath, m_RecipesFolder);
-            if (!Directory.Exists(localRecipeDirectory))
-            {
-                Directory.CreateDirectory(localRecipeDirectory);
-            }
-
-            string localPictureDirectory = Path.Combine(Application.persistentDataPath, m_PicturesFolder);
-            if (!Directory.Exists(localPictureDirectory))
-            {
-                Directory.CreateDirectory(localPictureDirectory);
-            }
-
+            
             if (m_FileData.Data == null) yield break;
 
             if ((id < 0) || (id > m_FileData.Data.Count)) yield break;
 
             m_ProgressUI.Show();
-            m_ProgressUI.SetProgress("Downloading Recipe " + m_FileData.Data[id].Title + "\n0 %", 0);
+            m_ProgressUI.SetProgress("Wait..", 0);
 
             //AppController.Instance.PopupWithButtons.ShowPopup("Downlad Recipe", "Downloading recipe " + m_FileData.Data[id].Title + "\n Wait..", string.Empty, null, string.Empty, null, string.Empty, null);
 
@@ -345,17 +349,17 @@ namespace RecipeApp
             {
                 int progress = (int)(wwwFile.progress * 100);
 
-                m_ProgressUI.SetProgress("Downloading Recipe " + m_FileData.Data[id].Title + "\n" + progress + " %", progress);                
+                m_ProgressUI.SetProgress("Downloading " + fileName + "\nWait..", progress);                
             }
 
             yield return wwwFile;
 
-            m_ProgressUI.SetProgress("Downloading Recipe " + m_FileData.Data[id].Title + "\n100 %", 100);
+            m_ProgressUI.SetProgress("Downloading " + fileName + "\nWait..", 100);
 
             string jsonData = wwwFile.text;
 
             // Save file in local
-            string localFile = Path.Combine(localRecipeDirectory, fileName);
+            string localFile = Path.Combine(m_LocalPictureDirectory, fileName);
             SaveFileToLocal(localFile, wwwFile);
             yield return new WaitForEndOfFrame();
 
@@ -375,9 +379,7 @@ namespace RecipeApp
             string pictureUrl = Path.Combine(pictureFolder, pictureName);
 
 
-            m_ProgressUI.SetProgress("Downloading Picture " + m_FileData.Data[id].Title + "\n0 %", 0);
-
-           // AppController.Instance.PopupWithButtons.MessageText = "Downloading picture " + m_FileData.Data[id].Title + "\n Wait..";
+            m_ProgressUI.SetProgress("Downloading " + fileName + "\nWait..", 0);
 
             Debug.Log("<color=blue>" + "[LauncherControl.RequestRecipe] Requesting Picture: " + pictureName + " URL: " + pictureUrl + "</color>");
 
@@ -387,12 +389,12 @@ namespace RecipeApp
             {
                 int progress = (int)(wwwPictureFile.progress * 100);
 
-                m_ProgressUI.SetProgress("Downloading Picture " + m_FileData.Data[id].Title + "\n" + progress + " %", progress);
+                m_ProgressUI.SetProgress("Downloading " + fileName + "\nWait..", progress);
             }
 
             yield return wwwPictureFile;
 
-            m_ProgressUI.SetProgress("Downloading Picture " + m_FileData.Data[id].Title + "\n100 %", 100);
+            m_ProgressUI.SetProgress("Downloading " + fileName + "\nWait..", 100);
 
             if (wwwPictureFile.texture != null)
             {
@@ -407,7 +409,7 @@ namespace RecipeApp
 
                 yield return new WaitForEndOfFrame();
 
-                string localPicture = Path.Combine(localPictureDirectory, pictureName);
+                string localPicture = Path.Combine(m_LocalPictureDirectory, pictureName);
                 SaveFileToLocal(localPicture, wwwPictureFile);
 
                 m_FileData.Data[id].Loaded = true;
@@ -424,13 +426,8 @@ namespace RecipeApp
             wwwFile.Dispose();
             wwwFile = null;
 
-            AppController.Instance.PopupWithButtons.MessageText = "Completed! ";
-
-            m_ProgressUI.SetProgress("Completed! ", 100);
-
+            RefreshDownloadButtonScroll(id);
             yield return new WaitForSeconds(0.3f);
-
-            yield return RefreshScrollList();
 
             m_ProgressUI.Hide();
 
@@ -446,8 +443,7 @@ namespace RecipeApp
 
         #region ScrollList
 
-        [SerializeField] private Sprite m_DownloadIcon;
-        [SerializeField] private Sprite m_RefreshIcon;
+        
 
         private IEnumerator RefreshScrollList()
         {
@@ -493,6 +489,31 @@ namespace RecipeApp
                         }
                     }
 
+                }
+            }
+        }
+
+        private void RefreshDownloadButtonScroll(int id)
+        {
+            if ((m_LauncherUI.ScrollList.ListElements != null) && (id >=0) && (id < m_LauncherUI.ScrollList.ListElements.Count))
+            {
+                if (m_LauncherUI.ScrollList.ListElements[id].transform.childCount > 1)
+                {
+                    Transform downloadObjectChild = m_LauncherUI.ScrollList.ListElements[id].transform.GetChild(1);
+
+                    // Change icon if the recipe is loaded
+                    ButtonWithText downloadBtn = downloadObjectChild.GetComponent<ButtonWithText>();
+                    if (downloadBtn != null)
+                    {
+                        if (m_FileData.Data[id].Loaded)
+                        {
+                            downloadBtn.SetIcon(m_RefreshIcon);
+                        }
+                        else
+                        {
+                            downloadBtn.SetIcon(m_DownloadIcon);
+                        }
+                    }
                 }
             }
         }
