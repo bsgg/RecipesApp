@@ -1,5 +1,4 @@
-﻿using LitJson;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -68,7 +67,7 @@ namespace RecipeApp
     public class LauncherControl : Base
     {
         public delegate void LauncherAction(RecipeModel Recipe);
-        public event LauncherAction OnRequestRecipeEnd;
+        public event LauncherAction OnRequestRecipeCompleted;
 
         [SerializeField] private string m_DataUrl = "http://beatrizcv.com/Data/";
 
@@ -77,7 +76,6 @@ namespace RecipeApp
 
         [SerializeField]
         private string m_PicturesFolder = "Pictures";
-
         private string m_LocalRecipeDirectory;
 
         [SerializeField]
@@ -121,11 +119,13 @@ namespace RecipeApp
         {
             StopAllCoroutines();
             StartCoroutine(DownloadData());
+
         }
 
-
-        public IEnumerator DownloadData()
+        public override void Init()
         {
+            base.Init();
+
             // Create local Directories
             m_LocalIndexFileURL = Path.Combine(Application.persistentDataPath, m_IndexFileName);
 
@@ -142,12 +142,21 @@ namespace RecipeApp
             }
 
             m_FileData = new FileData();
+        }
 
-            // Check if file exits in local
+        public bool CheckIfDataExits()
+        {
+            return (File.Exists(m_LocalIndexFileURL));
+        }
+
+        public IEnumerator LoadLocalData()
+        {
+            m_ProgressUI.Show();
+            m_ProgressUI.SetProgress("Wait..", 100);
+
             if (File.Exists(m_LocalIndexFileURL))
             {
                 m_LauncherUI.DownloadButton.SetIcon(m_RefreshIcon);
-                Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] File Index exits at : " + m_LocalIndexFileURL + "</color>");
 
                 // Retrive file
                 try
@@ -173,42 +182,43 @@ namespace RecipeApp
                 yield return LoadLocalRecipes();
 
                 yield return RefreshScrollList();
-
             }
-            else
-            {
 
-                if (Application.internetReachability == NetworkReachability.NotReachable)
+            m_ProgressUI.Hide();
+        }
+
+        public IEnumerator DownloadData()
+        {
+            m_ProgressUI.Show();
+            m_ProgressUI.SetProgress("Wait..", 0);
+            // Check if file exits in local
+            //if (!File.Exists(m_LocalIndexFileURL))
+           // {
+                yield return DownloadIndexFile();
+
+                m_LauncherUI.Progress = m_FileData.Data.Count + " recipe(s) available";
+
+                if (m_FileData.Data != null)
                 {
-                    m_LauncherUI.Progress = "Unable to download data, no internet connection available";
-
-                }
-                else
-                {
-
-                    yield return DownloadIndexFile();
-
-                    m_LauncherUI.Progress = m_FileData.Data.Count + " recipe(s) available";
-
-                    if (m_FileData.Data != null)
+                    for (int i = 0; i < m_FileData.Data.Count; i++)
                     {
-                        for (int i = 0; i < m_FileData.Data.Count; i++)
-                        {
-                            yield return RequestRecipe(i);
-                        }
+                        yield return DownloadRecipe(i);
                     }
-
-                    yield return RefreshScrollList();
-
-                    m_LauncherUI.DownloadButton.SetIcon(m_RefreshIcon);
                 }
-            }
+
+                yield return RefreshScrollList();
+
+                m_LauncherUI.DownloadButton.SetIcon(m_RefreshIcon);
+                
+            //}
+
+            m_ProgressUI.Hide();
         }
 
         private IEnumerator DownloadIndexFile()
         {
             m_ProgressUI.Show();
-            m_ProgressUI.SetProgress("Downloading Recipes\nWait..", 0);
+            m_ProgressUI.SetProgress("Wait..", 0);
             string urlFile = Path.Combine(m_DataUrl, m_IndexFileName);
 
             Debug.Log("<color=blue>" + "[LauncherControl.DelayedShow] Requesting data from: " + urlFile + "</color>");
@@ -219,10 +229,10 @@ namespace RecipeApp
             {
                 int progress = (int)(wwwFile.progress * 100);
 
-                m_ProgressUI.SetProgress("Downloading Recipes\nWait..", progress);
+                m_ProgressUI.SetProgress("Wait..", progress);
             }
 
-            m_ProgressUI.SetProgress("Downloading Recipes\nWait..", 100);
+            m_ProgressUI.SetProgress("Wait..", 100);
 
             yield return wwwFile;
             string jsonData = wwwFile.text;
@@ -233,7 +243,7 @@ namespace RecipeApp
 
             if (!string.IsNullOrEmpty(jsonData))
             {
-                m_FileData = JsonMapper.ToObject<FileData>(jsonData);
+                m_FileData = JsonUtility.FromJson<FileData>(jsonData);
 
                 yield return new WaitForEndOfFrame();
             }
@@ -330,6 +340,7 @@ namespace RecipeApp
                 {
                     File.Delete(url);
                 }
+
                 // Save file
                 byte[] bytes = request.bytes;
                 File.WriteAllBytes(url, bytes);
@@ -340,17 +351,15 @@ namespace RecipeApp
             }
         }
 
-        private IEnumerator RequestRecipe(int id)
-        {
-            
+        private IEnumerator DownloadRecipe(int id)
+        {            
             if (m_FileData.Data == null) yield break;
 
             if ((id < 0) || (id > m_FileData.Data.Count)) yield break;
 
+
             m_ProgressUI.Show();
             m_ProgressUI.SetProgress("Wait..", 0);
-
-            //AppController.Instance.PopupWithButtons.ShowPopup("Downlad Recipe", "Downloading recipe " + m_FileData.Data[id].Title + "\n Wait..", string.Empty, null, string.Empty, null, string.Empty, null);
 
             string fileName = m_FileData.Data[id].FileName + "." + m_FileData.Data[id].FileExtension; 
             string recipeFolder = Path.Combine(m_DataUrl, m_RecipesFolder);
@@ -364,12 +373,12 @@ namespace RecipeApp
             {
                 int progress = (int)(wwwFile.progress * 100);
 
-                m_ProgressUI.SetProgress("Downloading " + fileName, progress);                
+                m_ProgressUI.SetProgress("Downloading " + m_FileData.Data[id].Title, progress);                
             }
 
             yield return wwwFile;
 
-            m_ProgressUI.SetProgress("Downloading " + fileName, 100);
+            m_ProgressUI.SetProgress("Downloading " + m_FileData.Data[id].Title, 100);
 
             string jsonData = wwwFile.text;
 
@@ -394,7 +403,7 @@ namespace RecipeApp
             string pictureUrl = Path.Combine(pictureFolder, pictureName);
 
 
-            m_ProgressUI.SetProgress("Downloading " + fileName, 0);
+            m_ProgressUI.SetProgress("Downloading " + m_FileData.Data[id].Title, 0);
 
             Debug.Log("<color=blue>" + "[LauncherControl.RequestRecipe] Requesting Picture: " + pictureName + " URL: " + pictureUrl + "</color>");
 
@@ -404,12 +413,12 @@ namespace RecipeApp
             {
                 int progress = (int)(wwwPictureFile.progress * 100);
 
-                m_ProgressUI.SetProgress("Downloading " + fileName, progress);
+                m_ProgressUI.SetProgress("Downloading " + m_FileData.Data[id].Title, progress);
             }
 
             yield return wwwPictureFile;
 
-            m_ProgressUI.SetProgress("Downloading " + fileName, 100);
+            m_ProgressUI.SetProgress("Downloading " + m_FileData.Data[id].Title, 100);
 
             if (wwwPictureFile.texture != null)
             {
@@ -450,15 +459,11 @@ namespace RecipeApp
         
         public override void Hide()
         {
-            base.Hide();
-
-            // Show UI
             m_LauncherUI.Hide();
+            base.Hide();
         }
 
-        #region ScrollList
-
-        
+        #region ScrollList       
 
         private IEnumerator RefreshScrollList()
         {
@@ -539,9 +544,9 @@ namespace RecipeApp
             
             if ((button.IdButton >= 0) && (button.IdButton < m_FileData.Data.Count) && m_FileData.Data[button.IdButton].Loaded)
             {
-                if (OnRequestRecipeEnd != null)
+                if (OnRequestRecipeCompleted != null)
                 {
-                    OnRequestRecipeEnd(m_FileData.Data[button.IdButton].Recipe);
+                    OnRequestRecipeCompleted(m_FileData.Data[button.IdButton].Recipe);
                 }
             }else
             {
@@ -554,7 +559,7 @@ namespace RecipeApp
         {
             Debug.Log("OnScrollItemDownloadClicked: " + button.IdButton);           
 
-            StartCoroutine(RequestRecipe(button.IdButton));          
+            StartCoroutine(DownloadRecipe(button.IdButton));          
             
         }
 

@@ -8,21 +8,25 @@ namespace Utility.UI
 {
     public class ProgressUI : UIBase
     {
+        [SerializeField] private Text m_ProgressText;
+        [SerializeField] private Animator m_Loading;
 
-        [SerializeField] private Text m_Title;
-
-        public string Title
+        public override void Show()
         {
-            set { m_Title.text = value; }
+            m_ProgressText.text = "";
+            m_Loading.gameObject.SetActive(true);
+            base.Show();
         }
 
-        [SerializeField] private Image m_ProgressImage;
-        [SerializeField] private Text m_ProgressText;
+        public override void Hide()
+        {
+            m_Loading.gameObject.SetActive(false);
+            base.Hide();
+        }
 
         public void SetProgress(string text,int value)
         {
             m_ProgressText.text = text;
-            m_ProgressImage.fillAmount = value / 100.0f;
         }
 	}
 }

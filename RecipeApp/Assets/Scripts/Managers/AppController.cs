@@ -39,45 +39,48 @@ namespace RecipeApp
         }
 
         [Header("Controls")]
-        [SerializeField]
-        private LauncherControl m_Launcher;
-        public LauncherControl Launcher
-        {
-            get { return m_Launcher; }
-        }
+        [SerializeField] private LauncherControl m_Launcher;
 
-        [SerializeField]
-        private RecipeControl m_RecipeControl;
-
-        private Base m_CurrentControl;
-
+        [SerializeField] private RecipeControl m_RecipeControl;
 
         void Start ()
         {
-            m_PopupWithButtons.Hide();          
-                
-            m_Launcher.OnRequestRecipeEnd += OnLauncherRequestRecipeEnd;
-            m_CurrentControl = m_Launcher;
+            HideAll();
+            m_Launcher.Init();
 
-            m_CurrentControl.Show();
-            StartCoroutine(m_Launcher.DownloadData());
-           
-           
+            m_Launcher.OnRequestRecipeCompleted += Launcher_OnRequestRecipeCompleted;
+            m_Launcher.Show();
+            if (m_Launcher.CheckIfDataExits())
+            {
+                StartCoroutine(m_Launcher.LoadLocalData());
+            }
+            else
+            {
+                if (Application.internetReachability == NetworkReachability.NotReachable)
+                {
+                    m_PopupWithButtons.ShowPopup("No Internet", "Please connect to internet to download data and restart the app");
+                }
+                else
+                {
+                    StartCoroutine(m_Launcher.DownloadData());
+                }
+            }           
+
         }
 
-        private void OkPopup(ButtonWithText Button)
+        private void HideAll()
         {
-            Application.Quit();
+            m_PopupWithButtons.Hide();
+            m_RecipeControl.Hide();
+            m_Launcher.Hide();
         }
+        
 
-        private void OnLauncherRequestRecipeEnd(RecipeModel recipe)
+        private void Launcher_OnRequestRecipeCompleted(RecipeModel recipe)
         {
             m_RecipeControl.CurrentRecipe = recipe;
-            m_CurrentControl.Hide();
-
-            m_CurrentControl = m_RecipeControl;
-            m_CurrentControl.Show();
-        }
+            m_Launcher.Hide();
+            m_RecipeControl.Show();        }
 
 
         private void Update()
@@ -90,11 +93,10 @@ namespace RecipeApp
         
         public void Back()
         {
-            if (m_CurrentControl == m_RecipeControl)
+            if (m_RecipeControl.Visible)
             {
-                m_CurrentControl.Hide();
-                m_CurrentControl = m_Launcher;
-                m_CurrentControl.Show();
+                m_RecipeControl.Hide();
+                m_Launcher.Show();
             }         
         }
 
